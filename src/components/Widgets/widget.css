@@ -1,0 +1,38 @@
+.widget {
+  position: absolute;
+  right: 1rem;
+  width: 8rem;
+  border-radius: 0.25rem;
+  background-color: #1e1e1e;
+}
+
+.widget__item {
+  margin: 0.25rem 0.5rem;
+}
+
+.widget__topbar {
+  padding: 0.125rem 0.375rem;
+  height: 0.8rem;
+  background-color: black;
+  border-radius: 0.25rem 0.25rem 0 0;
+  color: azure;
+  font-size: 0.5rem;
+  font-weight: 700;
+}
+
+.widget__topbar__btn {
+  float: right;
+  font-size: 0.5rem;
+}
+
+.widget__topbar__btn:hover {
+  cursor: pointer;
+}
+
+.widget-layerSelect {
+  top: 0.625rem;
+}
+
+.widget-colorSelect {
+  top: 5rem;
+}

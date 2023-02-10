@@ -1,4 +1,5 @@
 import React from 'react';
+import './widget.css';
 
 import Layer from '../../pixit/Layer';
 
@@ -16,14 +17,12 @@ function layerSelect(
     setActiveLayer(active);
   };
   return () => (
-    <>
-      <label>Layer: 
-        <select value={activeLayer} onChange={(evt) => setActiveLayer(evt.target.value)}>
-          {layers.map(({ id }) => <option key={id}>{id}</option>)}
-        </select>
-      </label>
+    <div className="widget__item">
+      <select value={activeLayer} onChange={(evt) => setActiveLayer(evt.target.value)}>
+        {layers.map(({ id }) => <option key={id}>{id}</option>)}
+      </select>
       <button onClick={insertLayer}>Add Layer</button>
-    </>
+    </div>
   );
 }
 

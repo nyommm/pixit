@@ -1,4 +1,5 @@
 import React, { ChangeEvent } from 'react';
+import './widget.css';
 
 // Currently only hex colors are supported but eventually this will be switched to react-color
 function colorSelect(color: string, setColor: Function) {
@@ -6,11 +7,9 @@ function colorSelect(color: string, setColor: Function) {
     setColor(evt.target.value);
   };
   return () => (
-    <>
-      <label>Color: 
+      <div className="widget__item">
         <input type="color" value={color} onChange={onChange} />
-      </label>
-    </>
+      </div>
   );
 }
 

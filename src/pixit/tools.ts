@@ -1,11 +1,11 @@
 import Layer from './Layer';
-import { Pixel, PixelPosition } from './types';
+import { Pixel, PixelPosition, ToolFn } from './types';
 
 export interface PixitTools {
-  pen: (layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) => (pos: PixelPosition) => void,
-  rectangle: (layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) => (pos: PixelPosition) => void,
-  circle: (layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) => (pos: PixelPosition) => void
-}
+  pen: ToolFn;
+  rectangle: ToolFn;
+  circle: ToolFn
+};
 
 function pen(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) {
   let activeLayer = layer;

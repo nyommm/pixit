@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import './viewport.css';
 
 import Layer from '../pixit/Layer';
 import LayerCanvas from './LayerCanvas';
@@ -25,14 +26,19 @@ function Viewport({ tool }: { tool: keyof PixitTools }) {
   const toolFn = (pos: PixelPosition) => 
       tools[tool](layers[idx], { ...pos, color }, dispatch);
   return (
-    <div>
+    <div className="viewport" >
       <LayerCanvas 
         layers={layers} 
         activeLayer={activeLayer}
         toolFn={toolFn} />
       <ViewportWidget 
+        widgetName='Layers'
+        widgetClass='widget-layerSelect'
         render={layerSelect(layers, setLayers, activeLayer, setActiveLayer)} />
-      <ViewportWidget render={colorSelect(color, setColor)} />
+      <ViewportWidget 
+        widgetName='Color'
+        widgetClass='widget-colorSelect'
+        render={colorSelect(color, setColor)} />
     </div>
   );
 }

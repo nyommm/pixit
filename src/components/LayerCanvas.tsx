@@ -11,7 +11,7 @@ interface LayerCanvasProps {
   toolFn: (pos: PixelPosition) => (pos: PixelPosition) => void;
 };
 
-const DEFAULT_SCALE = 8;
+const DEFAULT_SCALE = 6;
 const MIN_SCALE = DEFAULT_SCALE / 2;
 const MAX_SCALE = DEFAULT_SCALE * 2;
 
@@ -60,7 +60,11 @@ function LayerCanvas({ layers, activeLayer, toolFn }: LayerCanvasProps) {
     }
   };
   return (
-    <canvas ref={canvasRef} onWheel={onZoom} onMouseDown={toolCallback} >
+    <canvas 
+      ref={canvasRef} 
+      className="viewport__canvas" 
+      onWheel={onZoom} 
+      onMouseDown={toolCallback} >
     </canvas>
   );
 }
