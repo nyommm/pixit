@@ -1,0 +1,8 @@
+.editor {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: stretch;
+  height: 100vh;
+  width: 100vw;
+}
