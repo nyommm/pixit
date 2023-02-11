@@ -7,15 +7,29 @@ export interface PixitTools {
   circle: ToolFn
 };
 
+function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color: string): Layer {
+  const toColor: Pixel[] = [];
+  const deltaX = start.x <= end.x ? 1 : -1;
+  const deltaY = start.y <= end.y ? 1 : -1;
+  let x = start.x, y = start.y;
+  while (true) {
+    toColor.push({ x, y, color });
+    if (x == end.x && y == end.y) break;
+    if (x != end.x) x += deltaX;
+    if (y != end.y) y += deltaY;
+  }
+  return layer.colorPixels(toColor);
+}
+
 function pen(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) {
   let activeLayer = layer;
+  let start = { x: pixel.x, y: pixel.y };
   const penCallback = (pos: PixelPosition) => {
-    activeLayer = activeLayer.colorPixels([
-      { ...pos, color: pixel.color }
-    ]);
+    activeLayer = drawLine(activeLayer, start, pos, pixel.color);
+    start = pos;
     dispatch(activeLayer);
   };
-  penCallback({ x: pixel.x, y: pixel.y });
+  penCallback(start);
   return penCallback;
 }
 
