@@ -12,8 +12,8 @@ function pointerPosition(canvas: HTMLCanvasElement | null,
   if (canvas == null) return;
   const canvasRect = canvas.getBoundingClientRect();
   return {
-    x: Math.floor((moveEvent.clientX - canvasRect.left) / scale),
-    y: Math.floor((moveEvent.clientY - canvasRect.top) / scale)
+    x: Math.max(Math.floor((moveEvent.clientX - canvasRect.left) / scale), 0),
+    y: Math.max(Math.floor((moveEvent.clientY - canvasRect.top) / scale), 0)
   };
 }
 
