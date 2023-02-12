@@ -25,6 +25,11 @@
   font-weight: 700;
 }
 
+.widget__topbar:hover,
+.widget__topbar:focus {
+  cursor: move;
+}
+
 .widget__topbar__btn {
   float: right;
   font-size: 0.5rem;
