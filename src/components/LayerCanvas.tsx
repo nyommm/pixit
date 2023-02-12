@@ -35,10 +35,10 @@ function LayerCanvas({ layers, activeLayer, toolFn }: LayerCanvasProps) {
     else setScale(Math.min(scale + zoomAmount, MAX_SCALE));
   };
   // TODO!: Need to find a better way to handle adding/removing event listeners
-  // The main problem is that the toolFn (as the layers will update) will always cause a 
+  // The main problem is that the toolFn (as the layer(s) will be updated) will always cause a 
   // re-render of the LayerCanvas and therefor if we use a ref to the onMove callback it 
   // can be added everytime the ref changes using useEffect. But the pan callback (button 1) 
-  // there is no need to re-render the canvas again as the layers/scale etc won't change at all
+  // there is no need to re-render the canvas again as the layers/scale etc won't change 
   const onMouseDown = (evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
     evt.stopPropagation();
     if (canvasRef.current == null) return;
@@ -63,7 +63,6 @@ function LayerCanvas({ layers, activeLayer, toolFn }: LayerCanvasProps) {
       let x = evt.clientX, y = evt.clientY;
       let offsetX = 0, offsetY = 0;
       const onMoveCallback = (moveEvent: any) => {
-        if (canvasRef.current == null) return;
         if (moveEvent.buttons != 4) {
           canvasElement.removeEventListener('mousemove', onMoveCallback);
         } else {
