@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import './widget.css';
 
 interface ViewportWidgetProps {
@@ -10,6 +10,7 @@ interface ViewportWidgetProps {
 
 // this component will be used to eventually make the widgets collpsible, movable etc etc
 function ViewportWidget({ render, widgetClass, widgetName }: ViewportWidgetProps) {
+  const [hidden, setHidden] = useState(false);
   const widgetRef = useRef(null);
   const onMouseDown = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     evt.stopPropagation();
@@ -32,14 +33,20 @@ function ViewportWidget({ render, widgetClass, widgetName }: ViewportWidgetProps
       }
       widgetElement.addEventListener('mousemove', onMove);
     }
-  }
+  };
+  const toggleWidget = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    evt.stopPropagation();
+    setHidden(!hidden);
+  };
   return (
     <div ref={widgetRef} className={`widget ${widgetClass}`}>
       <div className="widget__topbar"  onMouseDown={onMouseDown}>
         {widgetName}
-        <span className="widget__topbar__btn">▲</span>
+        <span className="widget__topbar__btn" onClick={toggleWidget}>
+          {hidden ? '▼' : '▲'}
+        </span>
       </div>
-      {render()}
+      {!hidden && render()}
     </div>
   );
 }
