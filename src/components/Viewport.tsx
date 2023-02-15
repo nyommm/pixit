@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { RGBColor } from 'react-color';
 import './viewport.css';
 
 import Layer from '../pixit/Layer';
@@ -15,7 +16,7 @@ const BASE_LAYER = Layer.empty('0', 64, 64);
 function Viewport({ tool }: { tool: keyof PixitTools }) {
   const [layers, setLayers] = useState([BASE_LAYER]);
   const [activeLayer, setActiveLayer] = useState('0');
-  const [color, setColor] = useState('#000000');
+  const [color, setColor] = useState(Layer.DEFAULT_COLOR);
   const idx = layers.findIndex((layer) => layer.id == activeLayer);
   const dispatch = (layer: Layer) => {
     setLayers([

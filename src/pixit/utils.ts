@@ -1,4 +1,5 @@
 import React from 'react';
+import { RGBColor } from 'react-color';
 
 import Layer from './Layer';
 import { PixelPosition } from './types';
@@ -30,7 +31,7 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
   canvas.height = height * scale;
 
   const ctx = canvas.getContext('2d');
-  let color: string | undefined;
+  let color: RGBColor | undefined;
 
   if (ctx == null) return;
 
@@ -38,10 +39,9 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
     for (let y = 0; y < layer.height; y++) {
       for (let x = 0; x < layer.width; x++) {
         color = layer.pixel(x, y);
-        if (color) {
-          ctx.fillStyle = color;
-          ctx.fillRect(x * scale, y * scale, scale, scale);
-        }
+        if (!color) return;
+        ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${color.a || 255})`;
+        ctx.fillRect(x * scale, y * scale, scale, scale);
       }
     }
   }
