@@ -34,9 +34,9 @@ function layerSelect(
     evt.stopPropagation();
     const active = `${layers.length}`; 
     setLayers([
-      ...layers.slice(0, idx + 1),
+      ...(idx == 0 ? [] : layers.slice(0, idx)),
       Layer.empty(active, layers[idx].width, layers[idx].height),
-      ...layers.slice(idx + 1),
+      ...layers.slice(idx),
     ]);
     setActiveLayer(active);
   };
@@ -50,7 +50,7 @@ function layerSelect(
         layers[idx + 1], layers[idx],
         ...layers.slice(idx + 2)
       ]);
-      }
+    }
     // move layer up
     if (change == -1) {
       if (idx == 0) return;
@@ -64,8 +64,8 @@ function layerSelect(
   return () => (
     <div className="widget__item">
       <span className="widget__item__btn" onClick={insertLayer}>+</span>
-      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}>&#5169;</span>
-      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}>&#5167;</span>
+      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}>&#5169;</span>
+      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}>&#5167;</span>
       <LayerSelectItem 
         activeLayer={activeLayer}
         layerIds={layers.map((layer) => layer.id)} 

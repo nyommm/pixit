@@ -35,12 +35,12 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
 
   if (ctx == null) return;
 
-  for(const layer of layers) {
-    for (let y = 0; y < layer.height; y++) {
-      for (let x = 0; x < layer.width; x++) {
-        color = layer.pixel(x, y);
+  for(let idx = layers.length - 1; idx >= 0; idx--) {
+    for (let y = 0; y < layers[idx].height; y++) {
+      for (let x = 0; x < layers[idx].width; x++) {
+        color = layers[idx].pixel(x, y);
         if (!color) return;
-        ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${color.a || 255})`;
+        ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${color.a})`;
         ctx.fillRect(x * scale, y * scale, scale, scale);
       }
     }

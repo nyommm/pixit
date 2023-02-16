@@ -21,7 +21,7 @@ function LayerCanvas({ layers, activeLayer, toolFn }: LayerCanvasProps) {
   const canvasRef = useRef(null);
   const idx = layers.findIndex((layer) => layer.id === activeLayer);
   const paintCanvas = () => {
-    draw(canvasRef.current, layers.slice(0, idx + 1), scale);
+    draw(canvasRef.current, layers.slice(idx), scale);
   };
   useEffect(paintCanvas, [layers, layers[idx], activeLayer, scale]);
   const onZoom = (evt: WheelEvent<HTMLCanvasElement>) => {
