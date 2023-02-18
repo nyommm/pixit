@@ -23,6 +23,23 @@ class Layer {
     return new Layer(id, width, height, new Array(width * height).fill(color));
   }
 
+  static checkboard(id: string, width: number, height: number): Layer {
+    const black = { r: 30, g: 30, b: 30, a: 255 };
+    const ligthGrey = { r: 128, g: 128, b: 128, a: 255 };
+    const layer = Layer.empty(id, width, height);
+    const paint = [];
+    let flip = true;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        if (flip) paint.push({ x, y, color: black });
+        else paint.push({ x, y, color: ligthGrey });
+        flip = !flip;
+      }
+      flip =  !flip;
+    }
+    return layer.colorPixels(paint);
+  }
+
   /**
    * Returns the color at positon (x, y) on a Layer
    */
@@ -39,6 +56,7 @@ class Layer {
     for (const { x, y, color } of pixels) {
       copy[x + (y * this.width)] = color;
     }
+    console.log(copy);
     return new Layer(this.id, this.width, this.height, copy);
   }
 }

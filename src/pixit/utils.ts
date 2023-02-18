@@ -4,6 +4,8 @@ import { RGBColor } from 'react-color';
 import Layer from './Layer';
 import { PixelPosition } from './types';
 
+const CHECKBOARD_BACKGROUND = Layer.checkboard('cbdl', 64, 64);
+
 /**
  * Get the position of the pixel at the client's position
  */
@@ -22,7 +24,8 @@ function pointerPosition(canvas: HTMLCanvasElement | null,
  * Draw the 'pixels' on the canvas layer by layer
  */
 function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number): void {
-  if (canvas == null || layers.length == 0) return;
+  if (canvas == null) return;
+  layers = [...layers, CHECKBOARD_BACKGROUND];
 
   const width = layers[0].width;
   const height = layers[0].height;
