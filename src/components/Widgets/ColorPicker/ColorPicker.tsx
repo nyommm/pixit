@@ -136,8 +136,8 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange}: ColorPickerFields
             onChange={handleChange} />
       </div>
       <div className="picker__controls__colors" style={styles['picker__controls__colors']}>
-        {colors.map((color) => (
-          <div className="picker__controls__color" style={{...styles.picker__controls__color, backgroundColor: `${color}`}}>
+        {colors.map((color, idx) => (
+          <div key={`color-${idx}`} className="picker__controls__color" style={{...styles.picker__controls__color, backgroundColor: `${color}`}}>
           </div>
         ))}
       </div>
