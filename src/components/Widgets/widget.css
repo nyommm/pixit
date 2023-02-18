@@ -3,7 +3,10 @@
   right: 1rem;
   width: 8rem;
   border-radius: 0.25rem;
+  color: azure;
   background-color: #1e1e1e;
+  font-size: 0.8rem;
+  overflow: hidden;
 }
 
 .widget__item {
@@ -20,9 +23,15 @@
   font-weight: 700;
 }
 
+.widget__topbar:hover,
+.widget__topbar:focus {
+  cursor: move;
+}
+
 .widget__topbar__btn {
   float: right;
   font-size: 0.5rem;
+  padding: 0 0.25rem;
 }
 
 .widget__topbar__btn:hover {
@@ -35,4 +44,27 @@
 
 .widget-colorSelect {
   top: 5rem;
+  min-width: 13.8rem;
+}
+
+.widget__item__layer {
+  border-top: 1px azure solid;
+  padding: 0 0.25rem;
+}
+
+.widget__item__layer-active {
+  background-color: #2e2e2e;
+}
+
+.widget__item__btn {
+  display: inline-block;
+  padding: 0 0.25rem;
+  margin: 0 0.125rem 0.25rem 0;
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+
+.widget__item__btn:hover,
+.widget__item__btn:focus {
+  background-color: #2e2e2e;
 }

@@ -1,15 +1,27 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState } from 'react';
+import { RGBColor, ColorResult } from 'react-color';
 import './widget.css';
 
+import ColorPicker from './ColorPicker/ColorPicker';
+
 // Currently only hex colors are supported but eventually this will be switched to react-color
-function colorSelect(color: string, setColor: Function) {
-  const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setColor(evt.target.value);
+function colorSelect(color: RGBColor, setColor: Function) {
+  const [colors, setColors] = useState([] as string[]);
+  const handleChange = (result: ColorResult) => {
+    setColor(result.rgb);
+  };
+  const handleChangeComplete = (result: ColorResult) => {
+    const copy = colors.slice();
+    if (copy.length >= 10) copy.pop();
+    if (copy.length == 0 || result.hex != copy[0])
+      setColors([result.hex, ...copy]);
   };
   return () => (
-      <div className="widget__item">
-        <input type="color" value={color} onChange={onChange} />
-      </div>
+    <ColorPicker 
+      color={color}
+      colors={colors}
+      onChange={handleChange}
+      onChangeComplete={handleChangeComplete} />
   );
 }
 

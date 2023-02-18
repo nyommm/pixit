@@ -1,0 +1,24 @@
+div {
+  position: relative;
+}
+
+.picker {
+  padding: 0.25rem;
+}
+
+.picker__saturation,
+.picker__hue,
+.picker__alpha {
+  margin-bottom: 0.25rem;
+  width: 100%;
+}
+
+.picker__saturation {
+  height: 6rem;
+}
+
+.picker__hue,
+.picker__alpha {
+  height: 10px;
+}
+

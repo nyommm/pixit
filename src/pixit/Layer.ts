@@ -1,12 +1,15 @@
 import { Pixel } from './types';
+import { RGBColor } from 'react-color';
 
 class Layer {
   id: string;
   width: number;
   height: number;
-  pixels: string[];
+  pixels: RGBColor[];
 
-  constructor(id: string, width: number, height: number, pixels: string[]) {
+  static DEFAULT_COLOR: RGBColor = { r: 0, g: 0, b: 0, a: 0 };
+
+  constructor(id: string, width: number, height: number, pixels: RGBColor[]) {
     this.id = id;
     this.width = width;
     this.height = height;
@@ -16,14 +19,31 @@ class Layer {
   /**
    * Creates a new Layer filled with the specified color
    */
-  static empty(id: string, width: number, height: number, color: string = '#f0f0f0'): Layer {
+  static empty(id: string, width: number, height: number, color: RGBColor = Layer.DEFAULT_COLOR): Layer {
     return new Layer(id, width, height, new Array(width * height).fill(color));
+  }
+
+  static checkboard(id: string, width: number, height: number): Layer {
+    const black = { r: 30, g: 30, b: 30, a: 255 };
+    const ligthGrey = { r: 128, g: 128, b: 128, a: 255 };
+    const layer = Layer.empty(id, width, height);
+    const paint = [];
+    let flip = true;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        if (flip) paint.push({ x, y, color: black });
+        else paint.push({ x, y, color: ligthGrey });
+        flip = !flip;
+      }
+      flip =  !flip;
+    }
+    return layer.colorPixels(paint);
   }
 
   /**
    * Returns the color at positon (x, y) on a Layer
    */
-  pixel(x: number, y: number): string | undefined {
+  pixel(x: number, y: number): RGBColor | undefined {
     if (x < this.width && y < this.height)
       return this.pixels[x + (y * this.width)];
   }
@@ -36,6 +56,7 @@ class Layer {
     for (const { x, y, color } of pixels) {
       copy[x + (y * this.width)] = color;
     }
+    console.log(copy);
     return new Layer(this.id, this.width, this.height, copy);
   }
 }

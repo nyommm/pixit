@@ -1,7 +1,10 @@
 import React from 'react';
+import { RGBColor } from 'react-color';
 
 import Layer from './Layer';
 import { PixelPosition } from './types';
+
+const CHECKBOARD_BACKGROUND = Layer.checkboard('cbdl', 64, 64);
 
 /**
  * Get the position of the pixel at the client's position
@@ -12,8 +15,8 @@ function pointerPosition(canvas: HTMLCanvasElement | null,
   if (canvas == null) return;
   const canvasRect = canvas.getBoundingClientRect();
   return {
-    x: Math.floor((moveEvent.clientX - canvasRect.left) / scale),
-    y: Math.floor((moveEvent.clientY - canvasRect.top) / scale)
+    x: Math.max(Math.floor((moveEvent.clientX - canvasRect.left) / scale), 0),
+    y: Math.max(Math.floor((moveEvent.clientY - canvasRect.top) / scale), 0)
   };
 }
 
@@ -21,7 +24,8 @@ function pointerPosition(canvas: HTMLCanvasElement | null,
  * Draw the 'pixels' on the canvas layer by layer
  */
 function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number): void {
-  if (canvas == null || layers.length == 0) return;
+  if (canvas == null) return;
+  layers = [...layers, CHECKBOARD_BACKGROUND];
 
   const width = layers[0].width;
   const height = layers[0].height;
@@ -30,18 +34,17 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
   canvas.height = height * scale;
 
   const ctx = canvas.getContext('2d');
-  let color: string | undefined;
+  let color: RGBColor | undefined;
 
   if (ctx == null) return;
 
-  for(const layer of layers) {
-    for (let y = 0; y < layer.height; y++) {
-      for (let x = 0; x < layer.width; x++) {
-        color = layer.pixel(x, y);
-        if (color) {
-          ctx.fillStyle = color;
-          ctx.fillRect(x * scale, y * scale, scale, scale);
-        }
+  for(let idx = layers.length - 1; idx >= 0; idx--) {
+    for (let y = 0; y < layers[idx].height; y++) {
+      for (let x = 0; x < layers[idx].width; x++) {
+        color = layers[idx].pixel(x, y);
+        if (!color) return;
+        ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${color.a})`;
+        ctx.fillRect(x * scale, y * scale, scale, scale);
       }
     }
   }

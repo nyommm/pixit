@@ -1,4 +1,5 @@
 import Layer from './Layer';
+import { RGBColor } from 'react-color';
 
 export interface PixelPosition {
   x: number;
@@ -6,7 +7,7 @@ export interface PixelPosition {
 };
 
 export interface Pixel extends PixelPosition {
-  color: string
+  color: RGBColor
 };
 
 export type ToolFn = 
