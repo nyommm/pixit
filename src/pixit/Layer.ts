@@ -56,7 +56,6 @@ class Layer {
     for (const { x, y, color } of pixels) {
       copy[x + (y * this.width)] = color;
     }
-    console.log(copy);
     return new Layer(this.id, this.width, this.height, copy);
   }
 }
