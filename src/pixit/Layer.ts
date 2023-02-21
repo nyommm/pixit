@@ -24,14 +24,14 @@ class Layer {
   }
 
   static checkboard(id: string, width: number, height: number): Layer {
-    const black = { r: 30, g: 30, b: 30, a: 255 };
-    const ligthGrey = { r: 128, g: 128, b: 128, a: 255 };
+    const darkGrey = { r: 105, g: 105, b: 105, a: 255 };
+    const ligthGrey = { r: 144, g: 144, b: 144, a: 255 };
     const layer = Layer.empty(id, width, height);
     const paint = [];
     let flip = true;
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        if (flip) paint.push({ x, y, color: black });
+        if (flip) paint.push({ x, y, color: darkGrey });
         else paint.push({ x, y, color: ligthGrey });
         flip = !flip;
       }
