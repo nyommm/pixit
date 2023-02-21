@@ -1,31 +1,42 @@
-import { RGBColor } from 'react-color';
-import Layer from '../Layer';
-import { Pixel, PixelPosition } from '../types';
-import { drawLine, pointerPosition } from '../utils';
+import { RGBColor } from "react-color";
+import Layer from "../Layer";
+import { Pixel, PixelPosition } from "../types";
+import { pointerPosition } from "../utils";
 
-function pen(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) {
+function circle(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) {
   let activeLayer = layer;
-  let start = { x: pixel.x, y: pixel.y };
-  const penCallback = (pos: PixelPosition) => {
-    // if the cursor goes out of the canvas reset start
-    if (pos.x == 0 || pos.x == layer.width - 1 || 
-      pos.y == 0 || pos.y == layer.height - 1) start = pos;
-    activeLayer = drawLine(activeLayer, start, pos, pixel.color);
-    start = pos;
-    dispatch(activeLayer);
-  };
-  penCallback(start);
-  return penCallback;
+  const center = { x: pixel.x, y: pixel.y };
+  const circleCallback = (pos: PixelPosition) => {
+    const radius = Math.floor(Math.sqrt(
+      Math.pow(pos.x - pixel.x, 2) + Math.pow(pos.y - pixel.y, 2)
+    ));
+    const toColor = [];
+    let chord; // technically chord length / 2
+    for (let y = center.y - radius; y <= center.y + radius; y++) {
+      chord = Math.floor(Math.sqrt(
+        Math.pow(radius, 2) - Math.pow(Math.abs(y - center.y), 2)
+      ));
+      if (chord == 0) continue; // to make the circle 'smoother'
+      if (radius == chord) chord -= 1; // to make the circle 'smoother'
+      for (let x = center.x - chord; x <= center.x + chord; x++) {
+        if (x < 0 || x >= layer.width || y < 0 || y >= layer.height) continue;
+        toColor.push({ x, y, color: pixel.color });
+      }
+    }
+    dispatch(activeLayer.colorPixels(toColor));
+  }
+  circleCallback(center);
+  return circleCallback;
 }
 
-function penTool(canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: (layer: Layer) => void) {
+function circleTool(canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: (layer: Layer) => void) {
   let handleMouseMove: (moveEvent: any) => void;
   const handleMouseDown = (evt: MouseEvent) => {
     // evt.stopPropagation();
     if (evt.button == 0) {
       let pos = pointerPosition(canvas, evt, scale);
       if (!pos) return;
-      const toolMoveFn = pen(layer, { ...pos, color }, dispatch);
+      const toolMoveFn = circle(layer, { ...pos, color }, dispatch);
       handleMouseMove = (moveEvent: any) => {
         if (moveEvent.buttons != 1) {
           canvas.removeEventListener('mousemove', handleMouseMove);
@@ -62,4 +73,4 @@ function penTool(canvas: HTMLCanvasElement, layer: Layer, scale: number, color: 
   };
 }
 
-export default penTool;
+export default circleTool;

@@ -14,11 +14,12 @@ export type ToolFn = (canvas: HTMLCanvasElement, layer: Layer,
   scale: number, color: RGBColor, dispatch: (layer: Layer) => void) => {
     handleMouseDown: (evt: MouseEvent) => void;
     handleMouseLeave: (evt: MouseEvent) => void;
+    handleMouseEnter: (evt: MouseEvent) => void;
     removeEventListeners: () => void;
 };
 
 export interface PixitTools {
   pen: ToolFn;
-  // rectangle: ToolFn;
-  // circle: ToolFn
+  rectangle: ToolFn;
+  circle: ToolFn;
 };

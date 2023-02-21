@@ -5,6 +5,7 @@ import './canvas.css';
 
 import Layer from '../pixit/Layer';
 import { draw } from '../pixit/utils';
+import { ToolFn } from '../pixit/types';
 
 interface LayerCanvasProps {
   layers: Layer[];
@@ -13,6 +14,7 @@ interface LayerCanvasProps {
   toolFn: (canvas: HTMLCanvasElement, scale: number) => {
     handleMouseDown: (evt: MouseEvent) => void;
     handleMouseLeave: (evt: MouseEvent) => void;
+    handleMouseEnter: (evt: MouseEvent) => void;
     removeEventListeners: () => void;
   };
 };
@@ -21,7 +23,7 @@ const DEFAULT_SCALE = 6;
 const MIN_SCALE = DEFAULT_SCALE / 2;
 const MAX_SCALE = DEFAULT_SCALE * 2;
 
-function LayerCanvas({ layers, activeLayer, color, toolFn }: LayerCanvasProps) {
+function LayerCanvas({ layers, activeLayer, toolFn }: LayerCanvasProps) {
   const [scale, setScale] = useState(DEFAULT_SCALE);
   const canvasRef = useRef(null);
   const idx = layers.findIndex((layer) => layer.id === activeLayer);
@@ -34,6 +36,7 @@ function LayerCanvas({ layers, activeLayer, color, toolFn }: LayerCanvasProps) {
     const tool = toolFn(canvasElement, scale);
     canvasElement.addEventListener('mouseleave', tool.handleMouseLeave);
     canvasElement.addEventListener('mousedown', tool.handleMouseDown);
+    canvasElement.addEventListener('mouseenter', tool.handleMouseEnter);
     return tool.removeEventListeners;
   };
   const onZoom = (evt: WheelEvent<HTMLCanvasElement>) => {
@@ -47,7 +50,7 @@ function LayerCanvas({ layers, activeLayer, color, toolFn }: LayerCanvasProps) {
     else setScale(Math.min(scale + zoomAmount, MAX_SCALE));
   };
   useEffect(paintCanvas, [layers[idx], activeLayer, scale]);
-  useEffect(bindTool, [layers[idx], activeLayer, scale, color]);
+  useEffect(bindTool);
   // TODO!: Need to find a better way to handle adding/removing event listeners
   // For now panning the canvas will be taken care of with this
   const onMouseDown = (evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
