@@ -7,8 +7,8 @@ import LayerCanvas from './LayerCanvas';
 import ViewportWidget from './Widgets/ViewportWidget';
 import layerSelect from './Widgets/LayerSelect';
 import colorSelect from './Widgets/colorSelect';
-import { tools, PixitTools } from '../pixit/tools';
-import { PixelPosition } from '../pixit/types';
+import tools from '../pixit/tools/tools';
+import { PixitTools } from '../pixit/types';
 
 const BASE_LAYER = Layer.empty('0', 64, 64);
 const BLACK = { r: 0, g: 0, b: 0, a: 255 };
@@ -23,13 +23,14 @@ function Viewport({ tool }: { tool: keyof PixitTools }) {
       ...layers.slice(0, idx),
       layer, ...layers.slice(idx + 1)
     ]);
-  }
-  const toolFn = (pos: PixelPosition) => 
-      tools[tool](layers[idx], { ...pos, color }, dispatch);
+  };
+  const toolFn = (canvas: HTMLCanvasElement, scale: number) => 
+      tools[tool](canvas, layers[idx], scale, color, dispatch);
   return (
     <div className="viewport" >
       <LayerCanvas 
         layers={layers} 
+        color={color} 
         activeLayer={activeLayer}
         toolFn={toolFn} />
       <ViewportWidget 

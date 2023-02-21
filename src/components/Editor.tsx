@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { PixitTools } from '../pixit/tools';
+import { PixitTools } from '../pixit/types';
 import './editor.css';
 
 import Tools from './Tools';

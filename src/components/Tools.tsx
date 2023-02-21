@@ -1,7 +1,7 @@
 import React from 'react';
 import './tools.css';
 
-import { tools } from '../pixit/tools';
+import tools from '../pixit/tools/tools';
 
 function Tools({ tool, setTool }: { tool: string, setTool: Function }) {
   return (

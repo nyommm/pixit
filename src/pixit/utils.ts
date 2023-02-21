@@ -2,7 +2,7 @@ import React from 'react';
 import { RGBColor } from 'react-color';
 
 import Layer from './Layer';
-import { PixelPosition } from './types';
+import { Pixel, PixelPosition } from './types';
 
 const CHECKBOARD_BACKGROUND = Layer.checkboard('cbdl', 64, 64);
 
@@ -10,8 +10,7 @@ const CHECKBOARD_BACKGROUND = Layer.checkboard('cbdl', 64, 64);
  * Get the position of the pixel at the client's position
  */
 function pointerPosition(canvas: HTMLCanvasElement | null, 
-  moveEvent: React.MouseEvent<HTMLCanvasElement, MouseEvent>, 
-  scale: number): PixelPosition | undefined {
+  moveEvent: MouseEvent, scale: number): PixelPosition | undefined {
   if (canvas == null) return;
   const canvasRect = canvas.getBoundingClientRect();
   return {
@@ -52,7 +51,22 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
 
 // TODO: A function to draw an outline on the 'pixels'/area that will be affected by the tool
 
+function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color: RGBColor): Layer {
+  const toColor: Pixel[] = [];
+  const deltaX = start.x <= end.x ? 1 : -1;
+  const deltaY = start.y <= end.y ? 1 : -1;
+  let x = start.x, y = start.y;
+  while (true) {
+    toColor.push({ x, y, color });
+    if (x == end.x && y == end.y) break;
+    if (x != end.x) x += deltaX;
+    if (y != end.y) y += deltaY;
+  }
+  return layer.colorPixels(toColor);
+}
+
 export {
   draw,
+  drawLine,
   pointerPosition
 };
