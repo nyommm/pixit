@@ -10,12 +10,12 @@ import colorSelect from './Widgets/colorSelect';
 import tools from '../pixit/tools/tools';
 import { PixitTools } from '../pixit/types';
 
-const BASE_LAYER = Layer.empty('0', 64, 64);
+const BASE_LAYER = Layer.empty('Layer 0', 64, 64);
 const BLACK = { r: 0, g: 0, b: 0, a: 255 };
 
 function Viewport({ tool }: { tool: keyof PixitTools }) {
   const [layers, setLayers] = useState([BASE_LAYER]);
-  const [activeLayer, setActiveLayer] = useState('0');
+  const [activeLayer, setActiveLayer] = useState(BASE_LAYER.id);
   const [color, setColor] = useState(BLACK);
   const idx = layers.findIndex((layer) => layer.id == activeLayer);
   const dispatch = (layer: Layer) => {

@@ -32,13 +32,35 @@ function layerSelect(
   const idx = layers.findIndex((layer) => layer.id === activeLayer);
   const insertLayer = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     evt.stopPropagation();
-    const active = `${layers.length}`; 
+    let newID = layers.length;
+    while (layers.some((layer) => layer.id == `Layer ${newID}`)) {
+      newID += 1;
+    };
+    const active = `Layer ${newID}`;
     setLayers([
       ...(idx == 0 ? [] : layers.slice(0, idx)),
       Layer.empty(active, layers[idx].width, layers[idx].height),
       ...layers.slice(idx),
     ]);
     setActiveLayer(active);
+  };
+  const removeLayer = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    evt.stopPropagation();
+    if (layers.length == 1) {
+      const newLayer = Layer.empty('Layer 0', layers[0].width, layers[0].height);
+      setLayers([newLayer]);
+      setActiveLayer('Layer 0');
+      return;
+    }
+    if (idx < layers.length - 1) {
+      setActiveLayer(layers[idx + 1].id);
+    } else {
+      setActiveLayer(layers[idx - 1].id);
+    }
+    setLayers([
+      ...layers.slice(0, idx),
+      ...layers.slice(idx + 1)
+    ]);
   };
   const moveLayer = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>, change: number) => {
     evt.stopPropagation();
@@ -60,10 +82,11 @@ function layerSelect(
         ...layers.slice(idx + 1)
       ]);
     }
-  }
+  };
   return () => (
     <div className="widget__item">
       <span className="widget__item__btn" onClick={insertLayer}>+</span>
+      <span className="widget__item__btn" onClick={removeLayer}>-</span>
       <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}>&#5169;</span>
       <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}>&#5167;</span>
       <LayerSelectItem 
