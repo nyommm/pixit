@@ -13,8 +13,8 @@ interface LayerCanvasProps {
   color: RGBColor;
   toolFn: (canvas: HTMLCanvasElement, scale: number) => {
     handleMouseDown: (evt: MouseEvent) => void;
-    handleMouseLeave: (evt: MouseEvent) => void;
-    handleMouseEnter: (evt: MouseEvent) => void;
+    handleMouseLeave?: (evt: MouseEvent) => void;
+    handleMouseEnter?: (evt: MouseEvent) => void;
     removeEventListeners: () => void;
   };
 };
@@ -34,9 +34,9 @@ function LayerCanvas({ layers, activeLayer, toolFn }: LayerCanvasProps) {
     if (canvasRef.current == null) return;
     const canvasElement = canvasRef.current as HTMLCanvasElement;
     const tool = toolFn(canvasElement, scale);
-    canvasElement.addEventListener('mouseleave', tool.handleMouseLeave);
     canvasElement.addEventListener('mousedown', tool.handleMouseDown);
-    canvasElement.addEventListener('mouseenter', tool.handleMouseEnter);
+    if (tool.handleMouseLeave) canvasElement.addEventListener('mouseleave', tool.handleMouseLeave);
+    if (tool.handleMouseEnter) canvasElement.addEventListener('mouseenter', tool.handleMouseEnter);
     return tool.removeEventListeners;
   };
   const onZoom = (evt: WheelEvent<HTMLCanvasElement>) => {
