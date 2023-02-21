@@ -22,4 +22,5 @@ export interface PixitTools {
   pen: ToolFn;
   rectangle: ToolFn;
   circle: ToolFn;
+  erase: ToolFn;
 };
