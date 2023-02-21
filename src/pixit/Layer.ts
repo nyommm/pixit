@@ -54,7 +54,8 @@ class Layer {
   colorPixels(pixels: Pixel[]) {
     const copy = this.pixels.slice();
     for (const { x, y, color } of pixels) {
-      copy[x + (y * this.width)] = color;
+      if (x >= 0 || x <= this.width || y >= 0 || y <= this.height)
+        copy[x + (y * this.width)] = color;
     }
     return new Layer(this.id, this.width, this.height, copy);
   }
