@@ -73,6 +73,12 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange}: ColorPickerFields
       width: '100%',
       // padding: '0.25rem 0.25rem',
       fontSize: '0.6rem',
+      background: '#2e2e2e',
+      border: 'none',
+      borderRadius: '2px 2px 0px 0px',
+      borderBottom: '2px solid black',
+      outline: 'none',
+      color: 'azure',
     },
     label: {
       display: 'block',
