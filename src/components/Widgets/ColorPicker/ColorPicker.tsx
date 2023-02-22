@@ -86,14 +86,13 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange}: ColorPickerFields
       gridRowStart: 2,
       gridRowEnd: 4,
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
+      gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr',
       gridTemplateRows: '1fr 1fr',
       columnGap: 'inherit',
       rowGap: 'inherit',
     },
     picker__controls__color: {
-      borderRadius: '0.25rem',
-      border: '1px ghostwhite solid',
+      border: '1px lightgrey solid',
     },
     picker__controls__hex: {
       gridColumnStart: 1,
@@ -133,7 +132,10 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange}: ColorPickerFields
       </div>
       <div className="picker__controls__colors" style={styles['picker__controls__colors']}>
         {colors.map((color, idx) => (
-          <div key={`color-${idx}`} className="picker__controls__color" style={{...styles.picker__controls__color, backgroundColor: `${color}`}}>
+          <div key={`color-${idx}`} 
+            onClick={(evt) => handleChange({ hex: color.replace('#', '')}, evt)}
+            className="picker__controls__color" 
+            style={{...styles.picker__controls__color, backgroundColor: `${color}`}}>
           </div>
         ))}
       </div>

@@ -12,7 +12,7 @@ function colorSelect(color: RGBColor, setColor: Function) {
   };
   const handleChangeComplete = (result: ColorResult) => {
     const copy = colors.slice();
-    if (copy.length >= 10) copy.pop();
+    if (copy.length >= 20) copy.pop();
     if (copy.length == 0 || result.hex != copy[0])
       setColors([result.hex, ...copy]);
   };
