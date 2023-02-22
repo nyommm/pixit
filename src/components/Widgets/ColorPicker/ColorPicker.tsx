@@ -60,38 +60,34 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange}: ColorPickerFields
     }
   };
 
-  const gridColumnSettings = {
-    gridColumnStart: 1,
-    gridColumnEnd: 4,
-  };
-
   const styles: ColorPickerStyles = {
     picker__controls: {
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
-      gridTemplateRows: '1fr 1fr 1fr 1fr 1fr',
+      gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr',
+      gridTemplateRows: '2fr 1fr 1fr',
       columnGap: '0.25rem',
       rowGap: '0.25rem',
     },
     input: {
-      width: '60%',
+      boxSizing: 'border-box',
+      width: '100%',
       // padding: '0.25rem 0.25rem',
       fontSize: '0.6rem',
     },
     label: {
+      display: 'block',
       textAlign: 'center',
       textTransform: 'uppercase',
       fontSize: '0.75rem',
-      paddingLeft: '0.125rem',
     },
     picker__controls__colors: {
-      gridColumnStart: 4,
-      gridColumnEnd: 6,
-      gridRowStart: 1,
-      gridRowEnd: 6,
+      gridColumnStart: 1,
+      gridColumnEnd: 7,
+      gridRowStart: 2,
+      gridRowEnd: 4,
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gridTemplateRows: '1fr 1fr 1fr 1fr 1fr',
+      gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
+      gridTemplateRows: '1fr 1fr',
       columnGap: 'inherit',
       rowGap: 'inherit',
     },
@@ -100,29 +96,29 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange}: ColorPickerFields
       border: '1px ghostwhite solid',
     },
     picker__controls__hex: {
-      ...gridColumnSettings,
+      gridColumnStart: 1,
+      gridColumnEnd: 3,
       gridRowStart: 1,
-      gridRowEnd: 2,
     },
     picker__controls__red: {
-      ...gridColumnSettings,
-      gridRowStart: 2,
-      gridRowEnd: 3,
+      gridColumnStart: 3,
+      gridColumnEnd: 4,
+      gridRowStart: 1,
     },
     picker__controls__green: {
-      ...gridColumnSettings,
-      gridRowStart: 3,
-      gridRowEnd: 4,
+      gridColumnStart: 4,
+      gridColumnEnd: 5,
+      gridRowStart: 1,
     },
     picker__controls__blue: {
-      ...gridColumnSettings,
-      gridRowStart: 4,
-      gridRowEnd: 5,
+      gridColumnStart: 5,
+      gridColumnEnd: 6,
+      gridRowStart: 1,
     },
     picker__controls__alpha: {
-      ...gridColumnSettings,
-      gridRowStart: 5,
-      gridRowEnd: 6,
+      gridColumnStart: 6,
+      gridColumnEnd: 7,
+      gridRowStart: 1,
     },
   };
 
@@ -165,7 +161,7 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange}: ColorPickerFields
         <div className="picker__controls__alpha" style={styles.picker__controls__alpha}>
           <EditableInput 
             label="a" 
-            value={rgb.a} 
+            value={rgb.a ? Math.ceil(rgb.a * 100) : rgb.a} 
             style={{input: styles.input, label: styles.label}} 
             onChange={handleChange} />
         </div>
