@@ -58,7 +58,8 @@ function LayerSelectItems({ activeLayer, layers, setLayers, setActiveLayer }: La
   return (
     <>
       {layers.map((layer, idx) => (
-        <LayerSelectItem activeLayer={activeLayer}
+        <LayerSelectItem key={layer.id}
+          activeLayer={activeLayer}
           layerId={layer.id}
           layerIdx={idx}
           changeActiveLayer={changeActiveLayer}
