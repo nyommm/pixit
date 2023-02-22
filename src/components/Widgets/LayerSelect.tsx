@@ -3,27 +3,69 @@ import './widget.css';
 
 import Layer from '../../pixit/Layer';
 
-interface LayerSelectItem {
+interface LayerSelectItems {
   activeLayer: string;
-  layerIds: string[];
+  layers: Layer[];
+  setLayers: Function;
   setActiveLayer: Function;
 };
 
-function LayerSelectItem({ activeLayer, layerIds, setActiveLayer }: LayerSelectItem) {
+interface LayerSelectItem {
+  activeLayer: string;
+  layerId: string;
+  layerIdx: number;
+  changeActiveLayer: Function;
+  handleLayerIdChange: Function;
+};
+
+function LayerSelectItem({ activeLayer, layerId, layerIdx, changeActiveLayer, handleLayerIdChange }: LayerSelectItem) {
+  return (
+    <div onClick={(evt) => changeActiveLayer(evt, layerId)}
+      className={`widget__item__layer ${layerId == activeLayer ? 'widget__item__layer-active' : ''}`}>
+      <input type="text" 
+        className="widget__item__layer__input"
+        minLength={1} 
+        maxLength={15} 
+        value={layerId} 
+        onClick={(evt) => { evt.stopPropagation(); }}
+        onChange={(evt) => handleLayerIdChange(evt, layerIdx)} />
+    </div>
+  )
+}
+
+function LayerSelectItems({ activeLayer, layers, setLayers, setActiveLayer }: LayerSelectItems) {
+  const handleLayerIdChange = (evt: any, layerIdx: number) => {
+    // if new id is not unique don't make any changes
+    // TODO!: Need to tell this to the user as well
+    if (layers.some((layer, idx) => idx != layerIdx && layer.id == evt.target.value))
+      return;
+    const idx = layers.findIndex((layer) => layer.id === activeLayer);
+    const updatedLayer = Layer.copy(evt.target.value, layers[layerIdx]);
+    setLayers([
+      ...layers.slice(0, layerIdx),
+      updatedLayer,
+      ...layers.slice(layerIdx + 1),
+
+    ]);
+    if (idx == layerIdx) {
+      setActiveLayer(evt.target.value);
+    }
+  };
   const changeActiveLayer = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) => {
     evt.stopPropagation();
     setActiveLayer(id);
   };
   return (
     <>
-      {layerIds.map((id) => (
-        <div key={id} 
-          className={`widget__item__layer ${id == activeLayer ? 'widget__item__layer-active' : ''}`}
-          onClick={(evt) => changeActiveLayer(evt, id)}>{id}
-        </div>
+      {layers.map((layer, idx) => (
+        <LayerSelectItem activeLayer={activeLayer}
+          layerId={layer.id}
+          layerIdx={idx}
+          changeActiveLayer={changeActiveLayer}
+          handleLayerIdChange={handleLayerIdChange} />
       ))}
     </>
-  )
+  );
 }
 
 function layerSelect(
@@ -89,9 +131,10 @@ function layerSelect(
       <span className="widget__item__btn" onClick={removeLayer}>-</span>
       <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}>&#5169;</span>
       <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}>&#5167;</span>
-      <LayerSelectItem 
+      <LayerSelectItems 
         activeLayer={activeLayer}
-        layerIds={layers.map((layer) => layer.id)} 
+        layers={layers}
+        setLayers={setLayers}
         setActiveLayer={setActiveLayer} />
     </div>
   );

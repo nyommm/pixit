@@ -16,6 +16,10 @@ class Layer {
     this.pixels = pixels;
   }
 
+  static copy(id: string, layer: Layer): Layer {
+    return new Layer(id, layer.width, layer.height, layer.pixels.slice());
+  }
+
   /**
    * Creates a new Layer filled with the specified color
    */
