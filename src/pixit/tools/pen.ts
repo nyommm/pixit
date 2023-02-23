@@ -1,10 +1,10 @@
 import { RGBColor } from 'react-color';
 import Layer from '../Layer';
-import { Pixel, PixelPosition } from '../types';
+import { DispatchFn, Pixel, PixelPosition } from '../types';
 import { drawLine, pointerPosition } from '../utils';
 import dragTool from './dragTool';
 
-function pen(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) {
+function pen(layer: Layer, pixel: Pixel, dispatch: DispatchFn) {
   let activeLayer = layer;
   let start = { x: pixel.x, y: pixel.y };
   const penCallback = (pos: PixelPosition) => {
@@ -13,13 +13,13 @@ function pen(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) {
       pos.y == 0 || pos.y == layer.height - 1) start = pos;
     activeLayer = drawLine(activeLayer, start, pos, pixel.color);
     start = pos;
-    dispatch(activeLayer);
+    dispatch({ layer: activeLayer });
   };
   penCallback(start);
   return penCallback;
 }
 
-function penTool(canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: (layer: Layer) => void) {
+function penTool(canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: DispatchFn) {
   return dragTool(pen, canvas, layer, scale, color, dispatch);
 }
 

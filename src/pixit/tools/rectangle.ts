@@ -1,9 +1,9 @@
 import { RGBColor } from "react-color";
 import Layer from "../Layer";
-import { Pixel, PixelPosition } from "../types";
+import { DispatchFn, Pixel, PixelPosition } from "../types";
 import dragTool from "./dragTool";
 
-function rectangle(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) {
+function rectangle(layer: Layer, pixel: Pixel, dispatch: DispatchFn) {
   const activeLayer = layer;
   const rectCallback = (pos: PixelPosition) => {
     const startX = Math.min(pixel.x, pos.x);
@@ -16,13 +16,13 @@ function rectangle(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void)
         toColor.push({ x, y, color: pixel.color});
       }
     }
-    dispatch(activeLayer.colorPixels(toColor));
+    dispatch({ layer: activeLayer.colorPixels(toColor) });
   }
   rectCallback({ x: pixel.x, y: pixel.y });
   return rectCallback;
 }
 
-function rectTool(canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: (layer: Layer) => void) {
+function rectTool(canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: DispatchFn) {
   return dragTool(rectangle, canvas, layer, scale, color, dispatch);
 }
 

@@ -38,6 +38,7 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
   if (ctx == null) return;
 
   for(let idx = layers.length - 1; idx >= 0; idx--) {
+    if (layers[idx].hidden) continue;
     for (let y = 0; y < layers[idx].height; y++) {
       for (let x = 0; x < layers[idx].width; x++) {
         color = layers[idx].pixel(x, y);
@@ -51,16 +52,30 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
 
 // TODO: A function to draw an outline on the 'pixels'/area that will be affected by the tool
 
+function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOfPoints: number): PixelPosition[] {
+  const points: PixelPosition[] = [];
+  const deltaX = (end.x - start.x) / numberOfPoints;
+  const deltaY = (end.y - start.y) / numberOfPoints;
+  for (let x = start.x, y = start.y; points.length <= numberOfPoints;) {
+    points.push({ x, y });
+    x += deltaX;
+    y += deltaY;
+  }
+  return points;
+}
+
+// TODO!: Need to add thickness to the line
+// User should be able to set the thickness of pen/erase/line tool
 function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color: RGBColor): Layer {
   const toColor: Pixel[] = [];
-  const deltaX = start.x <= end.x ? 1 : -1;
-  const deltaY = start.y <= end.y ? 1 : -1;
-  let x = start.x, y = start.y;
-  while (true) {
-    toColor.push({ x, y, color });
-    if (x == end.x && y == end.y) break;
-    if (x != end.x) x += deltaX;
-    if (y != end.y) y += deltaY;
+  // TODO!: the numberOfPixels should be dynamically set depending on the distance between start and end
+  const points = generatePointsOnLine(start, end, 2000);
+  for (const point of points) {
+    toColor.push({
+      x: Math.round(point.x),
+      y: Math.round(point.y),
+      color,
+    });
   }
   return layer.colorPixels(toColor);
 }

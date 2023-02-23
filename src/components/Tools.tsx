@@ -9,7 +9,10 @@ function Tools({ tool, setTool }: { tool: string, setTool: Function }) {
       {Object.keys(tools)
         .map((t) => (
           <button className="tools-sidebar__tool" key={t} disabled={t == tool} onClick={() => setTool(t)}>
-            {`${t[0].toUpperCase()}${t.slice(1)}`}
+            {(() => {
+              const Icon = tools[t].icon;
+              return <Icon />
+            })()}
           </button>
         ))}
     </div>

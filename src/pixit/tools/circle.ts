@@ -1,9 +1,10 @@
 import { RGBColor } from "react-color";
 import Layer from "../Layer";
-import { Pixel, PixelPosition } from "../types";
+import { DispatchFn, Pixel, PixelPosition } from "../types";
 import dragTool from "./dragTool";
 
-function circle(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) {
+// TODO!: Need the ellipse tool instead of the circle tool
+function circle(layer: Layer, pixel: Pixel, dispatch: DispatchFn) {
   let activeLayer = layer;
   const center = { x: pixel.x, y: pixel.y };
   const circleCallback = (pos: PixelPosition) => {
@@ -23,13 +24,13 @@ function circle(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) {
         toColor.push({ x, y, color: pixel.color });
       }
     }
-    dispatch(activeLayer.colorPixels(toColor));
+    dispatch({ layer: activeLayer.colorPixels(toColor) });
   }
   circleCallback(center);
   return circleCallback;
 }
 
-function circleTool(canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: (layer: Layer) => void) {
+function circleTool(canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: DispatchFn) {
   return dragTool(circle, canvas, layer, scale, color, dispatch);
 }
 

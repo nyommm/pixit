@@ -1,8 +1,9 @@
 import { RGBColor } from 'react-color';
 import Layer from '../Layer';
+import { DispatchFn } from '../types';
 import { pointerPosition } from '../utils';
 
-function dragTool(tool: Function, canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: (layer: Layer) => void) {
+function dragTool(tool: Function, canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: DispatchFn) {
   let handleMouseMove: (moveEvent: any) => void;
   const handleMouseDown = (evt: MouseEvent) => {
     // evt.stopPropagation();

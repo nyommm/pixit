@@ -8,30 +8,36 @@ import ViewportWidget from './Widgets/ViewportWidget';
 import layerSelect from './Widgets/LayerSelect';
 import colorSelect from './Widgets/colorSelect';
 import tools from '../pixit/tools/tools';
-import { PixitTools } from '../pixit/types';
+import { DispatchFn, PixitTools } from '../pixit/types';
+import { RGBColor } from 'react-color';
 
-const BASE_LAYER = Layer.empty('0', 64, 64);
-const BLACK = { r: 0, g: 0, b: 0, a: 255 };
+const BASE_LAYER = Layer.empty('Layer 0', 64, 64);
+const BLACK: RGBColor = { r: 0, g: 0, b: 0, a: 255 };
 
 function Viewport({ tool }: { tool: keyof PixitTools }) {
   const [layers, setLayers] = useState([BASE_LAYER]);
-  const [activeLayer, setActiveLayer] = useState('0');
+  const [activeLayer, setActiveLayer] = useState(BASE_LAYER.id);
   const [color, setColor] = useState(BLACK);
   const idx = layers.findIndex((layer) => layer.id == activeLayer);
-  const dispatch = (layer: Layer) => {
-    setLayers([
-      ...layers.slice(0, idx),
-      layer, ...layers.slice(idx + 1)
-    ]);
+  const dispatch = (state: { layer?: Layer, color?: RGBColor }) => {
+    if (state.layer) {
+      setLayers([
+        ...layers.slice(0, idx),
+        state.layer, ...layers.slice(idx + 1)
+      ]);
+    }
+    if (state.color) {
+      setColor(state.color);
+    }
   };
   const toolFn = (canvas: HTMLCanvasElement, scale: number) => 
-      tools[tool](canvas, layers[idx], scale, color, dispatch);
+      tools[tool].toolFn(canvas, layers[idx], scale, color, dispatch);
   return (
     <div className="viewport" >
       <LayerCanvas 
         layers={layers} 
         color={color} 
-        activeLayer={activeLayer}
+        activeLayerIdx={idx}
         toolFn={toolFn} />
       <ViewportWidget 
         widgetName='Layers'
