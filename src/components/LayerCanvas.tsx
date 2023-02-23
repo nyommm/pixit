@@ -27,6 +27,7 @@ function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
   const [scale, setScale] = useState(DEFAULT_SCALE);
   const canvasRef = useRef(null);
   const paintCanvas = () => {
+    console.log('painting the canvas');
     draw(canvasRef.current, layers.slice(activeLayerIdx), scale);
   };
   const bindTool = () => {
@@ -49,7 +50,7 @@ function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
     if (zoomAmount == -1) setScale(Math.max(scale + zoomAmount, MIN_SCALE));
     else setScale(Math.min(scale + zoomAmount, MAX_SCALE));
   };
-  useEffect(paintCanvas, [layers[activeLayerIdx], layers[activeLayerIdx].id, scale]);
+  useEffect(paintCanvas, [layers, activeLayerIdx, layers[activeLayerIdx].id, scale]);
   useEffect(bindTool);
   // TODO!: Need to find a better way to handle adding/removing event listeners
   // For now panning the canvas will be taken care of with this
