@@ -18,10 +18,16 @@ export type ToolFn = (canvas: HTMLCanvasElement, layer: Layer,
     removeEventListeners: () => void;
 };
 
+export interface PixitTool {
+  name: string;
+  icon: any;
+  toolFn: ToolFn;
+}
+
 export interface PixitTools {
-  pen: ToolFn;
-  rectangle: ToolFn;
-  circle: ToolFn;
-  erase: ToolFn;
-  fill: ToolFn;
+  pen: PixitTool;
+  rectangle: PixitTool;
+  circle: PixitTool;
+  erase: PixitTool;
+  fill: PixitTool;
 };

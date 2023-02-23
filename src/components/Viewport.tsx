@@ -25,7 +25,7 @@ function Viewport({ tool }: { tool: keyof PixitTools }) {
     ]);
   };
   const toolFn = (canvas: HTMLCanvasElement, scale: number) => 
-      tools[tool](canvas, layers[idx], scale, color, dispatch);
+      tools[tool].toolFn(canvas, layers[idx], scale, color, dispatch);
   return (
     <div className="viewport" >
       <LayerCanvas 

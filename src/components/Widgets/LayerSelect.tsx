@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaLayerGroup, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import './widget.css';
 
 import Layer from '../../pixit/Layer';
@@ -128,10 +129,10 @@ function layerSelect(
   };
   return () => (
     <div className="widget__item">
-      <span className="widget__item__btn" onClick={insertLayer}>+</span>
-      <span className="widget__item__btn" onClick={removeLayer}>-</span>
-      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}>&#5169;</span>
-      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}>&#5167;</span>
+      <span className="widget__item__btn" onClick={insertLayer}><FaLayerGroup /></span>
+      <span className="widget__item__btn" onClick={removeLayer}><FaTrash /></span>
+      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}><FaArrowUp /></span>
+      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}><FaArrowDown /></span>
       <LayerSelectItems 
         activeLayer={activeLayer}
         layers={layers}
