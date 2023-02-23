@@ -27,7 +27,6 @@ function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
   const [scale, setScale] = useState(DEFAULT_SCALE);
   const canvasRef = useRef(null);
   const paintCanvas = () => {
-    console.log('painting the canvas');
     draw(canvasRef.current, layers.slice(activeLayerIdx), scale);
   };
   const bindTool = () => {
