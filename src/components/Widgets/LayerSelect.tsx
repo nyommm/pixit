@@ -1,5 +1,7 @@
 import React from 'react';
-import { FaLayerGroup, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { useState } from 'react';
+import { FaLayerGroup, FaTrash, FaArrowUp, 
+          FaArrowDown, FaEye, FaEyeSlash, FaLock, FaLockOpen } from 'react-icons/fa';
 import './widget.css';
 
 import Layer from '../../pixit/Layer';
@@ -13,23 +15,33 @@ interface LayerSelectItems {
 
 interface LayerSelectItem {
   activeLayer: string;
-  layerId: string;
+  layer: Layer;
   layerIdx: number;
   changeActiveLayer: Function;
   handleLayerIdChange: Function;
+  updateLayerVisibility: Function;
+  updateLayerLock: Function;
 };
 
-function LayerSelectItem({ activeLayer, layerId, layerIdx, changeActiveLayer, handleLayerIdChange }: LayerSelectItem) {
+function LayerSelectItem(props: LayerSelectItem) {
   return (
-    <div onClick={(evt) => changeActiveLayer(evt, layerId)}
-      className={`widget__item__layer ${layerId == activeLayer ? 'widget__item__layer-active' : ''}`}>
+    <div onClick={(evt) => props.changeActiveLayer(evt, props.layer.id)}
+      className={`widget__item__layer ${props.layer.id == props.activeLayer ? 'widget__item__layer-active' : ''}`}>
       <input type="text" 
         className="widget__item__layer__input"
         minLength={1} 
         maxLength={15} 
-        value={layerId} 
+        value={props.layer.id} 
         onClick={(evt) => { evt.stopPropagation(); }}
-        onChange={(evt) => handleLayerIdChange(evt, layerIdx)} />
+        onChange={(evt) => props.handleLayerIdChange(evt, props.layerIdx)} />
+      <div className="widget__item__layer__btns">
+        <span onClick={(evt) => props.updateLayerVisibility(evt, props.layerIdx)}>
+          {props.layer.hidden ? <FaEyeSlash /> : <FaEye />}
+        </span>
+        <span onClick={(evt) => props.updateLayerLock(evt, props.layerIdx)}>
+          {props.layer.locked ? <FaLock /> : <FaLockOpen />}
+        </span>
+      </div>
     </div>
   )
 }
@@ -56,15 +68,33 @@ function LayerSelectItems({ activeLayer, layers, setLayers, setActiveLayer }: La
     evt.stopPropagation();
     setActiveLayer(id);
   };
+  const updateLayerVisibility = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>, idx: number) => {
+    evt.stopPropagation();
+    setLayers([
+      ...layers.slice(0, idx),
+      Layer.showHideLayer(layers[idx]),
+      ...layers.slice(idx + 1),
+    ]);
+  };
+  const updateLayerLock = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>, idx: number) => {
+    evt.stopPropagation();
+    setLayers([
+      ...layers.slice(0, idx),
+      Layer.lockUnlockLayer(layers[idx]),
+      ...layers.slice(idx + 1),
+    ]);
+  };
   return (
     <>
       {layers.map((layer, idx) => (
         <LayerSelectItem key={layer.id}
           activeLayer={activeLayer}
-          layerId={layer.id}
+          layer={layer}
           layerIdx={idx}
           changeActiveLayer={changeActiveLayer}
-          handleLayerIdChange={handleLayerIdChange} />
+          handleLayerIdChange={handleLayerIdChange}
+          updateLayerVisibility={updateLayerVisibility}
+          updateLayerLock={updateLayerLock} />
       ))}
     </>
   );

@@ -37,7 +37,7 @@ function Viewport({ tool }: { tool: keyof PixitTools }) {
       <LayerCanvas 
         layers={layers} 
         color={color} 
-        activeLayer={activeLayer}
+        activeLayerIdx={idx}
         toolFn={toolFn} />
       <ViewportWidget 
         widgetName='Layers'

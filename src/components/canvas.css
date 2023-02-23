@@ -1,3 +1,7 @@
 .viewport__canvas {
   position: absolute;
 }
+
+.viewport__canvas-disabled {
+  cursor: no-drop;
+}

@@ -9,7 +9,7 @@ import { ToolFn } from '../pixit/types';
 
 interface LayerCanvasProps {
   layers: Layer[];
-  activeLayer: string;
+  activeLayerIdx: number;
   color: RGBColor;
   toolFn: (canvas: HTMLCanvasElement, scale: number) => {
     handleMouseDown: (evt: MouseEvent) => void;
@@ -23,14 +23,14 @@ const DEFAULT_SCALE = 6;
 const MIN_SCALE = DEFAULT_SCALE / 2;
 const MAX_SCALE = DEFAULT_SCALE * 2;
 
-function LayerCanvas({ layers, activeLayer, toolFn }: LayerCanvasProps) {
+function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
   const [scale, setScale] = useState(DEFAULT_SCALE);
   const canvasRef = useRef(null);
-  const idx = layers.findIndex((layer) => layer.id === activeLayer);
   const paintCanvas = () => {
-    draw(canvasRef.current, layers.slice(idx), scale);
+    draw(canvasRef.current, layers.slice(activeLayerIdx), scale);
   };
   const bindTool = () => {
+    if (layers[activeLayerIdx].locked || layers[activeLayerIdx].hidden) return;
     if (canvasRef.current == null) return;
     const canvasElement = canvasRef.current as HTMLCanvasElement;
     const tool = toolFn(canvasElement, scale);
@@ -49,7 +49,7 @@ function LayerCanvas({ layers, activeLayer, toolFn }: LayerCanvasProps) {
     if (zoomAmount == -1) setScale(Math.max(scale + zoomAmount, MIN_SCALE));
     else setScale(Math.min(scale + zoomAmount, MAX_SCALE));
   };
-  useEffect(paintCanvas, [layers[idx], activeLayer, scale]);
+  useEffect(paintCanvas, [layers[activeLayerIdx], layers[activeLayerIdx].id, scale]);
   useEffect(bindTool);
   // TODO!: Need to find a better way to handle adding/removing event listeners
   // For now panning the canvas will be taken care of with this
@@ -78,7 +78,7 @@ function LayerCanvas({ layers, activeLayer, toolFn }: LayerCanvasProps) {
   return (
     <canvas 
       ref={canvasRef} 
-      className="viewport__canvas" 
+      className={`viewport__canvas ${layers[activeLayerIdx].locked ? 'viewport__canvas-disabled' : ''}`}
       onWheel={onZoom} 
       onMouseDown={onMouseDown} >
     </canvas>

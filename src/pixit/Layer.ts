@@ -6,6 +6,8 @@ class Layer {
   width: number;
   height: number;
   pixels: RGBColor[];
+  hidden: boolean = false;
+  locked: boolean = false;
 
   static DEFAULT_COLOR: RGBColor = { r: 0, g: 0, b: 0, a: 0 };
 
@@ -16,8 +18,31 @@ class Layer {
     this.pixels = pixels;
   }
 
+  /**
+   * Make a copy of the layer with an updated id
+   */
   static copy(id: string, layer: Layer): Layer {
     return new Layer(id, layer.width, layer.height, layer.pixels.slice());
+  }
+
+  /**
+   * Show/Hide layer
+   */
+  static showHideLayer(layer: Layer, hide?: boolean): Layer {
+    const newLayer = Layer.copy(layer.id, layer);
+    if (hide) newLayer.hidden = hide;
+    else newLayer.hidden = !layer.hidden;
+    return newLayer;
+  }
+
+  /**
+   * Lock/Unlock layer
+   */
+  static lockUnlockLayer(layer: Layer, lock?: boolean): Layer {
+    const newLayer = Layer.copy(layer.id, layer);
+    if (lock) newLayer.locked = lock;
+    else newLayer.locked = !layer.locked;
+    return newLayer;
   }
 
   /**

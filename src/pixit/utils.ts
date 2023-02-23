@@ -38,6 +38,7 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
   if (ctx == null) return;
 
   for(let idx = layers.length - 1; idx >= 0; idx--) {
+    if (layers[idx].hidden) continue;
     for (let y = 0; y < layers[idx].height; y++) {
       for (let x = 0; x < layers[idx].width; x++) {
         color = layers[idx].pixel(x, y);
