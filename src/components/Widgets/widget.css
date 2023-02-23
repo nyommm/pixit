@@ -54,7 +54,7 @@
   justify-content: end;
   align-items: center;
   border-top: 1px azure solid;
-  padding: 0.2rem 0.3rem;
+  padding: 0.1rem 0.3rem;
 }
 
 .widget__item__layer > * {
@@ -62,6 +62,7 @@
 }
 
 .widget__item__layer-active {
+  border-top: 1px darkgoldenrod solid;
   background-color: #2e2e2e;
 }
 
@@ -81,18 +82,19 @@
   padding: 0 0.25rem;
   cursor: pointer;
   border-radius: 0.25rem;
+  color: lightgrey;
 }
 
 .widget__item__layer__btns > span:hover,
 .widget__item__layer__btns > span:focus {
-  background-color: #1e1e1e;
+  color: azure;
 }
 
 .widget__item__layer__input:active,
 .widget__item__layer__input:focus {
   outline: none;
   background-color: #1e1e1e;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid darkgoldenrod;
   border-radius: 2px 2px 0px 0px;
 }
 
@@ -102,9 +104,10 @@
   margin: 0 0.125rem 0.25rem 0;
   cursor: pointer;
   border-radius: 0.25rem;
+  color: lightgrey;
 }
 
 .widget__item__btn:hover,
 .widget__item__btn:focus {
-  background-color: #2e2e2e;
+  color: azure;
 }

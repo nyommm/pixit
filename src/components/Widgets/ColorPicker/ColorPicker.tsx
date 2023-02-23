@@ -25,7 +25,7 @@ interface ColorPickerStyles {
   picker__controls__alpha: CSSProperties;
 };
 
-function ColorPickerFields({ hex, rgb, hsl, colors, onChange}: ColorPickerFieldsProps) {
+function ColorPickerFields({ hex, rgb, hsl, colors, onChange }: ColorPickerFieldsProps) {
   const validateHexCode = (code: string) => {
     return /^[0-9A-Fa-f]{6}$/.test(code) || /^[0-9A-Fa-f]{3}$/.test(code);
   }
@@ -76,7 +76,7 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange}: ColorPickerFields
       background: '#2e2e2e',
       border: 'none',
       borderRadius: '2px 2px 0px 0px',
-      borderBottom: '2px solid black',
+      borderBottom: '2px solid darkgoldenrod',
       outline: 'none',
       color: 'azure',
     },
