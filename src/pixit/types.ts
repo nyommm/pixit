@@ -33,4 +33,5 @@ export interface PixitTools {
   erase: PixitTool;
   fill: PixitTool;
   'color picker': PixitTool;
+  line: PixitTool;
 };
