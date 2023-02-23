@@ -1,7 +1,7 @@
 import { RGBColor } from "react-color";
 import Layer from "../Layer";
-import { Pixel } from "../types";
-import { pointerPosition } from "../utils";
+import { DispatchFn, Pixel } from "../types";
+import clickTool from "./clickTool";
 
 function isSameColor(color1: RGBColor, color2: RGBColor) {
   if (color1.r != color2.r) return false;
@@ -11,7 +11,7 @@ function isSameColor(color1: RGBColor, color2: RGBColor) {
   return true;
 }
 
-function fill(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) {
+function fill(layer: Layer, pixel: Pixel, dispatch: DispatchFn) {
   const targetColor = layer.pixel(pixel.x, pixel.y);
   const toColor = [pixel];
   const directions = [
@@ -31,25 +31,12 @@ function fill(layer: Layer, pixel: Pixel, dispatch: (layer: Layer) => void) {
         toColor.push({ x, y, color: pixel.color });
       }
     }
-    dispatch(layer.colorPixels(toColor));
+    dispatch({ layer: layer.colorPixels(toColor) });
   }
 }
 
-function fillTool(canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: (layer: Layer) => void) {
-  const handleMouseDown = (evt: MouseEvent) => {
-    if (evt.button == 0) {
-      const pos = pointerPosition(canvas, evt, scale);
-      if (!pos) return;
-      fill(layer, { ...pos, color }, dispatch);
-    }
-  };
-  const removeEventListeners = () => {
-    canvas.removeEventListener('mousedown', handleMouseDown);
-  }
-  return {
-    handleMouseDown,
-    removeEventListeners,
-  };
+function fillTool(canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: DispatchFn) {
+  return clickTool(fill, canvas, layer, scale, color, dispatch);
 }
 
 export default fillTool;

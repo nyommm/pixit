@@ -10,8 +10,10 @@ export interface Pixel extends PixelPosition {
   color: RGBColor
 };
 
+export type DispatchFn = (state: { layer?: Layer, color?: RGBColor }) => void;
+
 export type ToolFn = (canvas: HTMLCanvasElement, layer: Layer, 
-  scale: number, color: RGBColor, dispatch: (layer: Layer) => void) => {
+  scale: number, color: RGBColor, dispatch: DispatchFn) => {
     handleMouseDown: (evt: MouseEvent) => void;
     handleMouseLeave?: (evt: MouseEvent) => void;
     handleMouseEnter?: (evt: MouseEvent) => void;
@@ -30,4 +32,5 @@ export interface PixitTools {
   circle: PixitTool;
   erase: PixitTool;
   fill: PixitTool;
+  'color picker': PixitTool;
 };
