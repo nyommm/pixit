@@ -1,5 +1,6 @@
 import React from 'react';
-import { BiLayerPlus, BiLayerMinus, BiArrowToTop, BiArrowToBottom, BiShow, BiHide, BiLockOpenAlt, BiLockAlt } from 'react-icons/bi';
+import { BiCopy, BiLayerPlus, BiLayerMinus, BiArrowToTop, 
+  BiArrowToBottom, BiShow, BiHide, BiLockOpenAlt, BiLockAlt } from 'react-icons/bi';
 import './widget.css';
 
 import Layer from '../../pixit/Layer';
@@ -102,19 +103,26 @@ function layerSelect(
   layers: Layer[], setLayers: Function, 
   activeLayer: string, setActiveLayer: Function) {
   const idx = layers.findIndex((layer) => layer.id === activeLayer);
-  const insertLayer = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-    evt.stopPropagation();
+  const generateId = () => {
     let newID = layers.length;
     while (layers.some((layer) => layer.id == `Layer ${newID}`)) {
       newID += 1;
     };
-    const active = `Layer ${newID}`;
+    return newID;
+  }
+  const insertLayer = (evt?: React.MouseEvent<HTMLSpanElement, MouseEvent>, layer?: Layer) => {
+    evt && evt.stopPropagation();
+    const active = layer ? layer.id : `Layer ${generateId()}`;
     setLayers([
       ...(idx == 0 ? [] : layers.slice(0, idx)),
-      Layer.empty(active, layers[idx].width, layers[idx].height),
+      layer || Layer.empty(active, layers[idx].width, layers[idx].height),
       ...layers.slice(idx),
     ]);
     setActiveLayer(active);
+  };
+  const cloneLayer = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    evt.stopPropagation();
+    insertLayer(undefined, Layer.copy(`Layer ${generateId()}`, layers[idx]))
   };
   const removeLayer = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     evt.stopPropagation();
@@ -159,6 +167,7 @@ function layerSelect(
     <div className="widget__item">
       <span className="widget__item__btn" onClick={insertLayer}><BiLayerPlus /></span>
       <span className="widget__item__btn" onClick={removeLayer}><BiLayerMinus /></span>
+      <span className="widget__item__btn" onClick={cloneLayer}><BiCopy /></span>
       <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}><BiArrowToTop /></span>
       <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}><BiArrowToBottom /></span>
       <LayerSelectItems 
