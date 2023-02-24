@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 import { FaLayerGroup, FaTrash, FaArrowUp, 
           FaArrowDown, FaEye, FaEyeSlash, FaLock, FaLockOpen } from 'react-icons/fa';
 import './widget.css';

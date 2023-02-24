@@ -5,7 +5,6 @@ import './canvas.css';
 
 import Layer from '../pixit/Layer';
 import { draw } from '../pixit/utils';
-import { ToolFn } from '../pixit/types';
 
 interface LayerCanvasProps {
   layers: Layer[];
@@ -50,6 +49,7 @@ function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
     else setScale(Math.min(scale + zoomAmount, MAX_SCALE));
   };
   useEffect(paintCanvas, [layers, activeLayerIdx, layers[activeLayerIdx].id, scale]);
+  // TODO!: understand when this effect should trigger
   useEffect(bindTool);
   // TODO!: Need to find a better way to handle adding/removing event listeners
   // For now panning the canvas will be taken care of with this
@@ -75,10 +75,14 @@ function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
       canvasElement.addEventListener('mousemove', onMoveCallback);
     }
   };
+  const canvasLockClass = layers[activeLayerIdx].locked || layers[activeLayerIdx].hidden 
+    ? 'viewport__canvas-disabled' : '';
   return (
     <canvas 
       ref={canvasRef} 
-      className={`viewport__canvas ${layers[activeLayerIdx].locked ? 'viewport__canvas-disabled' : ''}`}
+      className={
+        `viewport__canvas ${canvasLockClass}`
+      }
       onWheel={onZoom} 
       onMouseDown={onMouseDown} >
     </canvas>
