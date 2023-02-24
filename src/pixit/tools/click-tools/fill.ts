@@ -26,6 +26,8 @@ function fill(layer: Layer, pixel: Pixel, dispatch: DispatchFn) {
 
       if (x >= 0 && x < layer.width && 
         y >= 0 && y < layer.height && 
+        // x or y will always be within the canvas
+        // @ts-ignore
         isSameColor(layer.pixel(x, y), targetColor) && 
         !toColor.some((p) => p.x === x && p.y === y)) {
         toColor.push({ x, y, color: pixel.color });
