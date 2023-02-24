@@ -1,7 +1,7 @@
 import { RGBColor } from 'react-color';
-import Layer from '../Layer';
-import { DispatchFn, Pixel, PixelPosition } from '../types';
-import { drawLine, pointerPosition } from '../utils';
+import Layer from '../../Layer';
+import { DispatchFn, Pixel, PixelPosition } from '../../types';
+import { drawLine, pointerPosition } from '../../utils';
 import dragTool from './dragTool';
 
 function pen(layer: Layer, pixel: Pixel, dispatch: DispatchFn) {

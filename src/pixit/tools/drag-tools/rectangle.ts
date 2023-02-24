@@ -1,6 +1,6 @@
 import { RGBColor } from "react-color";
-import Layer from "../Layer";
-import { DispatchFn, Pixel, PixelPosition } from "../types";
+import Layer from "../../Layer";
+import { DispatchFn, Pixel, PixelPosition } from "../../types";
 import dragTool from "./dragTool";
 
 function rectangle(layer: Layer, pixel: Pixel, dispatch: DispatchFn) {

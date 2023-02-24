@@ -3,13 +3,13 @@ import { GiPlainSquare } from 'react-icons/gi';
 import { BsSlashLg } from 'react-icons/bs';
 
 import { PixitTools } from '../types';
-import penToolFn from './pen';
-import rectToolFn from './rectangle';
-import circleToolFn from './circle';
-import eraseToolFn from './erase';
-import fillToolFn from './fill';
-import lineToolFn from './line';
-import colorPickerToolFn from './colorPicker';
+import penToolFn from './drag-tools/pen';
+import rectToolFn from './drag-tools/rectangle';
+import circleToolFn from './drag-tools/circle';
+import eraseToolFn from './drag-tools/erase';
+import fillToolFn from './click-tools/fill';
+import lineToolFn from './drag-tools/line';
+import colorPickerToolFn from './click-tools/colorPicker';
 
 const tools: PixitTools = {
   'color picker': {

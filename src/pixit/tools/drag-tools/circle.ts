@@ -1,6 +1,6 @@
 import { RGBColor } from "react-color";
-import Layer from "../Layer";
-import { DispatchFn, Pixel, PixelPosition } from "../types";
+import Layer from "../../Layer";
+import { DispatchFn, Pixel, PixelPosition } from "../../types";
 import dragTool from "./dragTool";
 
 // TODO!: Need the ellipse tool instead of the circle tool

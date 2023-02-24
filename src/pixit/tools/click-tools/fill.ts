@@ -1,6 +1,6 @@
 import { RGBColor } from "react-color";
-import Layer from "../Layer";
-import { DispatchFn, Pixel } from "../types";
+import Layer from "../../Layer";
+import { DispatchFn, Pixel } from "../../types";
 import clickTool from "./clickTool";
 
 function isSameColor(color1: RGBColor, color2: RGBColor) {
