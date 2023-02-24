@@ -4,7 +4,7 @@ import { BiPencil, BiRectangle, BiCircle, BiColorFill, BiEraser } from 'react-ic
 import { PixitTools } from '../types';
 import penToolFn from './drag-tools/pen';
 import rectToolFn from './drag-tools/rectangle';
-import circleToolFn from './drag-tools/circle';
+import circleToolFn from './drag-tools/ellipse';
 import eraseToolFn from './drag-tools/erase';
 import fillToolFn from './click-tools/fill';
 import lineToolFn from './drag-tools/line';
@@ -41,8 +41,8 @@ const tools: PixitTools = {
     toolFn: rectToolFn,
     icon: BiRectangle,
   },
-  circle: {
-    name: 'circle',
+  ellipse: {
+    name: 'ellipse',
     toolFn: circleToolFn,
     icon: BiCircle,
   },

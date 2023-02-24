@@ -29,7 +29,7 @@ export interface PixitTool {
 export interface PixitTools {
   pen: PixitTool;
   rectangle: PixitTool;
-  circle: PixitTool;
+  ellipse: PixitTool;
   erase: PixitTool;
   fill: PixitTool;
   'color picker': PixitTool;
