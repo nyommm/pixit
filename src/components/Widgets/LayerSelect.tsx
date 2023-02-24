@@ -84,7 +84,7 @@ function LayerSelectItems({ activeLayer, layers, setLayers, setActiveLayer }: La
     ]);
   };
   return (
-    <>
+    <div className="widget__item__layers">
       {layers.map((layer, idx) => (
         <LayerSelectItem key={layer.id}
           activeLayer={activeLayer}
@@ -95,7 +95,7 @@ function LayerSelectItems({ activeLayer, layers, setLayers, setActiveLayer }: La
           updateLayerVisibility={updateLayerVisibility}
           updateLayerLock={updateLayerLock} />
       ))}
-    </>
+    </div>
   );
 }
 
@@ -165,11 +165,13 @@ function layerSelect(
   };
   return () => (
     <div className="widget__item">
-      <span className="widget__item__btn" onClick={insertLayer}><BiLayerPlus /></span>
-      <span className="widget__item__btn" onClick={removeLayer}><BiLayerMinus /></span>
-      <span className="widget__item__btn" onClick={cloneLayer}><BiCopy /></span>
-      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}><BiArrowToTop /></span>
-      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}><BiArrowToBottom /></span>
+      <div>
+        <span className="widget__item__btn" onClick={insertLayer}><BiLayerPlus /></span>
+        <span className="widget__item__btn" onClick={removeLayer}><BiLayerMinus /></span>
+        <span className="widget__item__btn" onClick={cloneLayer}><BiCopy /></span>
+        <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}><BiArrowToTop /></span>
+        <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}><BiArrowToBottom /></span>
+      </div>
       <LayerSelectItems 
         activeLayer={activeLayer}
         layers={layers}

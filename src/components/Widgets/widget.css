@@ -41,11 +41,22 @@
 .widget-layerSelect {
   top: 0.625rem;
   min-width: 10rem;
+  max-height: 10rem;
 }
 
 .widget-colorSelect {
   top: 5.5rem;
-  min-width: 13.8rem;
+  min-width: 12rem;
+}
+
+.widget__item__layers {
+  overflow-y: scroll;
+  max-height: 7rem;
+  scrollbar-width: none;
+}
+
+.widget__item__layers::-webkit-scrollbar {
+  display: none;
 }
 
 .widget__item__layer {
