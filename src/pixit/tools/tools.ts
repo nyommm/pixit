@@ -1,7 +1,6 @@
-import { FaPen, FaCircle, FaEraser, FaFillDrip, FaEyeDropper } from 'react-icons/fa';
-import { GiPlainSquare } from 'react-icons/gi';
+import { TbColorPicker } from 'react-icons/tb';
 import { BsSlashLg } from 'react-icons/bs';
-
+import { BiPencil, BiRectangle, BiCircle, BiColorFill, BiEraser } from 'react-icons/bi';
 import { PixitTools } from '../types';
 import penToolFn from './drag-tools/pen';
 import rectToolFn from './drag-tools/rectangle';
@@ -15,22 +14,22 @@ const tools: PixitTools = {
   'color picker': {
     name: 'color picker',
     toolFn: colorPickerToolFn,
-    icon: FaEyeDropper,
+    icon: TbColorPicker,
   },
   fill: {
     name: 'fill',
     toolFn: fillToolFn,
-    icon: FaFillDrip,
+    icon: BiColorFill,
   },
   erase: {
     name: 'erase',
     toolFn: eraseToolFn,
-    icon: FaEraser,
+    icon: BiEraser,
   },
   pen: {
     name: 'pen',
     toolFn: penToolFn,
-    icon: FaPen,
+    icon: BiPencil,
   },
   line: {
     name: 'line',
@@ -40,12 +39,12 @@ const tools: PixitTools = {
   rectangle: {
     name: 'rectangle',
     toolFn: rectToolFn,
-    icon: GiPlainSquare,
+    icon: BiRectangle,
   },
   circle: {
     name: 'circle',
     toolFn: circleToolFn,
-    icon: FaCircle,
+    icon: BiCircle,
   },
 };
 

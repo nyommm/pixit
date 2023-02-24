@@ -1,6 +1,5 @@
 import React from 'react';
-import { FaLayerGroup, FaTrash, FaArrowUp, 
-          FaArrowDown, FaEye, FaEyeSlash, FaLock, FaLockOpen } from 'react-icons/fa';
+import { BiLayerPlus, BiLayerMinus, BiArrowToTop, BiArrowToBottom, BiShow, BiHide, BiLockOpenAlt, BiLockAlt } from 'react-icons/bi';
 import './widget.css';
 
 import Layer from '../../pixit/Layer';
@@ -35,10 +34,10 @@ function LayerSelectItem(props: LayerSelectItem) {
         onChange={(evt) => props.handleLayerIdChange(evt, props.layerIdx)} />
       <div className="widget__item__layer__btns">
         <span onClick={(evt) => props.updateLayerVisibility(evt, props.layerIdx)}>
-          {props.layer.hidden ? <FaEyeSlash /> : <FaEye />}
+          {props.layer.hidden ? <BiHide /> : <BiShow />}
         </span>
         <span onClick={(evt) => props.updateLayerLock(evt, props.layerIdx)}>
-          {props.layer.locked ? <FaLock /> : <FaLockOpen />}
+          {props.layer.locked ? <BiLockAlt /> : <BiLockOpenAlt />}
         </span>
       </div>
     </div>
@@ -158,10 +157,10 @@ function layerSelect(
   };
   return () => (
     <div className="widget__item">
-      <span className="widget__item__btn" onClick={insertLayer}><FaLayerGroup /></span>
-      <span className="widget__item__btn" onClick={removeLayer}><FaTrash /></span>
-      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}><FaArrowUp /></span>
-      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}><FaArrowDown /></span>
+      <span className="widget__item__btn" onClick={insertLayer}><BiLayerPlus /></span>
+      <span className="widget__item__btn" onClick={removeLayer}><BiLayerMinus /></span>
+      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}><BiArrowToTop /></span>
+      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}><BiArrowToBottom /></span>
       <LayerSelectItems 
         activeLayer={activeLayer}
         layers={layers}
