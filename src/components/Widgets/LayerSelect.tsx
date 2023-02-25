@@ -1,7 +1,7 @@
 import React from 'react';
 import { BiCopy, BiLayerPlus, BiLayerMinus, BiArrowToTop, 
   BiArrowToBottom, BiShow, BiHide, BiLockOpenAlt, BiLockAlt } from 'react-icons/bi';
-import './widget.css';
+import './layer-select.css';
 
 import Layer from '../../pixit/Layer';
 
@@ -25,15 +25,15 @@ interface LayerSelectItem {
 function LayerSelectItem(props: LayerSelectItem) {
   return (
     <div onClick={(evt) => props.changeActiveLayer(evt, props.layer.id)}
-      className={`widget__item__layer ${props.layer.id == props.activeLayer ? 'widget__item__layer-active' : ''}`}>
+      className={`layer-select__layers__item ${props.layer.id == props.activeLayer ? 'layer-select__layers__item-active' : ''}`}>
       <input type="text" 
-        className="widget__item__layer__input"
+        className="layer-select__layers__item__input"
         minLength={1} 
         maxLength={15} 
         value={props.layer.id} 
         onClick={(evt) => { evt.stopPropagation(); }}
         onChange={(evt) => props.handleLayerIdChange(evt, props.layerIdx)} />
-      <div className="widget__item__layer__btns">
+      <div className="layer-select__layers__item__btns">
         <span onClick={(evt) => props.updateLayerVisibility(evt, props.layerIdx)}>
           {props.layer.hidden ? <BiHide /> : <BiShow />}
         </span>
@@ -84,7 +84,7 @@ function LayerSelectItems({ activeLayer, layers, setLayers, setActiveLayer }: La
     ]);
   };
   return (
-    <div className="widget__item__layers">
+    <div className="layer-select__layers">
       {layers.map((layer, idx) => (
         <LayerSelectItem key={layer.id}
           activeLayer={activeLayer}

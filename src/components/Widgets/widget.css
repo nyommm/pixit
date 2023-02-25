@@ -49,66 +49,6 @@
   min-width: 12rem;
 }
 
-.widget__item__layers {
-  overflow-y: scroll;
-  max-height: 7rem;
-  scrollbar-width: none;
-}
-
-.widget__item__layers::-webkit-scrollbar {
-  display: none;
-}
-
-.widget__item__layer {
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-  align-items: center;
-  border-top: 2px grey solid;
-  padding: 0.1rem 0.3rem;
-}
-
-.widget__item__layer > * {
-  margin-left: 0.25rem;
-}
-
-.widget__item__layer-active {
-  border-top: 2px darkgoldenrod solid;
-  background-color: #2e2e2e;
-}
-
-.widget__item__layer__input {
-  border: none;
-  background: none;
-  padding: 0px;
-  padding-left: 4%;
-  font-size: 0.7rem;
-  color: azure;
-  width: 60%;
-  max-width: 4rem;
-}
-
-.widget__item__layer__btns > span {
-  display: inline-block;
-  padding: 0 0.25rem;
-  cursor: pointer;
-  border-radius: 0.25rem;
-  color: lightgrey;
-}
-
-.widget__item__layer__btns > span:hover,
-.widget__item__layer__btns > span:focus {
-  color: azure;
-}
-
-.widget__item__layer__input:active,
-.widget__item__layer__input:focus {
-  outline: none;
-  background-color: #1e1e1e;
-  border-bottom: 2px solid darkgoldenrod;
-  border-radius: 2px 2px 0px 0px;
-}
-
 .widget__item__btn {
   display: inline-block;
   padding: 0 0.25rem;
