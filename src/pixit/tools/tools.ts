@@ -10,6 +10,7 @@ import fillToolFn from './click-tools/fill';
 import lineToolFn from './drag-tools/line';
 import colorPickerToolFn from './click-tools/colorPicker';
 
+// Pixit tools with callbacks, metadata and options
 const tools: PixitTools = {
   'color picker': {
     name: 'color picker',
@@ -30,6 +31,14 @@ const tools: PixitTools = {
     name: 'pen',
     toolFn: penToolFn,
     icon: BiPencil,
+    options: {
+      thickness: {
+        value: 1,
+        min: 1,
+        max: 64,
+      },
+      toolShape: 'circle',
+    }
   },
   line: {
     name: 'line',

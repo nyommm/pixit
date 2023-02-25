@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './viewport.css';
 
 import Layer from '../pixit/Layer';
@@ -7,6 +7,7 @@ import LayerCanvas from './LayerCanvas';
 import ViewportWidget from './Widgets/ViewportWidget';
 import layerSelect from './Widgets/LayerSelect';
 import colorSelect from './Widgets/colorSelect';
+import toolOptions from './Widgets/toolOptions';
 import tools from '../pixit/tools/tools';
 import { DispatchFn, PixitTools } from '../pixit/types';
 import { RGBColor } from 'react-color';
@@ -18,6 +19,8 @@ function Viewport({ tool }: { tool: keyof PixitTools }) {
   const [layers, setLayers] = useState([BASE_LAYER]);
   const [activeLayer, setActiveLayer] = useState(BASE_LAYER.id);
   const [color, setColor] = useState(BLACK);
+  const [toolSettings, setToolSettings] = useState(tools[tool].options);
+  useEffect(() => setToolSettings(tools[tool].options), [tool]);
   const idx = layers.findIndex((layer) => layer.id == activeLayer);
   const dispatch = (state: { layer?: Layer, color?: RGBColor }) => {
     if (state.layer) {
@@ -31,7 +34,7 @@ function Viewport({ tool }: { tool: keyof PixitTools }) {
     }
   };
   const toolFn = (canvas: HTMLCanvasElement, scale: number) => 
-      tools[tool].toolFn(canvas, layers[idx], scale, color, dispatch);
+      tools[tool].toolFn(canvas, layers[idx], scale, color, dispatch, toolSettings);
   return (
     <div className="viewport" >
       <LayerCanvas 
@@ -47,6 +50,10 @@ function Viewport({ tool }: { tool: keyof PixitTools }) {
         widgetName='Color'
         widgetClass='widget-colorSelect'
         render={colorSelect(color, setColor)} />
+      <ViewportWidget
+        widgetName='Tool Options'
+        widgetClass='widget-toolOptions'
+        render={toolOptions(toolSettings, setToolSettings)} />
     </div>
   );
 }

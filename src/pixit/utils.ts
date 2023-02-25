@@ -2,7 +2,7 @@ import React from 'react';
 import { RGBColor } from 'react-color';
 
 import Layer from './Layer';
-import { Pixel, PixelPosition } from './types';
+import { Pixel, PixelPosition, ToolOptions } from './types';
 
 const CHECKBOARD_BACKGROUND = Layer.checkboard('cbdl', 64, 64);
 
@@ -52,12 +52,23 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
 
 // TODO: A function to draw an outline on the 'pixels'/area that will be affected by the tool
 
-function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOfPoints: number): PixelPosition[] {
+function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOfPoints: number, options?: ToolOptions): PixelPosition[] {
   const points: PixelPosition[] = [];
   const deltaX = (end.x - start.x) / numberOfPoints;
   const deltaY = (end.y - start.y) / numberOfPoints;
   for (let x = start.x, y = start.y; points.length <= numberOfPoints;) {
-    points.push({ x, y });
+    if (options?.thickness && options?.thickness?.value) {
+      switch(options.toolShape) {
+        case 'square':
+          points.push(...generateSquare({ x, y }, options.thickness.value));
+          break;
+        case 'circle':
+        default:
+          points.push(...generateCircle({ x, y }, options.thickness.value / 2));
+      }
+    } else {
+      points.push({ x, y });
+    }
     x += deltaX;
     y += deltaY;
   }
@@ -99,13 +110,17 @@ function generateCircle(center: PixelPosition, radius: number): PixelPosition[] 
 
 // TODO!: Need to add thickness to the line
 // User should be able to set the thickness of pen/erase/line tool
-function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color: RGBColor): Layer {
+function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color: RGBColor, options?: ToolOptions): Layer {
   const toColor: Pixel[] = [];
   const points = generatePointsOnLine(
-    start, end, 2 * Math.round(
-      Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2)
-    ));
+    start, end,
+    2 * Math.round(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2)),
+    options
+  );
   for (const point of points) {
+    if (point.x < 0 || point.x >= layer.width || 
+        point.y < 0 || point.y >= layer.height)
+      continue;
     toColor.push({
       x: Math.round(point.x),
       y: Math.round(point.y),

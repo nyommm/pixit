@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import './widget.css';
 
 interface ViewportWidgetProps {
-  render: () => JSX.Element;
+  render: () => JSX.Element | null;
   widgetClass: string;
   widgetName: string;
 };
