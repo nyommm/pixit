@@ -58,7 +58,7 @@ const tools: PixitTools = {
         min: 1,
         max: 64,
       },
-      // toolShape: 'circle',
+      toolShape: 'circle',
     }
   },
   rectangle: {

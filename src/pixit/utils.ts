@@ -50,7 +50,7 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
   }
 }
 
-// TODO: A function to draw an outline on the 'pixels'/area that will be affected by the tool
+// TODO!: A function to draw an outline on the 'pixels'/area that will be affected by the tool
 
 function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOfPoints: number, options?: ToolOptions): PixelPosition[] {
   const points: PixelPosition[] = [];
@@ -119,8 +119,10 @@ function generateCircle(center: PixelPosition, diameter: number): PixelPosition[
 // User should be able to set the thickness of pen/erase/line tool
 function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color: RGBColor, options?: ToolOptions): Layer {
   const toColor: Pixel[] = [];
+  // TODO!: Optimize for large thickness values
   const points = generatePointsOnLine(
     start, end,
+    // *Optimization Idea: reduce numberOfPoints proportional to thickness
     Math.round(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2)),
     options
   );
