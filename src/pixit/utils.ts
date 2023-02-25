@@ -77,8 +77,8 @@ function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOf
 
 function generateRectangle(pos: PixelPosition, width: number, height: number): PixelPosition[] {
   const rect: PixelPosition[] = [];
-  const w = Math.round(width / 2);
-  const h = Math.round(height / 2);
+  const w = Math.floor(width / 2);
+  const h = Math.floor(height / 2);
   for (let y = pos.y - h; y <= pos.y + h; y++) {
     for (let x = pos.x - w; x <= pos.x + w; x++) {
       rect.push({ x, y });
