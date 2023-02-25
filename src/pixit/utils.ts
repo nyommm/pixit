@@ -56,15 +56,22 @@ function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOf
   const points: PixelPosition[] = [];
   const deltaX = (end.x - start.x) / numberOfPoints;
   const deltaY = (end.y - start.y) / numberOfPoints;
+  const thickness = options?.thickness?.value;
+  let prevPosition = { x: Number.MAX_SAFE_INTEGER, y: Number.MIN_SAFE_INTEGER };
   for (let x = start.x, y = start.y; Math.round(x) != Math.round(end.x) || Math.round(y) != Math.round(end.y);) {
-    if (options?.thickness && options?.thickness?.value) {
-      switch(options.toolShape) {
-        case 'square':
-          points.push(...generateSquare({ x, y }, options.thickness.value));
-          break;
-        case 'circle':
-        default:
-          points.push(...generateCircle({ x, y }, options.thickness.value / 2));
+    if (thickness && thickness > 1) {
+      if ((x >= (prevPosition.x + thickness / 3) || x <= (prevPosition.x - thickness / 3)) || 
+        (y >= (prevPosition.y + thickness / 3) || y <= (prevPosition.y - thickness / 3))) {
+        switch(options.toolShape) {
+          case 'square':
+            points.push(...generateSquare({ x, y }, thickness));
+            break;
+          case 'circle':
+          default:
+            points.push(...generateCircle({ x, y }, thickness));
+        }
+        prevPosition.x = x;
+        prevPosition.y = y;
       }
     } else {
       points.push({ x, y });
@@ -91,9 +98,9 @@ function generateSquare(pos: PixelPosition, side: number): PixelPosition[] {
   return generateRectangle(pos, side, side);
 }
 
-function generateCircle(center: PixelPosition, radius: number): PixelPosition[] {
+function generateCircle(center: PixelPosition, diameter: number): PixelPosition[] {
   const circle: PixelPosition[] = [];
-  radius = Math.round(radius);
+  const radius = Math.round(diameter / 2);
   let chord;
   for (let y = center.y - radius; y <= center.y + radius; y++) {
     chord = Math.floor(Math.sqrt(
