@@ -37,7 +37,7 @@ function toolOptions(options: ToolOptions | undefined, setOptions: Function) {
               </label>
             </div>)
           : null}
-        {options.fill 
+        {options.fill !== undefined
           ? (<div className="widget-toolOptions__fill">
               <label>Fill: 
               <input type="checkbox" 

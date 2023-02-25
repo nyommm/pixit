@@ -53,7 +53,7 @@
   width: 0.6rem;
   height: 0.6rem;
   border: 2px solid darkgoldenrod;
-  border-radius: 50%;
+  border-radius: 16%;
   transform: translateY(0.075rem);
 }
 
