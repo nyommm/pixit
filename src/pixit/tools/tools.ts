@@ -52,6 +52,14 @@ const tools: PixitTools = {
     name: 'line',
     toolFn: lineToolFn,
     icon: BsSlashLg,
+    options: {
+      thickness: {
+        value: 1,
+        min: 1,
+        max: 64,
+      },
+      // toolShape: 'circle',
+    }
   },
   rectangle: {
     name: 'rectangle',
