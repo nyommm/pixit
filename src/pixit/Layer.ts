@@ -30,6 +30,7 @@ class Layer {
    */
   static showHideLayer(layer: Layer, hide?: boolean): Layer {
     const newLayer = Layer.copy(layer.id, layer);
+    newLayer.locked = layer.locked;
     if (hide) newLayer.hidden = hide;
     else newLayer.hidden = !layer.hidden;
     return newLayer;
@@ -40,6 +41,7 @@ class Layer {
    */
   static lockUnlockLayer(layer: Layer, lock?: boolean): Layer {
     const newLayer = Layer.copy(layer.id, layer);
+    newLayer.hidden = layer.hidden;
     if (lock) newLayer.locked = lock;
     else newLayer.locked = !layer.locked;
     return newLayer;

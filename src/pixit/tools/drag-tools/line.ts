@@ -1,7 +1,7 @@
 import { RGBColor } from 'react-color';
-import Layer from '../Layer';
-import { DispatchFn, Pixel, PixelPosition } from '../types';
-import { drawLine } from '../utils';
+import Layer from '../../Layer';
+import { DispatchFn, Pixel, PixelPosition } from '../../types';
+import { drawLine } from '../../utils';
 import dragTool from './dragTool';
 
 function line(layer: Layer, pixel: Pixel, dispatch: DispatchFn) {

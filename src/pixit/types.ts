@@ -20,16 +20,31 @@ export type ToolFn = (canvas: HTMLCanvasElement, layer: Layer,
     removeEventListeners: () => void;
 };
 
+export interface ToolThickness {
+  value: number;
+  min: number;
+  max: number;
+}
+
+export type ToolShape = 'square' | 'circle';
+
+export interface ToolOptions {
+  thickness?: ToolThickness;
+  toolShape?: ToolShape;
+  fill?: boolean;
+}
+
 export interface PixitTool {
   name: string;
   icon: any;
   toolFn: ToolFn;
+  options?: ToolOptions;
 }
 
 export interface PixitTools {
   pen: PixitTool;
   rectangle: PixitTool;
-  circle: PixitTool;
+  ellipse: PixitTool;
   erase: PixitTool;
   fill: PixitTool;
   'color picker': PixitTool;

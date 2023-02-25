@@ -1,8 +1,7 @@
 import React from 'react';
-import { useState } from 'react';
-import { FaLayerGroup, FaTrash, FaArrowUp, 
-          FaArrowDown, FaEye, FaEyeSlash, FaLock, FaLockOpen } from 'react-icons/fa';
-import './widget.css';
+import { BiCopy, BiLayerPlus, BiLayerMinus, BiArrowToTop, 
+  BiArrowToBottom, BiShow, BiHide, BiLockOpenAlt, BiLockAlt } from 'react-icons/bi';
+import './layer-select.css';
 
 import Layer from '../../pixit/Layer';
 
@@ -26,20 +25,20 @@ interface LayerSelectItem {
 function LayerSelectItem(props: LayerSelectItem) {
   return (
     <div onClick={(evt) => props.changeActiveLayer(evt, props.layer.id)}
-      className={`widget__item__layer ${props.layer.id == props.activeLayer ? 'widget__item__layer-active' : ''}`}>
+      className={`layer-select__layers__item ${props.layer.id == props.activeLayer ? 'layer-select__layers__item-active' : ''}`}>
       <input type="text" 
-        className="widget__item__layer__input"
+        className="layer-select__layers__item__input"
         minLength={1} 
         maxLength={15} 
         value={props.layer.id} 
         onClick={(evt) => { evt.stopPropagation(); }}
         onChange={(evt) => props.handleLayerIdChange(evt, props.layerIdx)} />
-      <div className="widget__item__layer__btns">
+      <div className="layer-select__layers__item__btns">
         <span onClick={(evt) => props.updateLayerVisibility(evt, props.layerIdx)}>
-          {props.layer.hidden ? <FaEyeSlash /> : <FaEye />}
+          {props.layer.hidden ? <BiHide /> : <BiShow />}
         </span>
         <span onClick={(evt) => props.updateLayerLock(evt, props.layerIdx)}>
-          {props.layer.locked ? <FaLock /> : <FaLockOpen />}
+          {props.layer.locked ? <BiLockAlt /> : <BiLockOpenAlt />}
         </span>
       </div>
     </div>
@@ -85,7 +84,7 @@ function LayerSelectItems({ activeLayer, layers, setLayers, setActiveLayer }: La
     ]);
   };
   return (
-    <>
+    <div className="layer-select__layers">
       {layers.map((layer, idx) => (
         <LayerSelectItem key={layer.id}
           activeLayer={activeLayer}
@@ -96,7 +95,7 @@ function LayerSelectItems({ activeLayer, layers, setLayers, setActiveLayer }: La
           updateLayerVisibility={updateLayerVisibility}
           updateLayerLock={updateLayerLock} />
       ))}
-    </>
+    </div>
   );
 }
 
@@ -104,19 +103,26 @@ function layerSelect(
   layers: Layer[], setLayers: Function, 
   activeLayer: string, setActiveLayer: Function) {
   const idx = layers.findIndex((layer) => layer.id === activeLayer);
-  const insertLayer = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-    evt.stopPropagation();
+  const generateId = () => {
     let newID = layers.length;
     while (layers.some((layer) => layer.id == `Layer ${newID}`)) {
       newID += 1;
     };
-    const active = `Layer ${newID}`;
+    return newID;
+  }
+  const insertLayer = (evt?: React.MouseEvent<HTMLSpanElement, MouseEvent>, layer?: Layer) => {
+    evt && evt.stopPropagation();
+    const active = layer ? layer.id : `Layer ${generateId()}`;
     setLayers([
       ...(idx == 0 ? [] : layers.slice(0, idx)),
-      Layer.empty(active, layers[idx].width, layers[idx].height),
+      layer || Layer.empty(active, layers[idx].width, layers[idx].height),
       ...layers.slice(idx),
     ]);
     setActiveLayer(active);
+  };
+  const cloneLayer = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    evt.stopPropagation();
+    insertLayer(undefined, Layer.copy(`Layer ${generateId()}`, layers[idx]))
   };
   const removeLayer = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     evt.stopPropagation();
@@ -159,10 +165,13 @@ function layerSelect(
   };
   return () => (
     <div className="widget__item">
-      <span className="widget__item__btn" onClick={insertLayer}><FaLayerGroup /></span>
-      <span className="widget__item__btn" onClick={removeLayer}><FaTrash /></span>
-      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}><FaArrowUp /></span>
-      <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}><FaArrowDown /></span>
+      <div>
+        <span className="widget__item__btn" onClick={insertLayer}><BiLayerPlus /></span>
+        <span className="widget__item__btn" onClick={removeLayer}><BiLayerMinus /></span>
+        <span className="widget__item__btn" onClick={cloneLayer}><BiCopy /></span>
+        <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, -1)}><BiArrowToTop /></span>
+        <span className="widget__item__btn" onClick={(evt) => moveLayer(evt, 1)}><BiArrowToBottom /></span>
+      </div>
       <LayerSelectItems 
         activeLayer={activeLayer}
         layers={layers}

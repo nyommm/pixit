@@ -1,7 +1,7 @@
 import { RGBColor } from 'react-color';
-import Layer from '../Layer';
-import { Pixel, PixelPosition, DispatchFn } from '../types';
-import { drawLine } from '../utils';
+import Layer from '../../Layer';
+import { Pixel, PixelPosition, DispatchFn } from '../../types';
+import { drawLine } from '../../utils';
 import dragTool from './dragTool';
 
 const TRANSPARENT = { r: 0, g: 0, b: 0, a: 0 };
