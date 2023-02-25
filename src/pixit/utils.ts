@@ -56,7 +56,7 @@ function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOf
   const points: PixelPosition[] = [];
   const deltaX = (end.x - start.x) / numberOfPoints;
   const deltaY = (end.y - start.y) / numberOfPoints;
-  for (let x = start.x, y = start.y; points.length <= numberOfPoints;) {
+  for (let x = start.x, y = start.y; Math.round(x) != Math.round(end.x) || Math.round(y) != Math.round(end.y);) {
     if (options?.thickness && options?.thickness?.value) {
       switch(options.toolShape) {
         case 'square':
@@ -114,7 +114,7 @@ function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color:
   const toColor: Pixel[] = [];
   const points = generatePointsOnLine(
     start, end,
-    2 * Math.round(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2)),
+    Math.round(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2)),
     options
   );
   for (const point of points) {
