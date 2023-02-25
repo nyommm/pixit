@@ -64,12 +64,47 @@ function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOf
   return points;
 }
 
+function generateRectangle(pos: PixelPosition, width: number, height: number): PixelPosition[] {
+  const rect: PixelPosition[] = [];
+  const w = Math.round(width / 2);
+  const h = Math.round(height / 2);
+  for (let y = pos.y - h; y <= pos.y + h; y++) {
+    for (let x = pos.x - w; x <= pos.x + w; x++) {
+      rect.push({ x, y });
+    }
+  }
+  return rect;
+}
+
+function generateSquare(pos: PixelPosition, side: number): PixelPosition[] {
+  return generateRectangle(pos, side, side);
+}
+
+function generateCircle(center: PixelPosition, radius: number): PixelPosition[] {
+  const circle: PixelPosition[] = [];
+  radius = Math.round(radius);
+  let chord;
+  for (let y = center.y - radius; y <= center.y + radius; y++) {
+    chord = Math.floor(Math.sqrt(
+      Math.pow(radius, 2) - Math.pow(Math.abs(y - center.y), 2)
+    ));
+    if (chord == 0) continue; // to make the circle 'smoother'
+    if (radius == chord) chord -= 1; // to make the circle 'smoother'
+    for (let x = center.x - chord; x <= center.x + chord; x++) {
+      circle.push({ x, y });
+    }
+  }
+  return circle;
+}
+
 // TODO!: Need to add thickness to the line
 // User should be able to set the thickness of pen/erase/line tool
 function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color: RGBColor): Layer {
   const toColor: Pixel[] = [];
-  // TODO!: the numberOfPixels should be dynamically set depending on the distance between start and end
-  const points = generatePointsOnLine(start, end, 2000);
+  const points = generatePointsOnLine(
+    start, end, 2 * Math.round(
+      Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2)
+    ));
   for (const point of points) {
     toColor.push({
       x: Math.round(point.x),
