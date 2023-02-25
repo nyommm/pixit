@@ -65,6 +65,14 @@ const tools: PixitTools = {
     name: 'rectangle',
     toolFn: rectToolFn,
     icon: BiRectangle,
+    options: {
+      thickness: {
+        value: 1,
+        min: 1,
+        max: 64,
+      },
+      fill: true,
+    },
   },
   ellipse: {
     name: 'ellipse',
