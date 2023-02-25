@@ -26,6 +26,14 @@ const tools: PixitTools = {
     name: 'erase',
     toolFn: eraseToolFn,
     icon: BiEraser,
+    options: {
+      thickness: {
+        value: 1,
+        min: 1,
+        max: 64,
+      },
+      toolShape: 'circle',
+    }
   },
   pen: {
     name: 'pen',
