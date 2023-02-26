@@ -78,6 +78,14 @@ const tools: PixitTools = {
     name: 'ellipse',
     toolFn: circleToolFn,
     icon: BiCircle,
+    options: {
+      thickness: {
+        value: 1,
+        min: 1,
+        max: 64,
+      },
+      fill: true,
+    },
   },
 };
 
