@@ -10,6 +10,9 @@ import fillToolFn from './click-tools/fill';
 import lineToolFn from './drag-tools/line';
 import colorPickerToolFn from './click-tools/colorPicker';
 
+const MIN_STROKE_THICKNESS = 1;
+const MAX_STROKE_THICKNESS = 64;
+
 // Pixit tools with callbacks, metadata and options
 const tools: PixitTools = {
   'color picker': {
@@ -28,9 +31,9 @@ const tools: PixitTools = {
     icon: BiEraser,
     options: {
       thickness: {
-        value: 1,
-        min: 1,
-        max: 64,
+        value: MIN_STROKE_THICKNESS,
+        min: MIN_STROKE_THICKNESS,
+        max: MAX_STROKE_THICKNESS,
       },
       toolShape: 'circle',
     }
@@ -41,9 +44,9 @@ const tools: PixitTools = {
     icon: BiPencil,
     options: {
       thickness: {
-        value: 1,
-        min: 1,
-        max: 64,
+        value: MIN_STROKE_THICKNESS,
+        min: MIN_STROKE_THICKNESS,
+        max: MAX_STROKE_THICKNESS,
       },
       toolShape: 'circle',
     }
@@ -54,9 +57,9 @@ const tools: PixitTools = {
     icon: BsSlashLg,
     options: {
       thickness: {
-        value: 1,
-        min: 1,
-        max: 64,
+        value: MIN_STROKE_THICKNESS,
+        min: MIN_STROKE_THICKNESS,
+        max: MAX_STROKE_THICKNESS,
       },
       toolShape: 'circle',
     }
@@ -67,9 +70,9 @@ const tools: PixitTools = {
     icon: BiRectangle,
     options: {
       thickness: {
-        value: 1,
-        min: 1,
-        max: 64,
+        value: MIN_STROKE_THICKNESS,
+        min: MIN_STROKE_THICKNESS,
+        max: MAX_STROKE_THICKNESS,
       },
       fill: true,
     },
@@ -80,9 +83,9 @@ const tools: PixitTools = {
     icon: BiCircle,
     options: {
       thickness: {
-        value: 1,
-        min: 1,
-        max: 64,
+        value: MIN_STROKE_THICKNESS,
+        min: MIN_STROKE_THICKNESS,
+        max: MAX_STROKE_THICKNESS,
       },
       fill: true,
     },
