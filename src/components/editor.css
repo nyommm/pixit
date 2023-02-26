@@ -1,8 +1,7 @@
 .editor {
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: 1.75rem auto;
+  grid-template-rows: 0.8rem auto;
   height: 100vh;
   width: 100vw;
 }

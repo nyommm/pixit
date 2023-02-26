@@ -1,0 +1,43 @@
+.navbar,
+.navbar__menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.navbar {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  background-color: black;
+  color: grey;
+  font-size: 0.5rem;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+.navbar__logo {
+  font-weight: bold;
+  font-size: 0.5rem;
+  padding: 0 0.5rem;
+  color: darkgoldenrod;
+}
+
+.navbar__menu {
+  padding: 0;
+  margin: 0;
+}
+
+.navbar__menu__item {
+  display: border-box;
+  list-style: none;
+  text-align: center;
+  padding: 0 0.5rem;
+}
+
+.navbar__menu__item:hover,
+.navbar__menu__item:focus {
+  color: azure;
+  background-color: #1e1e1e;
+}
