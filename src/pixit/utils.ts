@@ -54,11 +54,12 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
 
 function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOfPoints: number, options?: ToolOptions): PixelPosition[] {
   const points: PixelPosition[] = [];
-  const deltaX = (end.x - start.x) / numberOfPoints;
-  const deltaY = (end.y - start.y) / numberOfPoints;
+  const deltaX = numberOfPoints == 0 ? 0 : (end.x - start.x) / numberOfPoints;
+  const deltaY = numberOfPoints == 0 ? 0 : (end.y - start.y) / numberOfPoints;
   const thickness = options?.thickness?.value;
   let prevPosition = { x: Number.MAX_SAFE_INTEGER, y: Number.MIN_SAFE_INTEGER };
-  for (let x = start.x, y = start.y; Math.round(x) != Math.round(end.x) || Math.round(y) != Math.round(end.y);) {
+  let x = start.x, y = start.y;
+  do {
     if (thickness && thickness > 1) {
       if ((x >= (prevPosition.x + thickness / 3) || x <= (prevPosition.x - thickness / 3)) || 
         (y >= (prevPosition.y + thickness / 3) || y <= (prevPosition.y - thickness / 3))) {
@@ -78,7 +79,7 @@ function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOf
     }
     x += deltaX;
     y += deltaY;
-  }
+  } while (Math.round(x) != Math.round(end.x) || Math.round(y) != Math.round(end.y))
   return points;
 }
 
