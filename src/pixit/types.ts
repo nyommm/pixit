@@ -13,7 +13,7 @@ export interface Pixel extends PixelPosition {
 export type DispatchFn = (state: { layer?: Layer, color?: RGBColor }) => void;
 
 export type ToolFn = (canvas: HTMLCanvasElement, layer: Layer, 
-  scale: number, color: RGBColor, dispatch: DispatchFn) => {
+  scale: number, color: RGBColor, dispatch: DispatchFn, options?: ToolOptions) => {
     handleMouseDown: (evt: MouseEvent) => void;
     handleMouseLeave?: (evt: MouseEvent) => void;
     handleMouseEnter?: (evt: MouseEvent) => void;

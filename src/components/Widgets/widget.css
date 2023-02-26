@@ -44,6 +44,12 @@
   max-height: 10rem;
 }
 
+.widget-toolOptions {
+  top: 20.5rem;
+  min-width: 10rem;
+  max-height: 10rem;
+}
+
 .widget-colorSelect {
   top: 5.5rem;
   min-width: 12rem;

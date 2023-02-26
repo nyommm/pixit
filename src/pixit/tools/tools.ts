@@ -10,6 +10,10 @@ import fillToolFn from './click-tools/fill';
 import lineToolFn from './drag-tools/line';
 import colorPickerToolFn from './click-tools/colorPicker';
 
+const MIN_STROKE_THICKNESS = 1;
+const MAX_STROKE_THICKNESS = 64;
+
+// Pixit tools with callbacks, metadata and options
 const tools: PixitTools = {
   'color picker': {
     name: 'color picker',
@@ -25,26 +29,66 @@ const tools: PixitTools = {
     name: 'erase',
     toolFn: eraseToolFn,
     icon: BiEraser,
+    options: {
+      thickness: {
+        value: MIN_STROKE_THICKNESS,
+        min: MIN_STROKE_THICKNESS,
+        max: MAX_STROKE_THICKNESS,
+      },
+      toolShape: 'circle',
+    }
   },
   pen: {
     name: 'pen',
     toolFn: penToolFn,
     icon: BiPencil,
+    options: {
+      thickness: {
+        value: MIN_STROKE_THICKNESS,
+        min: MIN_STROKE_THICKNESS,
+        max: MAX_STROKE_THICKNESS,
+      },
+      toolShape: 'circle',
+    }
   },
   line: {
     name: 'line',
     toolFn: lineToolFn,
     icon: BsSlashLg,
+    options: {
+      thickness: {
+        value: MIN_STROKE_THICKNESS,
+        min: MIN_STROKE_THICKNESS,
+        max: MAX_STROKE_THICKNESS,
+      },
+      toolShape: 'circle',
+    }
   },
   rectangle: {
     name: 'rectangle',
     toolFn: rectToolFn,
     icon: BiRectangle,
+    options: {
+      thickness: {
+        value: MIN_STROKE_THICKNESS,
+        min: MIN_STROKE_THICKNESS,
+        max: MAX_STROKE_THICKNESS,
+      },
+      fill: true,
+    },
   },
   ellipse: {
     name: 'ellipse',
     toolFn: circleToolFn,
     icon: BiCircle,
+    options: {
+      thickness: {
+        value: MIN_STROKE_THICKNESS,
+        min: MIN_STROKE_THICKNESS,
+        max: MAX_STROKE_THICKNESS,
+      },
+      fill: true,
+    },
   },
 };
 

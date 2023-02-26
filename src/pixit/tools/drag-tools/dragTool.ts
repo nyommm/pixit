@@ -1,16 +1,16 @@
 import { RGBColor } from 'react-color';
 import Layer from '../../Layer';
-import { DispatchFn } from '../../types';
+import { DispatchFn, ToolOptions } from '../../types';
 import { pointerPosition } from '../../utils';
 
-function dragTool(tool: Function, canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: DispatchFn) {
+function dragTool(tool: Function, canvas: HTMLCanvasElement, layer: Layer, scale: number, color: RGBColor, dispatch: DispatchFn, options?: ToolOptions) {
   let handleMouseMove: (moveEvent: any) => void;
   const handleMouseDown = (evt: MouseEvent) => {
     // evt.stopPropagation();
     if (evt.button == 0) {
       let pos = pointerPosition(canvas, evt, scale);
       if (!pos) return;
-      const toolMoveFn = tool(layer, { ...pos, color }, dispatch);
+      const toolMoveFn = tool(layer, { ...pos, color }, dispatch, options);
       handleMouseMove = (moveEvent: any) => {
         if (moveEvent.buttons != 1) {
           canvas.removeEventListener('mousemove', handleMouseMove);
