@@ -1,5 +1,8 @@
-body {
+* {
 	font-family: 'Roboto Mono', monospace;
+}
+
+body {
 	margin: 0px;
 	padding: 0px;
 }
