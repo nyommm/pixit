@@ -71,11 +71,18 @@ class Layer {
     return layer.colorPixels(paint);
   }
 
+  isPixelValid(x: number, y: number): boolean {
+    return Math.round(x) >= 0 && Math.round(x) < this.width && 
+            Math.round(y) >= 0 && Math.round(y) < this.height;
+  }
+
   /**
    * Returns the color at positon (x, y) on a Layer
    */
   pixel(x: number, y: number): RGBColor | undefined {
-    if (x < this.width && y < this.height)
+    x = Math.round(x);
+    y = Math.round(y);
+    if (this.isPixelValid(x, y))
       return this.pixels[x + (y * this.width)];
   }
 
@@ -84,8 +91,10 @@ class Layer {
    */
   colorPixels(pixels: Pixel[]) {
     const copy = this.pixels.slice();
-    for (const { x, y, color } of pixels) {
-      if (x >= 0 || x <= this.width || y >= 0 || y <= this.height)
+    for (let { x, y, color } of pixels) {
+      x = Math.round(x);
+      y = Math.round(y);
+      if (this.isPixelValid(x, y))
         copy[x + (y * this.width)] = color;
     }
     return new Layer(this.id, this.width, this.height, copy);

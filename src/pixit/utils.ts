@@ -59,7 +59,10 @@ function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOf
   const thickness = options?.thickness?.value;
   let prevPosition = { x: Number.MAX_SAFE_INTEGER, y: Number.MIN_SAFE_INTEGER };
   let x = start.x, y = start.y;
+  let exit = false;
   do {
+    if (Math.round(x) == Math.round(end.x) && Math.round(y) == Math.round(end.y))
+      exit = true;
     if (thickness && thickness > 1) {
       if ((x >= (prevPosition.x + thickness / 3) || x <= (prevPosition.x - thickness / 3)) || 
         (y >= (prevPosition.y + thickness / 3) || y <= (prevPosition.y - thickness / 3))) {
@@ -79,7 +82,7 @@ function generatePointsOnLine(start: PixelPosition, end: PixelPosition, numberOf
     }
     x += deltaX;
     y += deltaY;
-  } while (Math.round(x) != Math.round(end.x) || Math.round(y) != Math.round(end.y))
+  } while (!exit)
   return points;
 }
 
@@ -128,8 +131,7 @@ function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color:
     options
   );
   for (const point of points) {
-    if (point.x < 0 || point.x >= layer.width || 
-        point.y < 0 || point.y >= layer.height)
+    if (!layer.isPixelValid(point.x, point.y))
       continue;
     toColor.push({
       x: Math.round(point.x),
