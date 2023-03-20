@@ -19,6 +19,6 @@ div {
 
 .picker__hue,
 .picker__alpha {
-  height: 10px;
+  height: 0.625rem;
 }
 

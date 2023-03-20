@@ -18,7 +18,7 @@ interface LayerCanvasProps {
   };
 };
 
-const DEFAULT_SCALE = 6;
+const DEFAULT_SCALE = 10;
 const MIN_SCALE = DEFAULT_SCALE / 2;
 const MAX_SCALE = DEFAULT_SCALE * 2;
 

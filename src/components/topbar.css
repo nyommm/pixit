@@ -11,7 +11,7 @@
   grid-row: 1 / 2;
   background-color: black;
   color: grey;
-  font-size: 0.5rem;
+  font-size: 0.8rem;
   margin: 0;
   padding: 0;
   user-select: none;
@@ -19,8 +19,8 @@
 
 .navbar__logo {
   font-weight: bold;
-  font-size: 0.5rem;
-  padding: 0 0.5rem;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.5rem;
   color: darkgoldenrod;
 }
 
