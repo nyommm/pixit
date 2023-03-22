@@ -15,7 +15,7 @@ const MAX_LAYER_COUNT = 64;
 const DEFAULT_TOOL: keyof PixitTools = 'pen';
 
 export const pixitEditorSlice = createSlice({
-  name: 'pixitEditor',
+  name: 'editor',
   initialState: {
     color: BLACK,
     scale: DEFAULT_SCALE,
@@ -33,7 +33,6 @@ export const pixitEditorSlice = createSlice({
       state.activeLayerIdx = action.payload;
     },
     insertLayer: (state, action) => {
-      if (state.layers.length >= MAX_LAYER_COUNT) return;
       state.layers = [
         ...(state.activeLayerIdx == 0 ? [] : state.layers.slice(0, state.activeLayerIdx)),
         action.payload,
@@ -49,21 +48,26 @@ export const pixitEditorSlice = createSlice({
       state.color = action.payload;
     },
     changeScale: (state, action) => {
-      if (MIN_SCALE > action.payload) return;
-      if (MAX_SCALE < action.payload) return;
       state.scale = action.payload;
     },
   },
 });
 
-export const pixitEditorActions = pixitEditorSlice.actions;
+export const {
+  updateActiveLayer,
+  changeActiveLayer,
+  insertLayer,
+  changeTool,
+  changeColor,
+  changeScale,
+} = pixitEditorSlice.actions;
 
-export const getActiveLayerIdx = (state) => state.pixitEditor.activeLayerIdx;
-export const getActiveLayer = (state) => state.pixitEditor.layers[state.pixitEditor.activeLayerIdx];
-export const getLayers = (state) => state.pixitEditor.layers;
-export const getColor = (state) => state.pixitEditor.color;
-export const getScale = (state) => state.pixitEditor.scale;
-export const getTool = (state) => state.pixitEditor.tool;
-export const getToolSettings = (state) => state.pixitEditor.toolSettings;
+export const getActiveLayerIdx = (state) => state.editor.activeLayerIdx;
+export const getActiveLayer = (state) => state.editor.layers[state.pixitEditor.activeLayerIdx];
+export const getLayers = (state) => state.editor.layers;
+export const getColor = (state) => state.editor.color;
+export const getScale = (state) => state.editor.scale;
+export const getTool = (state): keyof PixitTools => state.editor.tool;
+export const getToolSettings = (state) => state.editor.toolSettings;
 
-export const pixitEditorReducer = pixitEditorSlice.reducer;
+export const editorReducer = pixitEditorSlice.reducer;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import './viewport.css';
 
 import Layer from '../pixit/Layer';
@@ -9,20 +10,21 @@ import layerSelect from './Widgets/LayerSelect';
 import colorSelect from './Widgets/colorSelect';
 import toolOptions from './Widgets/toolOptions';
 import tools from '../pixit/tools/tools';
-import { DispatchFn, PixitTools } from '../pixit/types';
+import { getTool, changeTool } from '../store/editorSlice';
 import { RGBColor } from 'react-color';
 
 const BASE_LAYER = Layer.empty('Layer 0', 64, 64);
 const BLACK: RGBColor = { r: 0, g: 0, b: 0, a: 255 };
 
-function Viewport({ tool }: { tool: keyof PixitTools }) {
+function Viewport() {
+  const tool = useSelector(getTool);
   const [layers, setLayers] = useState([BASE_LAYER]);
   const [activeLayer, setActiveLayer] = useState(BASE_LAYER.id);
   const [color, setColor] = useState(BLACK);
   const [toolSettings, setToolSettings] = useState(tools[tool].options);
   useEffect(() => setToolSettings(tools[tool].options), [tool]);
   const idx = layers.findIndex((layer) => layer.id == activeLayer);
-  const dispatch = (state: { layer?: Layer, color?: RGBColor }) => {
+  const toolDispatch = (state: { layer?: Layer, color?: RGBColor }) => {
     if (state.layer) {
       setLayers([
         ...layers.slice(0, idx),
@@ -34,7 +36,7 @@ function Viewport({ tool }: { tool: keyof PixitTools }) {
     }
   };
   const toolFn = (canvas: HTMLCanvasElement, scale: number) => 
-      tools[tool].toolFn(canvas, layers[idx], scale, color, dispatch, toolSettings);
+      tools[tool].toolFn(canvas, layers[idx], scale, color, toolDispatch, toolSettings);
   return (
     <div className="viewport" >
       <LayerCanvas 

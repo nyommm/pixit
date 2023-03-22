@@ -1,8 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit/dist/configureStore';
-import { pixitEditorReducer } from './pixitSlice';
+import { configureStore } from '@reduxjs/toolkit';
+import { editorReducer } from './editorSlice';
 
 export default configureStore({
   reducer: {
-    editor: pixitEditorReducer,
+    editor: editorReducer,
   },
 });
