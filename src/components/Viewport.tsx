@@ -10,7 +10,7 @@ import layerSelect from './Widgets/LayerSelect';
 import colorSelect from './Widgets/colorSelect';
 import toolOptions from './Widgets/toolOptions';
 import tools from '../pixit/tools/tools';
-import { getTool, getToolSettings, changeToolSettings } from '../store/editorSlice';
+import { getTool, getToolSettings, changeToolSettings, getColor, changeColor } from '../store/editorSlice';
 import { RGBColor } from 'react-color';
 import { ToolOptions } from '../pixit/types';
 
@@ -21,10 +21,16 @@ function Viewport() {
   const dispatch = useDispatch();
   const tool = useSelector(getTool);
   const toolSettings = useSelector(getToolSettings);
+  const color = useSelector(getColor);
   const [layers, setLayers] = useState([BASE_LAYER]);
   const [activeLayer, setActiveLayer] = useState(BASE_LAYER.id);
-  const [color, setColor] = useState(BLACK);
   const idx = layers.findIndex((layer) => layer.id == activeLayer);
+  const toolOptionsDispatch = (options: ToolOptions) => {
+    dispatch(changeToolSettings(options));
+  };
+  const colorDispatch = (color: RGBColor) => {
+    dispatch(changeColor(color));
+  };
   const toolDispatch = (state: { layer?: Layer, color?: RGBColor }) => {
     if (state.layer) {
       setLayers([
@@ -32,13 +38,8 @@ function Viewport() {
         state.layer, ...layers.slice(idx + 1)
       ]);
     }
-    if (state.color) {
-      setColor(state.color);
-    }
+    if (state.color) colorDispatch(state.color);
   };
-  const toolOptionsDispatch = (options: ToolOptions) => {
-    dispatch(changeToolSettings(options));
-  }
   const toolFn = (canvas: HTMLCanvasElement, scale: number) => 
       tools[tool].toolFn(canvas, layers[idx], scale, color, toolDispatch, toolSettings);
   return (
@@ -55,7 +56,7 @@ function Viewport() {
       <ViewportWidget 
         widgetName='Color'
         widgetClass='widget-colorSelect'
-        render={colorSelect(color, setColor)} />
+        render={colorSelect(color, colorDispatch)} />
       <ViewportWidget
         widgetName='Tool Options'
         widgetClass='widget-toolOptions'
