@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RGBColor } from 'react-color';
 import Layer from '../pixit/Layer';
 import tools from '../pixit/tools/tools';
-import { PixitTools } from '../pixit/types';
+import { PixitTools, ToolOptions } from '../pixit/types';
 
 
 // ***** DEFAULTS *****
@@ -44,6 +44,9 @@ export const pixitEditorSlice = createSlice({
       // @ts-ignore
       state.toolSettings = tools[action.payload].options;
     },
+    changeToolSettings: (state, action) => {
+      state.toolSettings = action.payload;
+    },
     changeColor: (state, action) => {
       state.color = action.payload;
     },
@@ -58,16 +61,17 @@ export const {
   changeActiveLayer,
   insertLayer,
   changeTool,
+  changeToolSettings,
   changeColor,
   changeScale,
 } = pixitEditorSlice.actions;
 
-export const getActiveLayerIdx = (state) => state.editor.activeLayerIdx;
-export const getActiveLayer = (state) => state.editor.layers[state.pixitEditor.activeLayerIdx];
-export const getLayers = (state) => state.editor.layers;
-export const getColor = (state) => state.editor.color;
-export const getScale = (state) => state.editor.scale;
+export const getActiveLayerIdx = (state): number => state.editor.activeLayerIdx;
+export const getActiveLayer = (state): Layer => state.editor.layers[state.pixitEditor.activeLayerIdx];
+export const getLayers = (state): Layer[] => state.editor.layers;
+export const getColor = (state): RGBColor => state.editor.color;
+export const getScale = (state): number => state.editor.scale;
 export const getTool = (state): keyof PixitTools => state.editor.tool;
-export const getToolSettings = (state) => state.editor.toolSettings;
+export const getToolSettings = (state): ToolOptions => state.editor.toolSettings;
 
 export const editorReducer = pixitEditorSlice.reducer;

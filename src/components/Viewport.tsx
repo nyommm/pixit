@@ -1,6 +1,6 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import './viewport.css';
 
 import Layer from '../pixit/Layer';
@@ -10,19 +10,20 @@ import layerSelect from './Widgets/LayerSelect';
 import colorSelect from './Widgets/colorSelect';
 import toolOptions from './Widgets/toolOptions';
 import tools from '../pixit/tools/tools';
-import { getTool, changeTool } from '../store/editorSlice';
+import { getTool, getToolSettings, changeToolSettings } from '../store/editorSlice';
 import { RGBColor } from 'react-color';
+import { ToolOptions } from '../pixit/types';
 
 const BASE_LAYER = Layer.empty('Layer 0', 64, 64);
 const BLACK: RGBColor = { r: 0, g: 0, b: 0, a: 255 };
 
 function Viewport() {
+  const dispatch = useDispatch();
   const tool = useSelector(getTool);
+  const toolSettings = useSelector(getToolSettings);
   const [layers, setLayers] = useState([BASE_LAYER]);
   const [activeLayer, setActiveLayer] = useState(BASE_LAYER.id);
   const [color, setColor] = useState(BLACK);
-  const [toolSettings, setToolSettings] = useState(tools[tool].options);
-  useEffect(() => setToolSettings(tools[tool].options), [tool]);
   const idx = layers.findIndex((layer) => layer.id == activeLayer);
   const toolDispatch = (state: { layer?: Layer, color?: RGBColor }) => {
     if (state.layer) {
@@ -35,6 +36,9 @@ function Viewport() {
       setColor(state.color);
     }
   };
+  const toolOptionsDispatch = (options: ToolOptions) => {
+    dispatch(changeToolSettings(options));
+  }
   const toolFn = (canvas: HTMLCanvasElement, scale: number) => 
       tools[tool].toolFn(canvas, layers[idx], scale, color, toolDispatch, toolSettings);
   return (
@@ -55,7 +59,7 @@ function Viewport() {
       <ViewportWidget
         widgetName='Tool Options'
         widgetClass='widget-toolOptions'
-        render={toolOptions(toolSettings, setToolSettings)} />
+        render={toolOptions(toolSettings, toolOptionsDispatch)} />
     </div>
   );
 }
