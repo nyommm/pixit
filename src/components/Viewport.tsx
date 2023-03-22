@@ -52,7 +52,7 @@ function Viewport() {
       <ViewportWidget 
         widgetName='Layers'
         widgetClass='widget-layerSelect'
-        render={layerSelect(layers, setLayers, activeLayer, setActiveLayer)} />
+        render={layerSelect(layers, setLayers, idx, setActiveLayer)} />
       <ViewportWidget 
         widgetName='Color'
         widgetClass='widget-colorSelect'
