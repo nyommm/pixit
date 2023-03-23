@@ -10,49 +10,44 @@ import layerSelect from './Widgets/LayerSelect';
 import colorSelect from './Widgets/colorSelect';
 import toolOptions from './Widgets/toolOptions';
 import tools from '../pixit/tools/tools';
-import { getTool, getToolSettings, changeToolSettings, getColor, changeColor } from '../store/editorSlice';
+import { getTool, getToolSettings, changeToolSettings, getColor, changeColor, getActiveLayerIdx, changeActiveLayerIdx } from '../store/editorSlice';
 import { RGBColor } from 'react-color';
 import { ToolOptions } from '../pixit/types';
 
 const BASE_LAYER = Layer.empty('Layer 0', 64, 64);
-const BLACK: RGBColor = { r: 0, g: 0, b: 0, a: 255 };
 
 function Viewport() {
   const dispatch = useDispatch();
   const tool = useSelector(getTool);
   const toolSettings = useSelector(getToolSettings);
   const color = useSelector(getColor);
+  const activeLayerIdx = useSelector(getActiveLayerIdx);
   const [layers, setLayers] = useState([BASE_LAYER]);
-  const [activeLayer, setActiveLayer] = useState(BASE_LAYER.id);
-  const idx = layers.findIndex((layer) => layer.id == activeLayer);
-  const toolOptionsDispatch = (options: ToolOptions) => {
-    dispatch(changeToolSettings(options));
-  };
-  const colorDispatch = (color: RGBColor) => {
-    dispatch(changeColor(color));
-  };
+  const toolOptionsDispatch = (options: ToolOptions) => dispatch(changeToolSettings(options));
+  const colorDispatch = (color: RGBColor) => dispatch(changeColor(color));
+  const activeLayerIdxDispatch = (idx: number) => dispatch(changeActiveLayerIdx(idx));
   const toolDispatch = (state: { layer?: Layer, color?: RGBColor }) => {
     if (state.layer) {
       setLayers([
-        ...layers.slice(0, idx),
-        state.layer, ...layers.slice(idx + 1)
+        ...layers.slice(0, activeLayerIdx),
+        state.layer, ...layers.slice(activeLayerIdx + 1)
       ]);
     }
     if (state.color) colorDispatch(state.color);
   };
   const toolFn = (canvas: HTMLCanvasElement, scale: number) => 
-      tools[tool].toolFn(canvas, layers[idx], scale, color, toolDispatch, toolSettings);
+      tools[tool].toolFn(canvas, layers[activeLayerIdx], scale, color, toolDispatch, toolSettings);
   return (
     <div className="viewport" >
       <LayerCanvas 
         layers={layers} 
         color={color} 
-        activeLayerIdx={idx}
+        activeLayerIdx={activeLayerIdx}
         toolFn={toolFn} />
       <ViewportWidget 
         widgetName='Layers'
         widgetClass='widget-layerSelect'
-        render={layerSelect(layers, setLayers, idx, setActiveLayer)} />
+        render={layerSelect(layers, setLayers, activeLayerIdx, activeLayerIdxDispatch)} />
       <ViewportWidget 
         widgetName='Color'
         widgetClass='widget-colorSelect'

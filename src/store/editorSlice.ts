@@ -10,7 +10,6 @@ const BLACK: RGBColor = { r: 0, g: 0, b: 0, a: 255 };
 const DEFAULT_SCALE = 10;
 const MIN_SCALE = DEFAULT_SCALE / 2;
 const MAX_SCALE = DEFAULT_SCALE * 2;
-const BASE_LAYER = Layer.empty('Layer 0', 64, 64);
 const MAX_LAYER_COUNT = 64;
 const DEFAULT_TOOL: keyof PixitTools = 'pen';
 
@@ -21,23 +20,11 @@ export const pixitEditorSlice = createSlice({
     scale: DEFAULT_SCALE,
     tool: DEFAULT_TOOL,
     activeLayerIdx: 0,
-    layers: [BASE_LAYER],
     toolSettings: tools[DEFAULT_TOOL].options,
   },
   reducers: {
-    updateActiveLayer: (state, action) => {
-      state.layers[state.activeLayerIdx] = action.payload;
-    },
-    changeActiveLayer: (state, action) => {
-      if (action.payload < 0 || action.payload >= state.layers.length) return;
+    changeActiveLayerIdx: (state, action) => {
       state.activeLayerIdx = action.payload;
-    },
-    insertLayer: (state, action) => {
-      state.layers = [
-        ...(state.activeLayerIdx == 0 ? [] : state.layers.slice(0, state.activeLayerIdx)),
-        action.payload,
-        ...state.layers.slice(state.activeLayerIdx),
-      ];
     },
     changeTool: (state, action) => {
       state.tool = action.payload;
@@ -57,9 +44,7 @@ export const pixitEditorSlice = createSlice({
 });
 
 export const {
-  updateActiveLayer,
-  changeActiveLayer,
-  insertLayer,
+  changeActiveLayerIdx,
   changeTool,
   changeToolSettings,
   changeColor,
@@ -67,8 +52,6 @@ export const {
 } = pixitEditorSlice.actions;
 
 export const getActiveLayerIdx = (state): number => state.editor.activeLayerIdx;
-export const getActiveLayer = (state): Layer => state.editor.layers[state.pixitEditor.activeLayerIdx];
-export const getLayers = (state): Layer[] => state.editor.layers;
 export const getColor = (state): RGBColor => state.editor.color;
 export const getScale = (state): number => state.editor.scale;
 export const getTool = (state): keyof PixitTools => state.editor.tool;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { BiCopy, BiLayerPlus, BiLayerMinus, BiArrowToTop, 
   BiArrowToBottom, BiShow, BiHide, BiLockOpenAlt, BiLockAlt } from 'react-icons/bi';
 import './layer-select.css';
@@ -23,16 +24,18 @@ interface LayerSelectItem {
 };
 
 function LayerSelectItem(props: LayerSelectItem) {
+  const [value, setValue] = useState(props.layer.id);
   return (
-    <div onClick={(evt) => props.changeActiveLayer(evt, props.layer.id)}
+    <div onClick={(evt) => props.changeActiveLayer(evt, props.layerIdx)}
       className={`layer-select__layers__item ${props.layerIdx == props.activeLayerIdx ? 'layer-select__layers__item-active' : ''}`}>
       <input type="text" 
         className="layer-select__layers__item__input"
         minLength={1} 
         maxLength={15} 
-        value={props.layer.id} 
-        onClick={(evt) => { evt.stopPropagation(); }}
-        onChange={(evt) => props.handleLayerIdChange(evt, props.layerIdx)} />
+        value={value} 
+        onBlur={(evt) => { props.handleLayerIdChange(evt, props.layerIdx); setValue(props.layer.id); }} 
+        onClick={(evt) => { evt.stopPropagation(); }} 
+        onChange={(evt) => setValue(evt.target.value)} />
       <div className="layer-select__layers__item__btns">
         <span onClick={(evt) => props.updateLayerVisibility(evt, props.layerIdx)}>
           {props.layer.hidden ? <BiHide /> : <BiShow />}
@@ -48,7 +51,6 @@ function LayerSelectItem(props: LayerSelectItem) {
 function LayerSelectItems({ activeLayerIdx, layers, setLayers, setActiveLayer }: LayerSelectItems) {
   const handleLayerIdChange = (evt: any, layerIdx: number) => {
     // if new id is not unique don't make any changes
-    // TODO!: Need to tell this to the user as well
     if (layers.some((layer, idx) => idx != layerIdx && layer.id == evt.target.value))
       return;
     const updatedLayer = Layer.copy(evt.target.value, layers[layerIdx]);
@@ -62,9 +64,9 @@ function LayerSelectItems({ activeLayerIdx, layers, setLayers, setActiveLayer }:
       setActiveLayer(evt.target.value);
     }
   };
-  const changeActiveLayer = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) => {
+  const changeActiveLayer = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>, idx: number) => {
     evt.stopPropagation();
-    setActiveLayer(id);
+    setActiveLayer(idx);
   };
   const updateLayerVisibility = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>, idx: number) => {
     evt.stopPropagation();
@@ -99,8 +101,8 @@ function LayerSelectItems({ activeLayerIdx, layers, setLayers, setActiveLayer }:
 }
 
 function layerSelect(
-  layers: Layer[], setLayers: Function, 
-  activeLayerIdx: number, setActiveLayer: Function) {
+  layers: Layer[], setLayers: (layers: Layer[]) => void, 
+  activeLayerIdx: number, setActiveLayer: (idx: number) => void) {
   const generateId = () => {
     let newID = layers.length;
     while (layers.some((layer) => layer.id == `Layer ${newID}`)) {
@@ -116,7 +118,7 @@ function layerSelect(
       layer || Layer.empty(active, layers[activeLayerIdx].width, layers[activeLayerIdx].height),
       ...layers.slice(activeLayerIdx),
     ]);
-    setActiveLayer(active);
+    setActiveLayer(activeLayerIdx + 1);
   };
   const cloneLayer = (evt: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     evt.stopPropagation();
@@ -127,13 +129,13 @@ function layerSelect(
     if (layers.length == 1) {
       const newLayer = Layer.empty('Layer 0', layers[0].width, layers[0].height);
       setLayers([newLayer]);
-      setActiveLayer('Layer 0');
+      setActiveLayer(0);
       return;
     }
     if (activeLayerIdx < layers.length - 1) {
-      setActiveLayer(layers[activeLayerIdx + 1].id);
+      setActiveLayer(activeLayerIdx + 1);
     } else {
-      setActiveLayer(layers[activeLayerIdx - 1].id);
+      setActiveLayer(activeLayerIdx - 1);
     }
     setLayers([
       ...layers.slice(0, activeLayerIdx),
