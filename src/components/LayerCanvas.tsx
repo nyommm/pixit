@@ -1,10 +1,12 @@
 import React from 'react';
 import { useState, useEffect, useRef, WheelEvent } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { RGBColor } from 'react-color';
 import './canvas.css';
 
 import Layer from '../pixit/Layer';
 import { draw } from '../pixit/utils';
+import { changeScale, getScale } from '../store/editorSlice';
 
 interface LayerCanvasProps {
   layers: Layer[];
@@ -18,12 +20,13 @@ interface LayerCanvasProps {
   };
 };
 
-const DEFAULT_SCALE = 10;
-const MIN_SCALE = DEFAULT_SCALE / 2;
-const MAX_SCALE = DEFAULT_SCALE * 2;
+const MIN_SCALE = 1;
+const MAX_SCALE = 30;
 
 function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
-  const [scale, setScale] = useState(DEFAULT_SCALE);
+  const dispatch = useDispatch();
+  const scale = useSelector(getScale);
+  const scaleDispatch = (newScale: number) => dispatch(changeScale(newScale));
   const canvasRef = useRef(null);
   const paintCanvas = () => {
     draw(canvasRef.current, layers.slice(activeLayerIdx), scale);
@@ -45,8 +48,8 @@ function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
     // when the scale is not an integer.
     // The problem with this is that the zoom won't be smooth
     const zoomAmount = evt.deltaY / (Math.abs(evt.deltaY));
-    if (zoomAmount == -1) setScale(Math.max(scale + zoomAmount, MIN_SCALE));
-    else setScale(Math.min(scale + zoomAmount, MAX_SCALE));
+    if (zoomAmount == -1) scaleDispatch(Math.max(scale + zoomAmount, MIN_SCALE));
+    else scaleDispatch(Math.min(scale + zoomAmount, MAX_SCALE));
   };
   useEffect(paintCanvas, [layers, activeLayerIdx, layers[activeLayerIdx].id, scale]);
   // TODO!: understand when this effect should trigger
