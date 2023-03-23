@@ -11,10 +11,10 @@
   grid-row: 1 / 2;
   background-color: black;
   color: grey;
-  font-size: 0.8rem;
   margin: 0;
   padding: 0;
   user-select: none;
+  z-index: 11;
 }
 
 .navbar__logo {
@@ -29,15 +29,45 @@
   margin: 0;
 }
 
-.navbar__menu__item {
+.topbar__dropdown-menu__btn {
   display: border-box;
-  list-style: none;
   text-align: center;
   padding: 0 0.5rem;
+  font-size: 0.8rem;
 }
 
-.navbar__menu__item:hover,
-.navbar__menu__item:focus {
+.topbar__dropdown-menu__content {
+  display: none;
+  position: absolute;
+  background-color: black;
+  color: grey;
+  min-width: 10rem;
+  z-index: 11;
+}
+
+.topbar__dropdown-menu:hover .topbar__dropdown-menu__content {
+  display: block;
+}
+
+.topbar__dropdown-menu__content__btn {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+}
+
+.topbar__dropdown-menu__content__btn:hover,
+.topbar__dropdown-menu__content__btn:focus {
+  color: azure;
+  background-color: #1e1e1e;
+}
+
+.topbar__dropdown-menu__content__btn-disabled:hover,
+.topbar__dropdown-menu__content__btn-disabled:focus {
+  color: grey;
+  background-color: black;
+}
+
+.topbar__dropdown-menu__btn:hover,
+.topbar__dropdown-menu__btn:focus {
   color: azure;
   background-color: #1e1e1e;
 }
