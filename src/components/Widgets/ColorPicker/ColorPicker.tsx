@@ -85,6 +85,7 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange }: ColorPickerField
       textAlign: 'center',
       textTransform: 'uppercase',
       fontSize: '0.8rem',
+      userSelect: 'none',
     },
     picker__controls__colors: {
       gridColumnStart: 1,

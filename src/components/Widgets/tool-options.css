@@ -5,6 +5,12 @@
   margin: 0.2rem 0;
 }
 
+.widget-toolOptions__thickness label, 
+.widget-toolOptions__fill label, 
+.widget-toolOptions__shape label {
+  user-select: none;
+}
+
 .widget-toolOptions__thickness input {
   width: 50%;
   -webkit-appearance: none;
