@@ -5,7 +5,7 @@ import './widget.css';
 import ColorPicker from './ColorPicker/ColorPicker';
 
 // Currently only hex colors are supported but eventually this will be switched to react-color
-function colorSelect(color: RGBColor, setColor: Function) {
+function colorSelect(color: RGBColor, setColor: (color: RGBColor) => void) {
   const [colors, setColors] = useState([] as string[]);
   const handleChange = (result: ColorResult) => {
     setColor(result.rgb);

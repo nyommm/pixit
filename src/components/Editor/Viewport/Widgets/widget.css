@@ -21,6 +21,7 @@
   color: azure;
   font-size: 0.7rem;
   font-weight: 700;
+  user-select: none;
 }
 
 .widget__topbar:hover,

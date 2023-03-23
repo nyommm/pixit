@@ -1,13 +1,13 @@
 import React from 'react';
-import { ToolOptions } from '../../pixit/types';
+import { ToolOptions } from '../../../../pixit/types';
 import './tool-options.css';
 
-function toolOptions(options: ToolOptions | undefined, setOptions: Function) {
+function toolOptions(options: ToolOptions | undefined, setOptions: (options: ToolOptions) => void) {
   if (options == undefined) return () => null;
   return () => {
     return (
       <div className="widget__item">
-        {options.thickness 
+        {options.thickness
           ? (<div className="widget-toolOptions__thickness">
               <label>Stroke: 
                 <input type="range" 
@@ -15,7 +15,7 @@ function toolOptions(options: ToolOptions | undefined, setOptions: Function) {
                   max={options.thickness.max} 
                   step={1} className=""
                   value={options.thickness.value} 
-                  onChange={(evt) => setOptions({...options, thickness: { ...options.thickness, value: evt.target.value }})} />
+                  onChange={(evt) => setOptions({...options, thickness: { ...options.thickness, value: +evt.target.value }})} />
               {options.thickness.value}px</label>
             </div>)
           : null}
