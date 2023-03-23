@@ -21,7 +21,7 @@ interface LayerCanvasProps {
 };
 
 const MIN_SCALE = 1;
-const MAX_SCALE = 30;
+const MAX_SCALE = 50;
 
 function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
   const scaleDispatch = (newScale: number) => dispatch(changeScale(newScale));
   const canvasRef = useRef(null);
   const paintCanvas = () => {
-    draw(canvasRef.current, layers.slice(activeLayerIdx), scale);
+    draw(canvasRef.current, layers, scale);
   };
   const bindTool = () => {
     if (layers[activeLayerIdx].locked || layers[activeLayerIdx].hidden) return;
