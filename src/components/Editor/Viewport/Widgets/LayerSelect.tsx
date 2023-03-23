@@ -152,6 +152,7 @@ function layerSelect(
         layers[activeLayerIdx + 1], layers[activeLayerIdx],
         ...layers.slice(activeLayerIdx + 2)
       ]);
+      setActiveLayer(activeLayerIdx + 1);
     }
     // move layer up
     if (change == -1) {
@@ -161,6 +162,7 @@ function layerSelect(
         layers[activeLayerIdx], layers[activeLayerIdx - 1],
         ...layers.slice(activeLayerIdx + 1)
       ]);
+      setActiveLayer(activeLayerIdx - 1);
     }
   };
   return () => (
