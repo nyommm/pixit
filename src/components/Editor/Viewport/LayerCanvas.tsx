@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RGBColor } from 'react-color';
 import './canvas.css';
 
-import Layer from '../pixit/Layer';
-import { draw } from '../pixit/utils';
-import { changeScale, getScale } from '../store/editorSlice';
+import Layer from '../../../pixit/Layer';
+import { draw } from '../../../pixit/utils';
+import { changeScale, getScale } from '../../../store/editorSlice';
 
 interface LayerCanvasProps {
   layers: Layer[];

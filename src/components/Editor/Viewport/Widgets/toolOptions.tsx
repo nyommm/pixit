@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToolOptions } from '../../pixit/types';
+import { ToolOptions } from '../../../../pixit/types';
 import './tool-options.css';
 
 function toolOptions(options: ToolOptions | undefined, setOptions: (options: ToolOptions) => void) {

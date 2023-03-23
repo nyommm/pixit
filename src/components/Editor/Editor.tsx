@@ -1,11 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
-import { PixitTools } from '../pixit/types';
+import { PixitTools } from '../../pixit/types';
 import './editor.css';
 
-import Tools from './Tools';
-import Topbar from './Topbar';
-import Viewport from './Viewport';
+import Tools from './ToolsSidebar/Tools';
+import Topbar from './Topbar/Topbar';
+import Viewport from './Viewport/Viewport';
 
 function Editor() {
   return (

@@ -3,16 +3,17 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './viewport.css';
 
-import Layer from '../pixit/Layer';
+import Layer from '../../../pixit/Layer';
 import LayerCanvas from './LayerCanvas';
 import ViewportWidget from './Widgets/ViewportWidget';
 import layerSelect from './Widgets/LayerSelect';
 import colorSelect from './Widgets/colorSelect';
 import toolOptions from './Widgets/toolOptions';
-import tools from '../pixit/tools/tools';
-import { getTool, getToolSettings, changeToolSettings, getColor, changeColor, getActiveLayerIdx, changeActiveLayerIdx } from '../store/editorSlice';
+import tools from '../../../pixit/tools/tools';
+import { getTool, getToolSettings, changeToolSettings, 
+  getColor, changeColor, getActiveLayerIdx, changeActiveLayerIdx } from '../../../store/editorSlice';
 import { RGBColor } from 'react-color';
-import { ToolOptions } from '../pixit/types';
+import { ToolOptions } from '../../../pixit/types';
 
 const BASE_LAYER = Layer.empty('Layer 0', 64, 64);
 

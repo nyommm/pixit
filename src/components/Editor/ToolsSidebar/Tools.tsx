@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './tools.css';
 
-import { getTool, changeTool } from '../store/editorSlice';
-import tools from '../pixit/tools/tools';
+import { getTool, changeTool } from '../../../store/editorSlice';
+import tools from '../../../pixit/tools/tools';
 
 function Tools() {
   const tool = useSelector(getTool);

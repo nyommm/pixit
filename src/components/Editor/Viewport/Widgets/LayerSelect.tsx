@@ -4,7 +4,7 @@ import { BiCopy, BiLayerPlus, BiLayerMinus, BiArrowToTop,
   BiArrowToBottom, BiShow, BiHide, BiLockOpenAlt, BiLockAlt } from 'react-icons/bi';
 import './layer-select.css';
 
-import Layer from '../../pixit/Layer';
+import Layer from '../../../../pixit/Layer';
 
 interface LayerSelectItems {
   activeLayerIdx: number;
