@@ -10,7 +10,6 @@ function Topbar() {
       buttons: [
         { name: 'New...' }, { name: 'Save' }, 
         { name: 'Save As...' }, { name: 'Export' }, 
-        { name: 'Export As...' },
       ],
     },
     edit: {
