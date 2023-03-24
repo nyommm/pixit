@@ -1,0 +1,73 @@
+.navbar,
+.navbar__menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.navbar {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  background-color: black;
+  color: grey;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  z-index: 11;
+}
+
+.navbar__logo {
+  font-weight: bold;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.5rem;
+  color: darkgoldenrod;
+}
+
+.navbar__menu {
+  padding: 0;
+  margin: 0;
+}
+
+.topbar__dropdown-menu__btn {
+  display: border-box;
+  text-align: center;
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+}
+
+.topbar__dropdown-menu__content {
+  display: none;
+  position: absolute;
+  background-color: black;
+  color: grey;
+  min-width: 10rem;
+  z-index: 11;
+}
+
+.topbar__dropdown-menu:hover .topbar__dropdown-menu__content {
+  display: block;
+}
+
+.topbar__dropdown-menu__content__btn {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+}
+
+.topbar__dropdown-menu__content__btn:hover,
+.topbar__dropdown-menu__content__btn:focus {
+  color: azure;
+  background-color: #1e1e1e;
+}
+
+.topbar__dropdown-menu__content__btn-disabled:hover,
+.topbar__dropdown-menu__content__btn-disabled:focus {
+  color: grey;
+  background-color: black;
+}
+
+.topbar__dropdown-menu__btn:hover,
+.topbar__dropdown-menu__btn:focus {
+  color: azure;
+  background-color: #1e1e1e;
+}

@@ -1,5 +1,6 @@
 .viewport__canvas {
   position: absolute;
+  z-index: 1;
 }
 
 .viewport__canvas-disabled {

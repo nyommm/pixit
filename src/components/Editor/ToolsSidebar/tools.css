@@ -1,11 +1,12 @@
 .tools-sidebar {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  height: 100vh;
-  width: 1.75rem;
   background-color: #1e1e1e;
+  z-index: 10;
 }
 
 .tools-sidebar__tool {
@@ -13,7 +14,7 @@
   background: none;
   border: none;
   color: azure;
-  font-size: 0.75rem;
+  font-size: 1.1rem;
   flex-basis: auto;
   width: 100%;
   padding: 4px 0px;

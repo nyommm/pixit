@@ -1,8 +1,14 @@
 .widget-toolOptions__thickness, 
 .widget-toolOptions__fill, 
 .widget-toolOptions__shape {
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   margin: 0.2rem 0;
+}
+
+.widget-toolOptions__thickness label, 
+.widget-toolOptions__fill label, 
+.widget-toolOptions__shape label {
+  user-select: none;
 }
 
 .widget-toolOptions__thickness input {
@@ -33,8 +39,8 @@
   appearance: none;
   background-color: transparent;
   font: inherit;
-  width: 0.6rem;
-  height: 0.6rem;
+  width: 0.8rem;
+  height: 0.8rem;
   border: 2px solid darkgoldenrod;
   border-radius: 50%;
   transform: translateY(0.075rem);

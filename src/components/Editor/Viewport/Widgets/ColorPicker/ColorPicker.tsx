@@ -72,7 +72,7 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange }: ColorPickerField
       boxSizing: 'border-box',
       width: '100%',
       // padding: '0.25rem 0.25rem',
-      fontSize: '0.6rem',
+      fontSize: '0.7rem',
       background: '#2e2e2e',
       border: 'none',
       borderRadius: '2px 2px 0px 0px',
@@ -84,7 +84,8 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange }: ColorPickerField
       display: 'block',
       textAlign: 'center',
       textTransform: 'uppercase',
-      fontSize: '0.75rem',
+      fontSize: '0.8rem',
+      userSelect: 'none',
     },
     picker__controls__colors: {
       gridColumnStart: 1,
