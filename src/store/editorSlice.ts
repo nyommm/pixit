@@ -8,14 +8,16 @@ import { PixitTools, ToolOptions } from '../pixit/types';
 // ***** DEFAULTS *****
 const BLACK: RGBColor = { r: 0, g: 0, b: 0, a: 255 };
 const DEFAULT_SCALE = 10;
-const MIN_SCALE = DEFAULT_SCALE / 2;
-const MAX_SCALE = DEFAULT_SCALE * 2;
-const MAX_LAYER_COUNT = 64;
+const DEFAULT_FILENAME = 'untitled';
+const DEFAULT_CANVAS_SIZE = 64; // side length in number of pixels
 const DEFAULT_TOOL: keyof PixitTools = 'pen';
 
 export const pixitEditorSlice = createSlice({
   name: 'editor',
   initialState: {
+    fileName: DEFAULT_FILENAME,
+    width: DEFAULT_CANVAS_SIZE,
+    height: DEFAULT_CANVAS_SIZE,
     color: BLACK,
     scale: DEFAULT_SCALE,
     tool: DEFAULT_TOOL,
@@ -23,6 +25,15 @@ export const pixitEditorSlice = createSlice({
     toolSettings: tools[DEFAULT_TOOL].options,
   },
   reducers: {
+    changeFileName: (state, action) => {
+      state.width = action.payload;
+    },
+    changeWidth: (state, action) => {
+      state.width = action.payload;
+    },
+    changeHeight: (state, action) => {
+      state.height = action.payload;
+    },
     changeActiveLayerIdx: (state, action) => {
       state.activeLayerIdx = action.payload;
     },
@@ -44,6 +55,9 @@ export const pixitEditorSlice = createSlice({
 });
 
 export const {
+  changeFileName,
+  changeWidth,
+  changeHeight,
   changeActiveLayerIdx,
   changeTool,
   changeToolSettings,
@@ -51,6 +65,9 @@ export const {
   changeScale,
 } = pixitEditorSlice.actions;
 
+export const getWidth = (state): number => state.editor.width;
+export const getHeight = (state): number => state.editor.height;
+export const getFileName = (state): number => state.editor.fileName;
 export const getActiveLayerIdx = (state): number => state.editor.activeLayerIdx;
 export const getColor = (state): RGBColor => state.editor.color;
 export const getScale = (state): number => state.editor.scale;
