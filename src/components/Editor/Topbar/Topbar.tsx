@@ -24,8 +24,8 @@ function Topbar() {
     select: {
       title: 'Select',
       buttons: [
-        { name: 'Clear' }, { name: 'All' }, 
-        { name: 'Invert' },
+        { name: 'Clear Selection' }, { name: 'Select All' }, 
+        { name: 'Invert Selection' },
       ],
     },
     image: {

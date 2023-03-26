@@ -1,13 +1,9 @@
 import React from 'react';
-
-interface DDMenuBtn {
-  name: string;
-  onClick?: (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-};
+import { TopbarMenuBtn } from '../../../pixit/types';
 
 interface DropDownMenuProps {
   title: string;
-  buttons: DDMenuBtn[];
+  buttons: TopbarMenuBtn[];
 };
 
 export default function DropDownMenu({ title, buttons }: DropDownMenuProps) {

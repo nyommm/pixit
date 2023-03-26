@@ -50,3 +50,8 @@ export interface PixitTools {
   'color picker': PixitTool;
   line: PixitTool;
 };
+
+export interface TopbarMenuBtn {
+  name: string;
+  onClick?: (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+}
