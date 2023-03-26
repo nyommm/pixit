@@ -1,12 +1,12 @@
 import React from 'react';
-import { useState, useEffect, useRef, WheelEvent } from 'react';
+import { useEffect, useRef, WheelEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RGBColor } from 'react-color';
 import './canvas.css';
 
 import Layer from '../../../pixit/Layer';
 import { draw } from '../../../pixit/utils';
-import { changeScale, getScale } from '../../../store/editorSlice';
+import { changeScale, getHeight, getScale, getWidth } from '../../../store/editorSlice';
 
 interface LayerCanvasProps {
   layers: Layer[];
@@ -23,14 +23,19 @@ interface LayerCanvasProps {
 const MIN_SCALE = 1;
 const MAX_SCALE = 50;
 
+function generateCheckboardBackground(width: number, height: number) {
+  return Layer.checkboard('ckbg', width, height);
+}
+
 function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
   const dispatch = useDispatch();
   const scale = useSelector(getScale);
+  const width = useSelector(getWidth);
+  const height = useSelector(getHeight);
   const scaleDispatch = (newScale: number) => dispatch(changeScale(newScale));
   const canvasRef = useRef(null);
-  const paintCanvas = () => {
-    draw(canvasRef.current, layers, scale);
-  };
+  const paintCanvas = () =>
+    draw(canvasRef.current, [...layers, generateCheckboardBackground(width, height)], scale);
   const bindTool = () => {
     if (layers[activeLayerIdx].locked || layers[activeLayerIdx].hidden) return;
     if (canvasRef.current == null) return;
