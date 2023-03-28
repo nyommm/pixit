@@ -74,15 +74,17 @@ export const {
   changeOperationData
 } = pixitEditorSlice.actions;
 
-export const getWidth = (state): number => state.editor.width;
-export const getHeight = (state): number => state.editor.height;
-export const getFileName = (state): string => state.editor.fileName;
-export const getActiveLayerIdx = (state): number => state.editor.activeLayerIdx;
-export const getColor = (state): RGBColor => state.editor.color;
-export const getScale = (state): number => state.editor.scale;
-export const getTool = (state): keyof PixitTools => state.editor.tool;
-export const getToolSettings = (state): ToolOptions => state.editor.toolSettings;
-export const getOperation = (state): string => state.editor.operation;
-export const getOperationData = (state): OperationData => state.editor.operationData;
+export type EditorState = ReturnType<typeof pixitEditorSlice.reducer>
+
+export const getWidth = (state: { editor: EditorState }): number => state.editor.width;
+export const getHeight = (state: { editor: EditorState }): number => state.editor.height;
+export const getFileName = (state: { editor: EditorState }): string => state.editor.fileName;
+export const getActiveLayerIdx = (state: { editor: EditorState }): number => state.editor.activeLayerIdx;
+export const getColor = (state: { editor: EditorState }): RGBColor => state.editor.color;
+export const getScale = (state: { editor: EditorState }): number => state.editor.scale;
+export const getTool = (state: { editor: EditorState }): keyof PixitTools => state.editor.tool;
+export const getToolSettings = (state: { editor: EditorState }): ToolOptions | undefined => state.editor.toolSettings;
+export const getOperation = (state: { editor: EditorState }): string => state.editor.operation;
+export const getOperationData = (state: { editor: EditorState }): OperationData => state.editor.operationData;
 
 export const editorReducer = pixitEditorSlice.reducer;
