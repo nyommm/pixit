@@ -203,32 +203,11 @@ function outlineLayer(layer: Layer, outlineColor?: RGBColor): Layer {
   return layer.colorPixels(toColor);
 }
 
-function centralizeLayer(layer: Layer): Layer {
+function translatePixels(layer: Layer, offsetX: number, offsetY: number): Layer {
   const emptyLayer = Layer.empty(layer.id, layer.width, layer.height);
-  const centerX = Math.round(layer.width / 2);
-  const centerY = Math.round(layer.height / 2);
-  let hasContent = false;
-  let minX = Number.MAX_SAFE_INTEGER, minY = Number.MAX_SAFE_INTEGER;
-  let maxX = Number.MIN_SAFE_INTEGER, maxY = Number.MIN_SAFE_INTEGER;
+  const toColor: Pixel[] = [];
   for (let y = 0; y < layer.height; y++) {
     for (let x = 0; x < layer.width; x++) {
-      const color = layer.pixel(x, y);
-      if (!color || color.a === undefined || color.a === 0) continue;
-      hasContent = true;
-      minX = x < minX ? x : minX;
-      minX = y < minY ? y : minY;
-      maxX = x > maxX ? x : maxX;
-      maxX = y > maxY ? y : maxY;
-    }
-  }
-  if (!hasContent) return layer;
-  const rectCenterX = Math.round((maxX - minX) / 2);
-  const rectCenterY = Math.round((maxY - minY) / 2);
-  const offsetX = rectCenterX - centerX;
-  const offsetY = rectCenterY - centerY;
-  const toColor: Pixel[] = [];
-  for (let y = minY; y <= maxY; y++) {
-    for (let x = minY; x <= maxX; x++) {
       const color = layer.pixel(x, y);
       if (!color) continue;
       toColor.push({ x: x + offsetX, y: y + offsetY, color });
@@ -240,5 +219,8 @@ function centralizeLayer(layer: Layer): Layer {
 export {
   draw,
   drawLine,
-  pointerPosition
+  pointerPosition,
+  translatePixels,
+  invertLayerColors,
+  outlineLayer,
 };
