@@ -55,3 +55,8 @@ export interface TopbarMenuBtn {
   name: string;
   onClick?: (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
+
+export interface OperationData {
+  width?: number;
+  height?: number;
+}

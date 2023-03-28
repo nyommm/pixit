@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RGBColor } from 'react-color';
-import Layer from '../pixit/Layer';
 import tools from '../pixit/tools/tools';
-import { PixitTools, ToolOptions } from '../pixit/types';
+import { OperationData, PixitTools, ToolOptions } from '../pixit/types';
 
 
 // ***** DEFAULTS *****
@@ -23,6 +22,8 @@ export const pixitEditorSlice = createSlice({
     tool: DEFAULT_TOOL,
     activeLayerIdx: 0,
     toolSettings: tools[DEFAULT_TOOL].options,
+    operation: '',
+    operationData: {} as OperationData,
   },
   reducers: {
     changeFileName: (state, action) => {
@@ -51,6 +52,12 @@ export const pixitEditorSlice = createSlice({
     changeScale: (state, action) => {
       state.scale = action.payload;
     },
+    changeOperation: (state, action) => {
+      state.operation = action.payload;
+    },
+    changeOperationData: (state, action) => {
+      state.operationData = action.payload;
+    }
   },
 });
 
@@ -63,15 +70,19 @@ export const {
   changeToolSettings,
   changeColor,
   changeScale,
+  changeOperation,
+  changeOperationData
 } = pixitEditorSlice.actions;
 
 export const getWidth = (state): number => state.editor.width;
 export const getHeight = (state): number => state.editor.height;
-export const getFileName = (state): number => state.editor.fileName;
+export const getFileName = (state): string => state.editor.fileName;
 export const getActiveLayerIdx = (state): number => state.editor.activeLayerIdx;
 export const getColor = (state): RGBColor => state.editor.color;
 export const getScale = (state): number => state.editor.scale;
 export const getTool = (state): keyof PixitTools => state.editor.tool;
 export const getToolSettings = (state): ToolOptions => state.editor.toolSettings;
+export const getOperation = (state): string => state.editor.operation;
+export const getOperationData = (state): OperationData => state.editor.operationData;
 
 export const editorReducer = pixitEditorSlice.reducer;
