@@ -2,7 +2,7 @@ import React from 'react';
 import { RGBColor } from 'react-color';
 
 import Layer from './Layer';
-import { Pixel, PixelPosition, ToolOptions } from './types';
+import { MirrorAxis, Pixel, PixelPosition, ToolOptions } from './types';
 
 /**
  * Get the position of the pixel at the client's position
@@ -213,6 +213,7 @@ function grayscaleLayerColors(layer: Layer): Layer {
 
 function outlineLayer(layer: Layer, outlineThickness?: number, outlineColor?: RGBColor): Layer {
   const toColor: Pixel[] = [];
+  // TODO!: Implement logic to change outline thickness
   if (!outlineThickness) outlineThickness = 1;
   if (!outlineColor) {
     outlineColor = {
@@ -256,6 +257,29 @@ function translatePixels(layer: Layer, offsetX: number, offsetY: number): Layer 
   return emptyLayer.colorPixels(toColor);
 }
 
+function mirrorLayer(layer: Layer, axis: MirrorAxis = 'X'): Layer {
+  const emptyLayer = Layer.empty(layer.id, layer.width, layer.height);
+  const toColor: Pixel[] = [];
+  for (let y = 0; y < layer.height; y++) {
+    for (let x = 0; x < layer.width; x++) {
+      const color = layer.pixel(x, y);
+      if (!color) continue;
+      if (axis == 'X') {
+        toColor.push({
+          x: layer.width - 1 - x,
+          y, color
+        });
+      } else {
+        toColor.push({
+          y: layer.height - 1 - y,
+          x, color
+        });
+      }
+    }
+  }
+  return emptyLayer.colorPixels(toColor);
+}
+
 export {
   draw,
   drawLine,
@@ -265,4 +289,5 @@ export {
   grayscaleLayerColors,
   invertLayerColors,
   outlineLayer,
+  mirrorLayer,
 };

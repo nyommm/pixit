@@ -74,4 +74,5 @@ export interface Operations {
   centralizeImage: CanvasOperation,
   cropImage: CanvasOperation,
   outlineImage: CanvasOperation,
+  mirrorImage: CanvasOperation,
 }

@@ -1,6 +1,7 @@
 import Layer from '../Layer';
 import { Pixel } from '../types';
-import { getImageBoundingBox, invertLayerColors, outlineLayer, translatePixels } from '../utils';
+import { getImageBoundingBox, invertLayerColors, 
+  mirrorLayer, outlineLayer, translatePixels } from '../utils';
 
 export function invertImageColors(layers: Layer[]): Layer[] {
   const newLayers: Layer[] = [];
@@ -48,5 +49,12 @@ export function outlineImage(layers: Layer[]): Layer[] {
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(outlineLayer(layer));
+  return newLayers;
+}
+
+export function mirrorImage(layers: Layer[]): Layer[] {
+  const newLayers: Layer[] = [];
+  for (const layer of layers)
+    newLayers.push(mirrorLayer(layer));
   return newLayers;
 }
