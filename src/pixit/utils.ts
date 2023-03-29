@@ -149,6 +149,26 @@ function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color:
   return layer.colorPixels(toColor);
 }
 
+function getImageBoundingBox(layers: Layer[]) {
+  let hasContent = false;
+  let minX = Number.MAX_SAFE_INTEGER, minY = Number.MAX_SAFE_INTEGER;
+  let maxX = Number.MIN_SAFE_INTEGER, maxY = Number.MIN_SAFE_INTEGER;
+  for (const layer of layers) {
+    for (let y = 0; y < layer.height; y++) {
+      for (let x = 0; x < layer.width; x++) {
+        const color = layer.pixel(x, y);
+        if (!color || color.a === undefined || color.a === 0) continue;
+        hasContent = true;
+        minX = x < minX ? x : minX;
+        minX = y < minY ? y : minY;
+        maxX = x > maxX ? x : maxX;
+        maxX = y > maxY ? y : maxY;
+      }
+    }
+  }
+  return { hasContent, minX, minY, maxX, maxY };
+}
+
 function invertLayerColors(layer: Layer): Layer {
   if (layer.locked) return layer;
   const toColor: Pixel[] = [];
@@ -220,6 +240,7 @@ export {
   draw,
   drawLine,
   pointerPosition,
+  getImageBoundingBox,
   translatePixels,
   invertLayerColors,
   outlineLayer,
