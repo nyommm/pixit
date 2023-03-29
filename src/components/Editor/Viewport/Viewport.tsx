@@ -11,9 +11,10 @@ import colorSelect from './Widgets/colorSelect';
 import toolOptions from './Widgets/toolOptions';
 import tools from '../../../pixit/tools/tools';
 import { getTool, getToolSettings, changeToolSettings, 
-  getColor, changeColor, getActiveLayerIdx, changeActiveLayerIdx, getWidth, getHeight, getOperation, changeOperation } from '../../../store/editorSlice';
+  getColor, changeColor, getActiveLayerIdx, changeActiveLayerIdx, 
+  getWidth, getHeight, getOperation, changeOperation, changeWidth, changeHeight } from '../../../store/editorSlice';
 import { RGBColor } from 'react-color';
-import { Operations, ToolOptions } from '../../../pixit/types';
+import { ToolOptions } from '../../../pixit/types';
 import operationHandler from '../../../pixit/operations/handler';
 
 function generateDefaultBaseLayer(width: number, height: number) {
@@ -36,7 +37,11 @@ function Viewport() {
   const executeOperation = () => {
     if (operation == 'None') return;
     const result = operationHandler(layers, operation);
-    if (result) setLayers(result);
+    if (result) {
+      dispatch(changeWidth(result[0].width));
+      dispatch(changeHeight(result[0].height));
+      setLayers(result);
+    };
     dispatch(changeOperation('None'));
   };
   useEffect(executeOperation, [operation]);
