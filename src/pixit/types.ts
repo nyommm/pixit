@@ -50,3 +50,28 @@ export interface PixitTools {
   'color picker': PixitTool;
   line: PixitTool;
 };
+
+export interface TopbarMenuBtn {
+  name: string;
+  onClick?: (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+}
+
+export type MirrorAxis = 'X' | 'Y';
+
+export interface OperationData {
+  width?: number;
+  height?: number;
+  mirrorAxis?: MirrorAxis;
+  outlineThickness?: number;
+  outlineColor?: RGBColor;
+}
+
+export type CanvasOperation = ((layers: Layer[]) => Layer[]) | ((layers: Layer[]) => void);
+
+export interface Operations {
+  None: () => {},
+  invertImageColors: CanvasOperation,
+  centralizeImage: CanvasOperation,
+  cropImage: CanvasOperation,
+  outlineImage: CanvasOperation,
+}

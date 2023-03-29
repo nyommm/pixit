@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './viewport.css';
 
@@ -11,11 +11,14 @@ import colorSelect from './Widgets/colorSelect';
 import toolOptions from './Widgets/toolOptions';
 import tools from '../../../pixit/tools/tools';
 import { getTool, getToolSettings, changeToolSettings, 
-  getColor, changeColor, getActiveLayerIdx, changeActiveLayerIdx } from '../../../store/editorSlice';
+  getColor, changeColor, getActiveLayerIdx, changeActiveLayerIdx, getWidth, getHeight, getOperation, changeOperation } from '../../../store/editorSlice';
 import { RGBColor } from 'react-color';
-import { ToolOptions } from '../../../pixit/types';
+import { Operations, ToolOptions } from '../../../pixit/types';
+import operationHandler from '../../../pixit/operations/handler';
 
-const BASE_LAYER = Layer.empty('Layer 0', 64, 64);
+function generateDefaultBaseLayer(width: number, height: number) {
+  return Layer.empty('Layer 0', width, height);
+}
 
 function Viewport() {
   const dispatch = useDispatch();
@@ -23,10 +26,20 @@ function Viewport() {
   const toolSettings = useSelector(getToolSettings);
   const color = useSelector(getColor);
   const activeLayerIdx = useSelector(getActiveLayerIdx);
-  const [layers, setLayers] = useState([BASE_LAYER]);
+  const canvasWidth = useSelector(getWidth);
+  const canvasHeight = useSelector(getHeight);
+  const operation = useSelector(getOperation);
+  const [layers, setLayers] = useState([generateDefaultBaseLayer(canvasWidth, canvasHeight)]);
   const toolOptionsDispatch = (options: ToolOptions) => dispatch(changeToolSettings(options));
   const colorDispatch = (color: RGBColor) => dispatch(changeColor(color));
   const activeLayerIdxDispatch = (idx: number) => dispatch(changeActiveLayerIdx(idx));
+  const executeOperation = () => {
+    if (operation == 'None') return;
+    const result = operationHandler(layers, operation);
+    if (result) setLayers(result);
+    dispatch(changeOperation('None'));
+  };
+  useEffect(executeOperation, [operation]);
   const toolDispatch = (state: { layer?: Layer, color?: RGBColor }) => {
     if (state.layer) {
       setLayers([

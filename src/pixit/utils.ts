@@ -4,8 +4,6 @@ import { RGBColor } from 'react-color';
 import Layer from './Layer';
 import { Pixel, PixelPosition, ToolOptions } from './types';
 
-const CHECKBOARD_BACKGROUND = Layer.checkboard('cbdl', 64, 64);
-
 /**
  * Get the position of the pixel at the client's position
  */
@@ -24,7 +22,6 @@ function pointerPosition(canvas: HTMLCanvasElement | null,
  */
 function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number): void {
   if (canvas == null) return;
-  layers = [...layers, CHECKBOARD_BACKGROUND];
 
   const width = layers[0].width;
   const height = layers[0].height;
@@ -152,8 +149,120 @@ function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color:
   return layer.colorPixels(toColor);
 }
 
+function getImageBoundingBox(layers: Layer[]) {
+  let hasContent = false;
+  let minX = Number.MAX_SAFE_INTEGER, minY = Number.MAX_SAFE_INTEGER;
+  let maxX = Number.MIN_SAFE_INTEGER, maxY = Number.MIN_SAFE_INTEGER;
+  for (const layer of layers) {
+    for (let y = 0; y < layer.height; y++) {
+      for (let x = 0; x < layer.width; x++) {
+        const color = layer.pixel(x, y);
+        if (!color || color.a === undefined || color.a === 0) continue;
+        hasContent = true;
+        minX = x < minX ? x : minX;
+        minY = y < minY ? y : minY;
+        maxX = x > maxX ? x : maxX;
+        maxY = y > maxY ? y : maxY;
+      }
+    }
+  }
+  return { hasContent, minX, minY, maxX, maxY };
+}
+
+function invertLayerColors(layer: Layer): Layer {
+  const toColor: Pixel[] = [];
+  for (let y = 0; y < layer.height; y++) {
+    for (let x = 0; x < layer.width; x++) {
+      const color = layer.pixel(x, y);
+      if (!color) continue;
+      if (color.a === undefined || color.a == 0) continue;
+      toColor.push({
+        x, y, 
+        color: {
+          r: 255 - color.r,
+          g: 255 - color.g,
+          b: 255 - color.b,
+          a: color.a
+        }
+      });
+    }
+  }
+  return layer.colorPixels(toColor);
+}
+
+function grayscaleLayerColors(layer: Layer): Layer {
+  const toColor: Pixel[] = [];
+  for (let y = 0; y < layer.height; y++) {
+    for (let x = 0; x < layer.width; x++) {
+      const color = layer.pixel(x, y);
+      if (!color) continue;
+      if (color.a === undefined || color.a == 0) continue;
+      toColor.push({
+        x, y, 
+        color: {
+          r: Math.round(0.299 * color.r),
+          g: Math.round(0.587 * color.g),
+          b: Math.round(0.114 * color.b),
+          a: color.a
+        }
+      });
+    }
+  }
+  return layer.colorPixels(toColor);
+}
+
+function outlineLayer(layer: Layer, outlineThickness?: number, outlineColor?: RGBColor): Layer {
+  const toColor: Pixel[] = [];
+  if (!outlineThickness) outlineThickness = 1;
+  if (!outlineColor) {
+    outlineColor = {
+      r: 0,
+      g: 0,
+      b: 0,
+      a: 255,
+    };
+  }
+  const directions = [
+    { dx: 1, dy: 0 }, { dx: -1, dy: 0 },
+    { dx: 0, dy: 1 }, { dx: 0, dy: -1 },
+  ];
+  for (let y = 0; y < layer.height; y++) {
+    for (let x = 0; x < layer.width; x++) {
+      const color = layer.pixel(x, y);
+      if (!color || color.a !== 0) continue;
+      let addOutline = false;
+      for (let { dx, dy } of directions) {
+        const adjacentColor = layer.pixel(x + dx, y + dy);
+        if (!adjacentColor || adjacentColor.a === undefined || adjacentColor.a == 0) continue;
+        addOutline = true;
+        break;
+      }
+      if (addOutline) toColor.push({ x, y, color: outlineColor });
+    }
+  }
+  return layer.colorPixels(toColor);
+}
+
+function translatePixels(layer: Layer, offsetX: number, offsetY: number): Layer {
+  const emptyLayer = Layer.empty(layer.id, layer.width, layer.height);
+  const toColor: Pixel[] = [];
+  for (let y = 0; y < layer.height; y++) {
+    for (let x = 0; x < layer.width; x++) {
+      const color = layer.pixel(x, y);
+      if (!color) continue;
+      toColor.push({ x: x + offsetX, y: y + offsetY, color });
+    }
+  }
+  return emptyLayer.colorPixels(toColor);
+}
+
 export {
   draw,
   drawLine,
-  pointerPosition
+  pointerPosition,
+  getImageBoundingBox,
+  translatePixels,
+  grayscaleLayerColors,
+  invertLayerColors,
+  outlineLayer,
 };
