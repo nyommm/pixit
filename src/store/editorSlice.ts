@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RGBColor } from 'react-color';
 import tools from '../pixit/tools/tools';
-import { OperationData, PixitTools, ToolOptions } from '../pixit/types';
-
+import { OperationData, Operations, PixitTools, ToolOptions } from '../pixit/types';
 
 // ***** DEFAULTS *****
 const BLACK: RGBColor = { r: 0, g: 0, b: 0, a: 255 };
@@ -22,7 +21,7 @@ export const pixitEditorSlice = createSlice({
     tool: DEFAULT_TOOL,
     activeLayerIdx: 0,
     toolSettings: tools[DEFAULT_TOOL].options,
-    operation: '',
+    operation: 'None' as keyof Operations,
     operationData: {} as OperationData,
   },
   reducers: {
@@ -84,7 +83,7 @@ export const getColor = (state: { editor: EditorState }): RGBColor => state.edit
 export const getScale = (state: { editor: EditorState }): number => state.editor.scale;
 export const getTool = (state: { editor: EditorState }): keyof PixitTools => state.editor.tool;
 export const getToolSettings = (state: { editor: EditorState }): ToolOptions | undefined => state.editor.toolSettings;
-export const getOperation = (state: { editor: EditorState }): string => state.editor.operation;
+export const getOperation = (state: { editor: EditorState }): keyof Operations => state.editor.operation;
 export const getOperationData = (state: { editor: EditorState }): OperationData => state.editor.operationData;
 
 export const editorReducer = pixitEditorSlice.reducer;

@@ -1,9 +1,19 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import './topbar.css';
 
 import DropDownMenu from './DropDownMenu';
+import { Operations } from '../../../pixit/types';
+import { changeOperation } from '../../../store/editorSlice';
 
 function Topbar() {
+  const dispatch = useDispatch();
+  const clickHandler = (operation: keyof Operations) => {
+    return (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      evt.stopPropagation();
+      dispatch(changeOperation(operation));
+    };
+  };
   const menuItems = {
     file: {
       title: 'File',
@@ -31,22 +41,23 @@ function Topbar() {
     image: {
       title: 'Image',
       buttons: [
-        { name: 'Scale' }, { name: 'Resize' }, 
-        { name: 'Crop' }, { name: 'Centralize' }, 
-        { name: 'Mirror' }, { name: 'Rotate' }, 
-        { name: 'Desaturation' }, { name: 'Invert Colors' }, 
-        { name: 'Outline' }, { name: 'Adjust Hue/Saturation/Value' }, 
+        { name: 'Scale Canvas' }, { name: 'Resize Canvas' }, 
+        { name: 'Crop Image', onClick: clickHandler('cropImage') }, 
+        { name: 'Centralize Image', onClick: clickHandler('centralizeImage') }, 
+        { name: 'Mirror' }, { name: 'Rotate' }, { name: 'Desaturation' }, 
+        { name: 'Invert Colors', onClick: clickHandler('invertImageColors') }, 
+        { name: 'Outline', onClick: clickHandler('outlineImage') }, 
+        { name: 'Drop Shadow' }, { name: 'Adjust Hue/Saturation/Value' }, 
       ],
     },
     view: {
       title: 'View',
       buttons: [
-        { name: 'Mirror View' }, { name: 'Grayscale View' }, 
-        { name: 'Invert View' }, { name: 'Show Grid' }, 
-        { name: 'Show Pixel Grid' },
+        { name: 'Grayscale View' }, { name: 'Invert View' }, 
+        { name: 'Show Grid' }, { name: 'Show Pixel Grid' },
       ],
     },
-  }
+  };
   return (
     <nav className="navbar">
       <span className="navbar__logo">Pixit!</span>
@@ -58,7 +69,7 @@ function Topbar() {
         <DropDownMenu {...menuItems.image} />
       </div>
     </nav>
-  )
+  );
 }
 
 export default Topbar;

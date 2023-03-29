@@ -160,9 +160,9 @@ function getImageBoundingBox(layers: Layer[]) {
         if (!color || color.a === undefined || color.a === 0) continue;
         hasContent = true;
         minX = x < minX ? x : minX;
-        minX = y < minY ? y : minY;
+        minY = y < minY ? y : minY;
         maxX = x > maxX ? x : maxX;
-        maxX = y > maxY ? y : maxY;
+        maxY = y > maxY ? y : maxY;
       }
     }
   }
@@ -211,8 +211,9 @@ function grayscaleLayerColors(layer: Layer): Layer {
   return layer.colorPixels(toColor);
 }
 
-function outlineLayer(layer: Layer, outlineColor?: RGBColor): Layer {
+function outlineLayer(layer: Layer, outlineThickness?: number, outlineColor?: RGBColor): Layer {
   const toColor: Pixel[] = [];
+  if (!outlineThickness) outlineThickness = 1;
   if (!outlineColor) {
     outlineColor = {
       r: 0,
@@ -223,7 +224,7 @@ function outlineLayer(layer: Layer, outlineColor?: RGBColor): Layer {
   }
   const directions = [
     { dx: 1, dy: 0 }, { dx: -1, dy: 0 },
-    { dx: 0, dy: -1 }, { dx: 0, dy: -1 },
+    { dx: 0, dy: 1 }, { dx: 0, dy: -1 },
   ];
   for (let y = 0; y < layer.height; y++) {
     for (let x = 0; x < layer.width; x++) {
