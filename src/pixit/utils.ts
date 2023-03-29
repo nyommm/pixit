@@ -191,6 +191,28 @@ function invertLayerColors(layer: Layer): Layer {
   return layer.colorPixels(toColor);
 }
 
+function grayscaleLayerColors(layer: Layer): Layer {
+  if (layer.locked) return layer;
+  const toColor: Pixel[] = [];
+  for (let y = 0; y < layer.height; y++) {
+    for (let x = 0; x < layer.width; x++) {
+      const color = layer.pixel(x, y);
+      if (!color) continue;
+      if (color.a === undefined || color.a == 0) continue;
+      toColor.push({
+        x, y, 
+        color: {
+          r: Math.round(0.299 * color.r),
+          g: Math.round(0.587 * color.g),
+          b: Math.round(0.114 * color.b),
+          a: color.a
+        }
+      });
+    }
+  }
+  return layer.colorPixels(toColor);
+}
+
 function outlineLayer(layer: Layer, outlineColor?: RGBColor): Layer {
   if (layer.locked) return layer;
   const toColor: Pixel[] = [];
@@ -224,6 +246,7 @@ function outlineLayer(layer: Layer, outlineColor?: RGBColor): Layer {
 }
 
 function translatePixels(layer: Layer, offsetX: number, offsetY: number): Layer {
+  if (layer.locked) return layer;
   const emptyLayer = Layer.empty(layer.id, layer.width, layer.height);
   const toColor: Pixel[] = [];
   for (let y = 0; y < layer.height; y++) {
@@ -242,6 +265,7 @@ export {
   pointerPosition,
   getImageBoundingBox,
   translatePixels,
+  grayscaleLayerColors,
   invertLayerColors,
   outlineLayer,
 };
