@@ -16,10 +16,10 @@ export function centralizeImage(layers: Layer[]): Layer[] {
   const centerY = Math.round(layers[0].height / 2);
   const { hasContent, minX, minY, maxX, maxY } = getImageBoundingBox(layers);
   if (!hasContent) return layers;
-  const rectCenterX = Math.round((maxX - minX) / 2);
-  const rectCenterY = Math.round((maxY - minY) / 2);
-  const offsetX = rectCenterX - centerX;
-  const offsetY = rectCenterY - centerY;
+  const rectCenterX = Math.round((maxX - minX) / 2) + minX;
+  const rectCenterY = Math.round((maxY - minY) / 2) + minY;
+  const offsetX =  centerX - rectCenterX;
+  const offsetY =  centerY - rectCenterY;
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(translatePixels(layer, offsetX, offsetY));
