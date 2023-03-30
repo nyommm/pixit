@@ -22,18 +22,15 @@ function pointerPosition(canvas: HTMLCanvasElement | null,
  */
 function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number): void {
   if (canvas == null) return;
-
   const width = layers[0].width;
   const height = layers[0].height;
-
   canvas.width = width * scale;
   canvas.height = height * scale;
-
   const ctx = canvas.getContext('2d');
   let color: RGBColor | undefined;
-
   if (ctx == null) return;
-
+  const ckbgScale = 1.5 * scale;
+  const ckbgOffset = -1.75;
   for(let idx = layers.length - 1; idx >= 0; idx--) {
     if (layers[idx].hidden) continue;
     for (let y = 0; y < layers[idx].height; y++) {
@@ -41,7 +38,10 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
         color = layers[idx].pixel(x, y);
         if (!color) return;
         ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${color.a})`;
-        ctx.fillRect(x * scale, y * scale, scale, scale);
+        if (idx == layers.length - 1)
+          ctx.fillRect((x + ckbgOffset) * ckbgScale, (y + ckbgOffset) * ckbgScale, ckbgScale, ckbgScale);
+        else
+          ctx.fillRect(x * scale, y * scale, scale, scale);
       }
     }
   }
