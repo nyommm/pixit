@@ -10,6 +10,7 @@ class Layer {
   locked: boolean = false;
 
   static TRANSPARENT: RGBColor = { r: 0, g: 0, b: 0, a: 0 };
+  static BLACK: RGBColor = { r: 0, g: 0, b: 0, a: 255 };
 
   constructor(id: string, width: number, height: number, pixels: RGBColor[]) {
     this.id = id;

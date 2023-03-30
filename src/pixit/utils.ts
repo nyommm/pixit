@@ -215,14 +215,7 @@ function outlineLayer(layer: Layer, outlineThickness?: number, outlineColor?: RG
   const toColor: Pixel[] = [];
   // TODO!: Implement logic to change outline thickness
   if (!outlineThickness) outlineThickness = 1;
-  if (!outlineColor) {
-    outlineColor = {
-      r: 0,
-      g: 0,
-      b: 0,
-      a: 255,
-    };
-  }
+  if (!outlineColor) outlineColor = Layer.BLACK;
   const directions = [
     { dx: 1, dy: 0 }, { dx: -1, dy: 0 },
     { dx: 0, dy: 1 }, { dx: 0, dy: -1 },
@@ -280,6 +273,30 @@ function mirrorLayer(layer: Layer, axis: MirrorAxis = 'X'): Layer {
   return emptyLayer.colorPixels(toColor);
 }
 
+function dropShadowOnLayer(layer: Layer, offsetX: number = 1, offsetY: number = 1): Layer {
+  const emptyLayer = Layer.copy(layer.id, layer);
+  const toColor: Pixel[] = [];
+  const shadow = Layer.BLACK;
+  const alphaFactor = 0.3;
+  for (let y = 0; y < layer.height; y++) {
+    for (let x = 0; x < layer.width; x++) {
+      const color = layer.pixel(x, y);
+      if (!color || !color.a) continue;
+      const colorAtOffset = layer.pixel(x + offsetX, y + offsetY);
+      if (colorAtOffset && colorAtOffset.a) continue;
+      toColor.push({
+        x: x + offsetX, 
+        y: y + offsetY, 
+        color: {
+          ...shadow,
+          a: alphaFactor * color.a,
+        },
+      });
+    }
+  }
+  return emptyLayer.colorPixels(toColor);
+}
+
 export {
   draw,
   drawLine,
@@ -290,4 +307,5 @@ export {
   invertLayerColors,
   outlineLayer,
   mirrorLayer,
+  dropShadowOnLayer,
 };

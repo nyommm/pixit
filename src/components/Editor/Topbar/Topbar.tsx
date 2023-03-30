@@ -48,7 +48,7 @@ function Topbar() {
         { name: 'Rotate Image' }, { name: 'Desaturation' }, 
         { name: 'Invert Colors', onClick: clickHandler('invertImageColors') }, 
         { name: 'Outline', onClick: clickHandler('outlineImage') }, 
-        { name: 'Drop Shadow' }, { name: 'Adjust Hue/Saturation/Value' }, 
+        { name: 'Drop Shadow', onClick: clickHandler('dropShadow') }, { name: 'Adjust Hue/Saturation/Value' }, 
       ],
     },
     view: {

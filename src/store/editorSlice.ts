@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RGBColor } from 'react-color';
+import Layer from '../pixit/Layer';
 import tools from '../pixit/tools/tools';
 import { OperationData, Operations, PixitTools, ToolOptions } from '../pixit/types';
 
 // ***** DEFAULTS *****
-const BLACK: RGBColor = { r: 0, g: 0, b: 0, a: 255 };
 const DEFAULT_SCALE = 10;
 const DEFAULT_FILENAME = 'untitled';
 const DEFAULT_CANVAS_SIZE = 64; // side length in number of pixels
@@ -16,7 +16,7 @@ export const pixitEditorSlice = createSlice({
     fileName: DEFAULT_FILENAME,
     width: DEFAULT_CANVAS_SIZE,
     height: DEFAULT_CANVAS_SIZE,
-    color: BLACK,
+    color: Layer.BLACK,
     scale: DEFAULT_SCALE,
     tool: DEFAULT_TOOL,
     activeLayerIdx: 0,
