@@ -277,7 +277,7 @@ function dropShadowOnLayer(layer: Layer, offsetX: number = 1, offsetY: number = 
   const emptyLayer = Layer.copy(layer.id, layer);
   const toColor: Pixel[] = [];
   const shadow = Layer.BLACK;
-  const alphaFactor = 0.3;
+  const alphaFactor = 0.4;
   for (let y = 0; y < layer.height; y++) {
     for (let x = 0; x < layer.width; x++) {
       const color = layer.pixel(x, y);
