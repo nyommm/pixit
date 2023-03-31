@@ -30,7 +30,8 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
   let color: RGBColor | undefined;
   if (ctx == null) return;
   const ckbgScale = 1.5 * scale;
-  const ckbgOffset = -1.75;
+  const ckbgOffsetX = -1;
+  const ckbgOffsetY = -1.5;
   for(let idx = layers.length - 1; idx >= 0; idx--) {
     if (layers[idx].hidden) continue;
     for (let y = 0; y < layers[idx].height; y++) {
@@ -39,7 +40,7 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
         if (!color) return;
         ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${color.a})`;
         if (idx == layers.length - 1)
-          ctx.fillRect((x + ckbgOffset) * ckbgScale, (y + ckbgOffset) * ckbgScale, ckbgScale, ckbgScale);
+          ctx.fillRect((x + ckbgOffsetX) * ckbgScale, (y + ckbgOffsetY) * ckbgScale, ckbgScale, ckbgScale);
         else
           ctx.fillRect(x * scale, y * scale, scale, scale);
       }
@@ -211,11 +212,9 @@ function grayscaleLayerColors(layer: Layer): Layer {
   return layer.colorPixels(toColor);
 }
 
-function outlineLayer(layer: Layer, outlineThickness?: number, outlineColor?: RGBColor): Layer {
+function outlineLayer(layer: Layer, outlineThickness: number = 1, outlineColor: RGBColor = Layer.BLACK): Layer {
   const toColor: Pixel[] = [];
   // TODO!: Implement logic to change outline thickness
-  if (!outlineThickness) outlineThickness = 1;
-  if (!outlineColor) outlineColor = Layer.BLACK;
   const directions = [
     { dx: 1, dy: 0 }, { dx: -1, dy: 0 },
     { dx: 0, dy: 1 }, { dx: 0, dy: -1 },
@@ -250,14 +249,14 @@ function translatePixels(layer: Layer, offsetX: number, offsetY: number): Layer 
   return emptyLayer.colorPixels(toColor);
 }
 
-function mirrorLayer(layer: Layer, axis: MirrorAxis = 'X'): Layer {
+function mirrorLayer(layer: Layer, axis: MirrorAxis = 'Y'): Layer {
   const emptyLayer = Layer.empty(layer.id, layer.width, layer.height);
   const toColor: Pixel[] = [];
   for (let y = 0; y < layer.height; y++) {
     for (let x = 0; x < layer.width; x++) {
       const color = layer.pixel(x, y);
       if (!color) continue;
-      if (axis == 'X') {
+      if (axis == 'Y') {
         toColor.push({
           x: layer.width - 1 - x,
           y, color
