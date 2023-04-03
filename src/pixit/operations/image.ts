@@ -1,5 +1,5 @@
 import Layer from '../Layer';
-import { Pixel } from '../types';
+import { MirrorAxis, OperationData, Pixel } from '../types';
 import { dropShadowOnLayer, getImageBoundingBox, invertLayerColors, 
   mirrorLayer, outlineLayer, translatePixels } from '../utils';
 
@@ -45,23 +45,23 @@ export function cropImage(layers: Layer[]): Layer[] {
   return newLayers;
 }
 
-export function outlineImage(layers: Layer[]): Layer[] {
+export function outlineImage(layers: Layer[], data?: OperationData): Layer[] {
   const newLayers: Layer[] = [];
   for (const layer of layers)
-    newLayers.push(outlineLayer(layer));
+    newLayers.push(outlineLayer(layer, data?.outlineThickness, data?.outlineColor));
   return newLayers;
 }
 
-export function mirrorImage(layers: Layer[]): Layer[] {
+export function mirrorImage(layers: Layer[], data?: OperationData): Layer[] {
   const newLayers: Layer[] = [];
   for (const layer of layers)
-    newLayers.push(mirrorLayer(layer));
+    newLayers.push(mirrorLayer(layer, data?.mirrorAxis));
   return newLayers;
 }
 
-export function dropShadow(layers: Layer[]): Layer[] {
+export function dropShadow(layers: Layer[], data?: OperationData): Layer[] {
   const newLayers: Layer[] = [];
   for (const layer of layers)
-    newLayers.push(dropShadowOnLayer(layer));
+    newLayers.push(dropShadowOnLayer(layer, data?.offsetX, data?.offsetY, data?.shadowColor));
   return newLayers;
 }

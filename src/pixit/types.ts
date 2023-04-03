@@ -63,12 +63,13 @@ export interface OperationData {
   canvasHeight?: number;
   mirrorAxis?: MirrorAxis;
   outlineThickness?: number;
-  color?: RGBColor;
+  outlineColor?: RGBColor;
+  shadowColor?: RGBColor;
   offsetX?: number;
   offsetY?: number;
 }
 
-export type CanvasOperation = ((layers: Layer[]) => Layer[]) | ((layers: Layer[]) => void);
+export type CanvasOperation = ((layers: Layer[], data?: OperationData) => Layer[]) | ((layers: Layer[]) => void);
 
 export interface Operations {
   None: () => {};

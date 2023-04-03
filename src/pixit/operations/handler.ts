@@ -13,6 +13,6 @@ export const operations = {
   dropShadow,
 }
 
-export default function operationHandler(layers: Layer[], operation: keyof Operations) {
-  return operations[operation](layers);
+export default function operationHandler(layers: Layer[], operation: keyof Operations, data?: OperationData) {
+  return operations[operation](layers, data);
 }

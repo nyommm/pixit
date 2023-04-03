@@ -272,10 +272,9 @@ function mirrorLayer(layer: Layer, axis: MirrorAxis = 'Y'): Layer {
   return emptyLayer.colorPixels(toColor);
 }
 
-function dropShadowOnLayer(layer: Layer, offsetX: number = 1, offsetY: number = 1): Layer {
+function dropShadowOnLayer(layer: Layer, offsetX: number = 1, offsetY: number = 1, shadowColor: RGBColor = Layer.BLACK): Layer {
   const emptyLayer = Layer.copy(layer.id, layer);
   const toColor: Pixel[] = [];
-  const shadow = Layer.BLACK;
   const alphaFactor = 0.4;
   for (let y = 0; y < layer.height; y++) {
     for (let x = 0; x < layer.width; x++) {
@@ -287,7 +286,7 @@ function dropShadowOnLayer(layer: Layer, offsetX: number = 1, offsetY: number = 
         x: x + offsetX, 
         y: y + offsetY, 
         color: {
-          ...shadow,
+          ...shadowColor,
           a: alphaFactor * color.a,
         },
       });

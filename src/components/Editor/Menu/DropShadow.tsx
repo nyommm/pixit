@@ -55,10 +55,10 @@ function ShadowColorSection() {
   const operationData = useSelector(getOperationData);
   const dispatch = useDispatch();
   const handleChange = (result: ColorResult) => {
-    dispatch(changeOperationData({ ...operationData, color: result.rgb }));
+    dispatch(changeOperationData({ ...operationData, shadowColor: result.rgb }));
   };
   const OutlineColorFields = CustomPicker(ShadowColor);
-  return <OutlineColorFields color={operationData.color ?? Layer.BLACK} onChange={handleChange} />;
+  return <OutlineColorFields color={operationData.shadowColor ?? Layer.BLACK} onChange={handleChange} />;
 }
 
 export default function DropShadow() {

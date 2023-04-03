@@ -12,7 +12,8 @@ import toolOptions from './Widgets/toolOptions';
 import tools from '../../../pixit/tools/tools';
 import { getTool, getToolSettings, changeToolSettings, 
   getColor, changeColor, getActiveLayerIdx, changeActiveLayerIdx, 
-  getWidth, getHeight, getOperation, changeOperation, changeWidth, changeHeight } from '../../../store/editorSlice';
+  getWidth, getHeight, getOperation, changeOperation, changeWidth, 
+  changeHeight, getOperationData } from '../../../store/editorSlice';
 import { RGBColor } from 'react-color';
 import { ToolOptions } from '../../../pixit/types';
 import operationHandler from '../../../pixit/operations/handler';
@@ -30,13 +31,14 @@ function Viewport() {
   const canvasWidth = useSelector(getWidth);
   const canvasHeight = useSelector(getHeight);
   const operation = useSelector(getOperation);
+  const operationData = useSelector(getOperationData);
   const [layers, setLayers] = useState([generateDefaultBaseLayer(canvasWidth, canvasHeight)]);
   const toolOptionsDispatch = (options: ToolOptions) => dispatch(changeToolSettings(options));
   const colorDispatch = (color: RGBColor) => dispatch(changeColor(color));
   const activeLayerIdxDispatch = (idx: number) => dispatch(changeActiveLayerIdx(idx));
   const executeOperation = () => {
     if (operation == 'None') return;
-    const result = operationHandler(layers, operation);
+    const result = operationHandler(layers, operation, operationData);
     if (result) {
       dispatch(changeWidth(result[0].width));
       dispatch(changeHeight(result[0].height));
