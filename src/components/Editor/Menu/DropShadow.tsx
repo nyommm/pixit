@@ -23,16 +23,18 @@ function ShadowOffsetSection() {
   };
   return (
     <>
-      <label htmlFor="x-offset">
+      <label className="menu-section__container__label" htmlFor="x-offset">
         X 
         <input id="x-offset" type="number" name="shadow-offset" 
-          value={offsetX} min={1} step={1}
+          value={offsetX} min={1} step={1} 
+          className="menu-section__container__input" 
           onChange={(evt) => handleChange(evt, true)} />
       </label>
-      <label htmlFor="y-offset">
+      <label className="menu-section__container__label menu-section__container__label-block" htmlFor="y-offset">
         Y 
         <input id="y-offset" type="number" name="shadow-offset" 
           value={offsetY} min={1} step={1} 
+          className="menu-section__container__input" 
           onChange={(evt) => handleChange(evt, false)} />
       </label>
     </>

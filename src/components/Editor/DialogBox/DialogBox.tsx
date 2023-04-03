@@ -52,8 +52,8 @@ export default function DialogBox({ title, operation, menu }: DialogBoxProps) {
         <Component />
       </div>
       <div className="dialog-box__btns">
-        <button onClick={() => dispatch(changeOperation(operation))}>Ok</button>
-        <button onClick={() => dispatch(changeDialogBox('None'))}>Cancel</button>
+        <button className="dialog-box__btns__btn" onClick={() => dispatch(changeOperation(operation))}>Ok</button>
+        <button className="dialog-box__btns__btn" onClick={() => dispatch(changeDialogBox('None'))}>Cancel</button>
       </div>
     </div>
   );

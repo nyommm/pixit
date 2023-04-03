@@ -6,6 +6,7 @@ import { Hue, Alpha, Checkboard } from 'react-color/lib/components/common';
 import { ColorResult, CustomPicker } from 'react-color';
 import menuSection from './MenuSection';
 import Layer from '../../../pixit/Layer';
+import './menu-section.css';
 
 function OutlineThicknessSection() {
   const operationData = useSelector(getOperationData);
@@ -17,10 +18,11 @@ function OutlineThicknessSection() {
   };
   return (
     <>
-      <label htmlFor="outline-thickness">
-        X 
+      <label className="menu-section__container__label" htmlFor="outline-thickness">
+        Px:  
         <input id="outline-thickness" type="number" name="outline-thickness" 
           value={thickness} min={1} step={1}
+          className="menu-section__container__input" 
           onChange={handleChange} />
       </label>
     </>
@@ -55,7 +57,7 @@ export default function OutlineImage() {
   return (
     <>
       {menuSection('Outline Thickness', OutlineThicknessSection)()}
-      {menuSection('Outline Thickness', OutlineColorSection)()}
+      {menuSection('Outline Color', OutlineColorSection)()}
     </>
   );
 }

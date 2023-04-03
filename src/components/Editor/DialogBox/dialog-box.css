@@ -1,7 +1,7 @@
 .dialog-box {
   position: absolute;
   top: 25vh;
-  left: 30vw;
+  left: 25vw;
   min-width: 10rem;
   background-color: #1e1e1e;
   color: azure;
@@ -14,7 +14,7 @@
   padding: 0.125rem 0.375rem;
   height: 1rem;
   border-radius: 0.1rem 0.1rem 0 0;
-  color: grey;
+  color: lightgrey;
   background-color: black;
   font-size: 0.7rem;
   font-weight: 700;
@@ -41,5 +41,29 @@
 }
 
 .dialog-box__content {
-  padding: 0.5rem 0.25rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.dialog-box__btns {
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-around;
+  padding: 0.25rem 0 0.5rem;
+  max-width: 12rem;
+}
+
+.dialog-box__btns__btn {
+  display: inline-block;
+  background-color: black;
+  border: none;
+  border-radius: 0.15rem;
+  color: grey;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+.dialog-box__btns__btn:hover,
+.dialog-box__btns__btn:focus {
+  color: lightgrey;
+  font-weight: 500;
 }

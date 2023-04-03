@@ -10,16 +10,18 @@ function AxisSection() {
   const axis = operationData.mirrorAxis ?? 'Y' as MirrorAxis;
   return (
     <>
-      <label htmlFor="x-axis">
+      <label className="menu-section__container__label" htmlFor="x-axis">
         X 
         <input id="x-axis" type="radio" name="mirror-axis" 
           value={'X' as MirrorAxis} checked={axis == 'X'} 
+          className="menu-section__container__radio"
           onChange={() => dispatch(changeOperationData({ ...operationData, mirrorAxis: 'X' }))} />
       </label>
-      <label htmlFor="y-axis">
+      <label className="menu-section__container__label" htmlFor="y-axis">
         Y 
         <input id="y-axis" type="radio" name="mirror-axis" 
           value={'Y' as MirrorAxis} checked={axis == 'Y'} 
+          className="menu-section__container__radio"
           onChange={() => dispatch(changeOperationData({ ...operationData, mirrorAxis: 'Y' }))} />
       </label>
     </>
