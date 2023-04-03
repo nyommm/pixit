@@ -59,11 +59,11 @@ export interface TopbarMenuBtn {
 export type MirrorAxis = 'X' | 'Y';
 
 export interface OperationData {
-  width?: number;
-  height?: number;
+  canvasWidth?: number;
+  canvasHeight?: number;
   mirrorAxis?: MirrorAxis;
   outlineThickness?: number;
-  outlineColor?: RGBColor;
+  color?: RGBColor;
   offsetX?: number;
   offsetY?: number;
 }
@@ -79,3 +79,5 @@ export interface Operations {
   mirrorImage: CanvasOperation;
   dropShadow: CanvasOperation;
 };
+
+export type DialogBox = 'None' | 'mirrorImage' | 'outlineImage' | 'dropShadow';

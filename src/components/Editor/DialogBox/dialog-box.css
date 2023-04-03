@@ -1,7 +1,7 @@
 .dialog-box {
-  display: absolute;
+  position: absolute;
   top: 25vh;
-  right: 30vw;
+  left: 30vw;
   min-width: 10rem;
   background-color: #1e1e1e;
   color: azure;
@@ -15,6 +15,7 @@
   height: 1rem;
   border-radius: 0.1rem 0.1rem 0 0;
   color: grey;
+  background-color: black;
   font-size: 0.7rem;
   font-weight: 700;
   user-select: none;
@@ -27,7 +28,7 @@
 }
 
 .dialog-box__header__btn {
-  float: left;
+  float: right;
   display: block;
   border: none;
   background: none;
