@@ -57,3 +57,8 @@
   outline: none;
   color: azure;
 }
+
+.picker__hue,
+.picker__alpha {
+  position: relative;
+}

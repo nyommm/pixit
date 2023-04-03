@@ -15,6 +15,7 @@ const DEFAULT_OPERATION_DATA: OperationData = {
   mirrorAxis: 'Y',
   outlineThickness: 1,
   outlineColor: Layer.BLACK,
+  shadowColor: Layer.BLACK,
   offsetX: 5,
   offsetY: 5,
 };

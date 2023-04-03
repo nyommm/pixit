@@ -43,14 +43,15 @@ function OutlineColor(props: any) {
   );
 }
 
+const OutlineColorFields = CustomPicker(OutlineColor);
+
 function OutlineColorSection() {
   const operationData = useSelector(getOperationData);
   const dispatch = useDispatch();
-  const handleChangeComplete = (result: ColorResult) => {
-    dispatch(changeOperationData({ ...operationData, outlineColor: result.rgb }));
+  const handleChange = (result: ColorResult) => {
+    dispatch(changeOperationData({ ...operationData, shadowColor: result.rgb }));
   };
-  const OutlineColorFields = CustomPicker(OutlineColor);
-  return <OutlineColorFields color={operationData.outlineColor ?? Layer.BLACK} onChangeComplete={handleChangeComplete} />;
+  return <OutlineColorFields color={operationData.shadowColor ?? Layer.BLACK} onChange={handleChange} />;
 }
 
 export default function OutlineImage() {

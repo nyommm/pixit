@@ -40,8 +40,11 @@ function Viewport() {
     if (operation == 'None') return;
     const result = operationHandler(layers, operation, operationData);
     if (result) {
-      dispatch(changeWidth(result[0].width));
-      dispatch(changeHeight(result[0].height));
+      if (result[0].width != layers[0].width || 
+        result[0].height != layers[0].height) {
+        dispatch(changeWidth(result[0].width));
+        dispatch(changeHeight(result[0].height));
+      }
       setLayers(result);
     };
     dispatch(changeOperation('None'));
