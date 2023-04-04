@@ -58,11 +58,7 @@ function LayerSelectItems({ activeLayerIdx, layers, setLayers, setActiveLayer }:
       ...layers.slice(0, layerIdx),
       updatedLayer,
       ...layers.slice(layerIdx + 1),
-
     ]);
-    if (activeLayerIdx == layerIdx) {
-      setActiveLayer(evt.target.value);
-    }
   };
   const changeActiveLayer = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>, idx: number) => {
     evt.stopPropagation();
