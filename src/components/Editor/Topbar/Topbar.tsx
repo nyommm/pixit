@@ -47,7 +47,7 @@ function Topbar() {
     image: {
       title: 'Image',
       buttons: [
-        { name: 'Scale Canvas' }, { name: 'Resize Canvas' }, 
+        { name: 'Scale Canvas', onClick: dispatchMenu('scaleCanvas') }, { name: 'Resize Canvas' }, 
         { name: 'Crop Image', onClick: dispatchOperation('cropImage') }, 
         { name: 'Centralize Image', onClick: dispatchOperation('centralizeImage') }, 
         { name: 'Mirror Image', onClick: dispatchMenu('mirrorImage') }, 

@@ -1,7 +1,7 @@
 import Layer from '../Layer';
 import { OperationData, Operations } from '../types';
 import { invertImageColors, dropShadow, cropImage, 
-  mirrorImage, centralizeImage, outlineImage } from './image';
+  mirrorImage, centralizeImage, outlineImage, scaleCanvas } from './image';
 
 export const operations = {
   None: () => {},
@@ -11,6 +11,7 @@ export const operations = {
   outlineImage,
   mirrorImage,
   dropShadow,
+  scaleCanvas,
 }
 
 export default function operationHandler(layers: Layer[], operation: keyof Operations, data?: OperationData) {

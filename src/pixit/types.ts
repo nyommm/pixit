@@ -79,6 +79,7 @@ export interface Operations {
   outlineImage: CanvasOperation;
   mirrorImage: CanvasOperation;
   dropShadow: CanvasOperation;
+  scaleCanvas: CanvasOperation;
 };
 
-export type DialogBox = 'None' | 'mirrorImage' | 'outlineImage' | 'dropShadow';
+export type DialogBox = 'None' | 'mirrorImage' | 'outlineImage' | 'dropShadow' | 'scaleCanvas';

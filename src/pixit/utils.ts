@@ -298,6 +298,32 @@ function dropShadowOnLayer(layer: Layer, offsetX: number = 1, offsetY: number = 
   return emptyLayer.colorPixels(toColor);
 }
 
+function nearestNeighbor(initialWidth: number, initialHeight: number, finalWidth: number, finalHeight: number) {
+  const rowRatio = initialWidth / finalWidth;
+  const colRatio = initialHeight / finalHeight;
+  return {
+    rowPositions: new Array(finalWidth).fill(0).map((_, idx) => Math.ceil(idx * rowRatio)),
+    colPositions: new Array(finalHeight).fill(0).map((_, idx) => Math.ceil(idx * colRatio)),
+  };
+}
+
+function scaleLayer(layer: Layer, finalWidth: number, finalHeight: number): Layer {
+  const emptyLayer = Layer.empty(layer.id, finalWidth, finalHeight);
+  const toColor: Pixel[] = [];
+  const { rowPositions, colPositions } = nearestNeighbor(layer.width, layer.height, finalWidth, finalHeight);
+  console.log(rowPositions);
+  console.log(colPositions);
+  for (let y = 0; y < emptyLayer.height; y++) {
+    for (let x = 0; x < emptyLayer.width; x++) {
+      const color = layer.pixel(rowPositions[x], colPositions[y]);
+      if (!color || !color.a) continue;
+      toColor.push({ x, y, color });
+    }
+  }
+  console.log(toColor);
+  return emptyLayer.colorPixels(toColor);
+}
+
 export {
   draw,
   drawLine,
@@ -309,4 +335,5 @@ export {
   outlineLayer,
   mirrorLayer,
   dropShadowOnLayer,
+  scaleLayer,
 };
