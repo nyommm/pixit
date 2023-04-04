@@ -213,12 +213,15 @@ function grayscaleLayerColors(layer: Layer): Layer {
 }
 
 function outlineLayer(layer: Layer, outlineThickness: number = 1, outlineColor: RGBColor = Layer.BLACK): Layer {
+  if (outlineThickness <= 0) return layer;
   const toColor: Pixel[] = [];
-  // TODO!: Implement logic to change outline thickness
-  const directions = [
-    { dx: 1, dy: 0 }, { dx: -1, dy: 0 },
-    { dx: 0, dy: 1 }, { dx: 0, dy: -1 },
-  ];
+  const directions = [];
+  for (let i = outlineThickness; i > 0; i--) {
+    directions.push(
+      { dx: i, dy: 0 }, { dx: -i, dy: 0 },
+      { dx: 0, dy: i }, { dx: 0, dy: -i },
+    );
+  }
   for (let y = 0; y < layer.height; y++) {
     for (let x = 0; x < layer.width; x++) {
       const color = layer.pixel(x, y);
