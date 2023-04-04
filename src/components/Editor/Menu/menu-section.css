@@ -58,7 +58,12 @@
   color: azure;
 }
 
-.picker__hue,
-.picker__alpha {
+.menu-section__container__alpha {
+  background-color: white;
+}
+
+.menu-section__container__alpha,
+.menu-section__container__hue {
   position: relative;
+  margin-top: 0.25rem;
 }

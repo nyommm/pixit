@@ -2,8 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeOperationData, getOperationData } from '../../../store/editorSlice';
-import { Hue } from 'react-color/lib/components/common';
-import { ColorResult, CustomPicker } from 'react-color';
+import { ColorResult, CustomPicker, HuePicker } from 'react-color';
 import Layer from '../../../pixit/Layer';
 import menuSection from './MenuSection';
 import './menu-section.css';
@@ -44,7 +43,7 @@ function ShadowColor(props: any) {
   return (
     <>
       <div className="picker__hue">
-        <Hue {...props} />
+        <HuePicker {...props} />
       </div>
     </>
   );
@@ -53,12 +52,12 @@ function ShadowColor(props: any) {
 const ShadowColorFields = CustomPicker(ShadowColor);
 
 function ShadowColorSection() {
-  const operationData = useSelector(getOperationData);
+  const { shadowColor } = useSelector(getOperationData);
   const dispatch = useDispatch();
-  const handleChange = (result: ColorResult) => {
+  const handleChangeComplete = (result: ColorResult) => {
     dispatch(changeOperationData({ shadowColor: result.rgb }));
   };
-  return <ShadowColorFields color={operationData.shadowColor ?? Layer.BLACK} onChange={handleChange} />;
+  return <ShadowColorFields color={shadowColor ?? Layer.BLACK} onChangeComplete={handleChangeComplete} />;
 }
 
 export default function DropShadow() {

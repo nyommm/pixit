@@ -2,8 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeOperationData, getOperationData } from '../../../store/editorSlice';
-import { Hue, Alpha, Checkboard } from 'react-color/lib/components/common';
-import { ColorResult, CustomPicker } from 'react-color';
+import { AlphaPicker, ColorResult, CustomPicker, HuePicker } from 'react-color';
 import menuSection from './MenuSection';
 import Layer from '../../../pixit/Layer';
 import './menu-section.css';
@@ -32,12 +31,11 @@ function OutlineThicknessSection() {
 function OutlineColor(props: any) {
   return (
     <>
-      <div className="picker__alpha">
-        <Checkboard white="#fff" size={4} />
-        <Alpha {...props} />
+      <div className="menu-section__container__alpha">
+        <AlphaPicker {...props} />
       </div>
-      <div className="picker__hue">
-        <Hue {...props} />
+      <div className="menu-section__container__hue">
+        <HuePicker {...props} />
       </div>
     </>
   );
@@ -46,12 +44,12 @@ function OutlineColor(props: any) {
 const OutlineColorFields = CustomPicker(OutlineColor);
 
 function OutlineColorSection() {
-  const operationData = useSelector(getOperationData);
+  const { outlineColor } = useSelector(getOperationData);
   const dispatch = useDispatch();
-  const handleChange = (result: ColorResult) => {
+  const handleChangeComplete = (result: ColorResult) => {
     dispatch(changeOperationData({ outlineColor: result.rgb }));
   };
-  return <OutlineColorFields color={operationData.outlineColor ?? Layer.BLACK} onChange={handleChange} />;
+  return <OutlineColorFields color={outlineColor ?? Layer.BLACK} onChangeComplete={handleChangeComplete} />;
 }
 
 export default function OutlineImage() {
