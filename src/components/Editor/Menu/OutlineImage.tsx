@@ -14,7 +14,7 @@ function OutlineThicknessSection() {
   const [thickness, setThickness] = useState(operationData.outlineThickness ?? 1);
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setThickness(+evt.target.value);
-    dispatch(changeOperationData({ ...operationData, outlineThickness: thickness }));
+    dispatch(changeOperationData({ outlineThickness: thickness }));
   };
   return (
     <>
@@ -49,9 +49,9 @@ function OutlineColorSection() {
   const operationData = useSelector(getOperationData);
   const dispatch = useDispatch();
   const handleChange = (result: ColorResult) => {
-    dispatch(changeOperationData({ ...operationData, shadowColor: result.rgb }));
+    dispatch(changeOperationData({ outlineColor: result.rgb }));
   };
-  return <OutlineColorFields color={operationData.shadowColor ?? Layer.BLACK} onChange={handleChange} />;
+  return <OutlineColorFields color={operationData.outlineColor ?? Layer.BLACK} onChange={handleChange} />;
 }
 
 export default function OutlineImage() {

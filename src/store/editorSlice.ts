@@ -66,7 +66,10 @@ export const pixitEditorSlice = createSlice({
       state.operation = action.payload;
     },
     changeOperationData: (state, action) => {
-      state.operationData = action.payload;
+      state.operationData = {
+        ...state.operationData,
+        ...action.payload,
+      };
     },
     changeDialogBox: (state, action) => {
       state.dialogBox = action.payload;

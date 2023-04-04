@@ -16,10 +16,10 @@ function ShadowOffsetSection() {
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>, x: boolean) => {
     if (x) {
       setOffsetX(+evt.target.value);
-      dispatch(changeOperationData({ ...operationData, offsetX: +evt.target.value }));
+      dispatch(changeOperationData({ offsetX: +evt.target.value }));
     } else {
       setOffsetY(+evt.target.value);
-      dispatch(changeOperationData({ ...operationData, offsetY: +evt.target.value }));
+      dispatch(changeOperationData({ offsetY: +evt.target.value }));
     }
   };
   return (
@@ -56,7 +56,7 @@ function ShadowColorSection() {
   const operationData = useSelector(getOperationData);
   const dispatch = useDispatch();
   const handleChange = (result: ColorResult) => {
-    dispatch(changeOperationData({ ...operationData, shadowColor: result.rgb }));
+    dispatch(changeOperationData({ shadowColor: result.rgb }));
   };
   return <ShadowColorFields color={operationData.shadowColor ?? Layer.BLACK} onChange={handleChange} />;
 }
