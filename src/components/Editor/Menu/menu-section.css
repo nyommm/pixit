@@ -12,20 +12,18 @@
 }
 
 .menu-section__header,
-.menu-section__container__label {
+.num-input__container__label {
   font-weight: 500;
   font-size: 0.8rem;
 }
 
-.menu-section__container__label {
-  display: inline-block;
-  margin-right: 1rem;
-  color: lightgrey;
+.num-input__container {
+  margin: 0 0 0.25rem 0.5rem;
 }
 
-.menu-section__container__label-block {
-  display: block;
-  margin-top: 0.25rem;
+.num-input__container__label {
+  /* float: left; */
+  color: lightgrey;
 }
 
 .menu-section__container__radio {
@@ -46,10 +44,11 @@
   background-color: darkgoldenrod;
 }
 
-.menu-section__container__input {
+.num-input__container__input {
+  /* float: right; */
   width: 50%;
   margin-left: 0.5rem;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   background: #2e2e2e;
   border: none;
   border-radius: 2px 2px 0px 0px;

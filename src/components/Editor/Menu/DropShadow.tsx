@@ -1,40 +1,31 @@
 import React from 'react';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeOperationData, getOperationData } from '../../../store/editorSlice';
+import { changeOperationData, getHeight, getOperationData, getWidth } from '../../../store/editorSlice';
 import { ColorResult, CustomPicker, HuePicker } from 'react-color';
+import NumberInput from './NumberInput';
 import Layer from '../../../pixit/Layer';
 import menuSection from './MenuSection';
 import './menu-section.css';
 
 function ShadowOffsetSection() {
   const operationData = useSelector(getOperationData);
+  const width = useSelector(getWidth);
+  const height = useSelector(getHeight);
   const dispatch = useDispatch();
-  const [offsetX, setOffsetX] = useState(operationData.offsetX ?? 5);
-  const [offsetY, setOffsetY] = useState(operationData.offsetY ?? 5);
-  const handleChange = (evt: React.ChangeEvent<HTMLInputElement>, x: boolean) => {
-    if (x) {
-      setOffsetX(+evt.target.value);
-      dispatch(changeOperationData({ offsetX: +evt.target.value }));
-    } else {
-      setOffsetY(+evt.target.value);
-      dispatch(changeOperationData({ offsetY: +evt.target.value }));
-    }
+  const handleChangeX = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(changeOperationData({ offsetX: +evt.target.value }));
+  };
+  const handleChangeY = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(changeOperationData({ offsetY: +evt.target.value }));
   };
   return (
     <>
-      <label className="menu-section__container__label" htmlFor="x-offset">
-        X 
-        <input id="x-offset" type="number" name="shadow-offset" 
-          value={offsetX} step={1} className="menu-section__container__input" 
-          onChange={(evt) => handleChange(evt, true)} />
-      </label>
-      <label className="menu-section__container__label menu-section__container__label-block" htmlFor="y-offset">
-        Y 
-        <input id="y-offset" type="number" name="shadow-offset" 
-          value={offsetY} step={1} className="menu-section__container__input" 
-          onChange={(evt) => handleChange(evt, false)} />
-      </label>
+      <NumberInput id={'x-offset'} label={'X'} 
+        min={0} max={width * 2} step={1}
+        value={operationData.offsetX ?? 5} onChange={handleChangeX} />
+      <NumberInput id={'y-offset'} label={'Y'} 
+        min={0} max={height * 2} step={1}
+        value={operationData.offsetY ?? 5} onChange={handleChangeY} />
     </>
   );
 }
