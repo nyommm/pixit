@@ -1,8 +1,9 @@
 import MirrorImage from './MirrorImage';
 import DropShadow from './DropShadow';
 import OutlineImage from './OutlineImage';
-import { Operations } from '../../../pixit/types';
 import ScaleCanvas from './ScaleCanvas';
+import ResizeCanvas from './ResizeCanvas';
+import { Operations } from '../../../pixit/types';
 
 export default {
   mirrorImage: {
@@ -24,5 +25,10 @@ export default {
     title: 'Scale Canvas',
     operation: 'scaleCanvas' as keyof Operations,
     component: ScaleCanvas,
+  },
+  resizeCanvas: {
+    title: 'Resize Canvas',
+    operation: 'resizeCanvas' as keyof Operations,
+    component: ResizeCanvas,
   },
 };

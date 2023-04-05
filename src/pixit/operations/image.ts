@@ -1,7 +1,7 @@
 import Layer from '../Layer';
 import { OperationData, Pixel } from '../types';
 import { dropShadowOnLayer, getImageBoundingBox, invertLayerColors, 
-  mirrorLayer, outlineLayer, translatePixels, scaleLayer } from '../utils';
+  mirrorLayer, outlineLayer, translatePixels, scaleLayer, resizeLayer } from '../utils';
 
 export function invertImageColors(layers: Layer[]): Layer[] {
   const newLayers: Layer[] = [];
@@ -71,5 +71,13 @@ export function scaleCanvas(layers: Layer[], data?: OperationData): Layer[] {
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(scaleLayer(layer, data.canvasWidth, data.canvasHeight));
+  return newLayers;
+}
+
+export function resizeCanvas(layers: Layer[], data?: OperationData): Layer[] {
+  if (!data?.canvasHeight || !data?.canvasWidth) return layers;
+  const newLayers: Layer[] = [];
+  for (const layer of layers)
+    newLayers.push(resizeLayer(layer, data.canvasWidth, data.canvasHeight));
   return newLayers;
 }

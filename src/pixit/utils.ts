@@ -311,8 +311,6 @@ function scaleLayer(layer: Layer, finalWidth: number, finalHeight: number): Laye
   const emptyLayer = Layer.empty(layer.id, finalWidth, finalHeight);
   const toColor: Pixel[] = [];
   const { rowPositions, colPositions } = nearestNeighbor(layer.width, layer.height, finalWidth, finalHeight);
-  console.log(rowPositions);
-  console.log(colPositions);
   for (let y = 0; y < emptyLayer.height; y++) {
     for (let x = 0; x < emptyLayer.width; x++) {
       const color = layer.pixel(rowPositions[x], colPositions[y]);
@@ -320,7 +318,21 @@ function scaleLayer(layer: Layer, finalWidth: number, finalHeight: number): Laye
       toColor.push({ x, y, color });
     }
   }
-  console.log(toColor);
+  return emptyLayer.colorPixels(toColor);
+}
+
+function resizeLayer(layer: Layer, width: number, height: number): Layer {
+  const emptyLayer = Layer.empty(layer.id, width, height);
+  const toColor: Pixel[] = [];
+  for (let y = 0; y < emptyLayer.height; y++) {
+    if (layer.height <= y) break;
+    for (let x = 0; x < emptyLayer.width; x++) {
+      if (layer.width <= x) break;
+      const color = layer.pixel(x, y);
+      if (!color || !color.a) continue;
+      toColor.push({ x, y, color });
+    }
+  }
   return emptyLayer.colorPixels(toColor);
 }
 
@@ -336,4 +348,5 @@ export {
   mirrorLayer,
   dropShadowOnLayer,
   scaleLayer,
+  resizeLayer,
 };
