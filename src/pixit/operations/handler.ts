@@ -1,6 +1,7 @@
 import Layer from '../Layer';
 import { OperationData, Operations } from '../types';
-import { invertImageColors, cropImage, centralizeImage, outlineImage } from './image';
+import { invertImageColors, dropShadow, cropImage, resizeCanvas,  
+  mirrorImage, centralizeImage, outlineImage, scaleCanvas, rotateImage } from './image';
 
 export const operations = {
   None: () => {},
@@ -8,8 +9,13 @@ export const operations = {
   cropImage,
   centralizeImage,
   outlineImage,
+  mirrorImage,
+  dropShadow,
+  scaleCanvas,
+  resizeCanvas,
+  rotateImage,
 }
 
-export default function operationHandler(layers: Layer[], operation: keyof Operations) {
-  return operations[operation](layers);
+export default function operationHandler(layers: Layer[], operation: keyof Operations, data?: OperationData) {
+  return operations[operation](layers, data);
 }

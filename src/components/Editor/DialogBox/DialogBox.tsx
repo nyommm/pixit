@@ -1,46 +1,59 @@
 import React from 'react';
 import { useRef } from 'react';
 import { HiOutlineX } from 'react-icons/hi'
+import { useDispatch } from 'react-redux';
+import { changeDialogBox, changeOperation } from '../../../store/editorSlice';
+import { Operations } from '../../../pixit/types';
 import './dialog-box.css';
 
 interface DialogBoxProps {
   title: string;
-  render: () => JSX.Element;
-  close: (evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  operation: keyof Operations;
+  menu: () => JSX.Element;
 }
 
-export default function DialogBox({ title, render, close }: DialogBoxProps) {
+export default function DialogBox({ title, operation, menu }: DialogBoxProps) {
   const dialogBoxRef = useRef(null);
+  const dispatch = useDispatch();
   const onMouseDown = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     evt.stopPropagation();
     if (dialogBoxRef.current == null) return;
-    const widgetElement = dialogBoxRef.current as HTMLDivElement;
+    const dialogBoxElement = dialogBoxRef.current as HTMLDivElement;
     if (evt.button == 0) {
       let x = evt.clientX, y = evt.clientY;
       let offsetX = 0, offsetY = 0;
       const onMove = (moveEvent: any) => {
         if (moveEvent.buttons != 1) {
-          widgetElement.removeEventListener('mousemove', onMove);
+          dialogBoxElement.removeEventListener('mousemove', onMove);
         } else {
           offsetX = x - moveEvent.clientX;
           offsetY = y - moveEvent.clientY;
-          widgetElement.style.left = `${widgetElement.offsetLeft - offsetX}px`;
-          widgetElement.style.top = `${widgetElement.offsetTop - offsetY}px`;
+          dialogBoxElement.style.left = `${dialogBoxElement.offsetLeft - offsetX}px`;
+          dialogBoxElement.style.top = `${dialogBoxElement.offsetTop - offsetY}px`;
           x = moveEvent.clientX;
           y = moveEvent.clientY;
         }
       }
-      widgetElement.addEventListener('mousemove', onMove);
+      dialogBoxElement.addEventListener('mousemove', onMove);
     }
   };
+  const close = (evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    evt.stopPropagation();
+    dispatch(changeDialogBox('None'));
+  };
+  const Component = menu;
   return (
-    <div ref={dialogBoxRef.current} className="dialog-box">
+    <div ref={dialogBoxRef} className="dialog-box">
       <div className="dialog-box__header" onMouseDown={onMouseDown}>
-        <span>{title}</span>
+        {title}
         <button className="dialog-box__header__btn" onClick={close}><HiOutlineX /></button>
       </div>
       <div className="dialog-box__content">
-        {render()}
+        <Component />
+      </div>
+      <div className="dialog-box__btns">
+        <button className="dialog-box__btns__btn" onClick={() => dispatch(changeOperation(operation))}>Ok</button>
+        <button className="dialog-box__btns__btn" onClick={() => dispatch(changeDialogBox('None'))}>Cancel</button>
       </div>
     </div>
   );

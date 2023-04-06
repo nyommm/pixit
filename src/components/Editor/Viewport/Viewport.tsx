@@ -11,9 +11,11 @@ import colorSelect from './Widgets/colorSelect';
 import toolOptions from './Widgets/toolOptions';
 import tools from '../../../pixit/tools/tools';
 import { getTool, getToolSettings, changeToolSettings, 
-  getColor, changeColor, getActiveLayerIdx, changeActiveLayerIdx, getWidth, getHeight, getOperation, changeOperation } from '../../../store/editorSlice';
+  getColor, changeColor, getActiveLayerIdx, changeActiveLayerIdx, 
+  getWidth, getHeight, getOperation, changeOperation, changeWidth, 
+  changeHeight, getOperationData } from '../../../store/editorSlice';
 import { RGBColor } from 'react-color';
-import { Operations, ToolOptions } from '../../../pixit/types';
+import { ToolOptions } from '../../../pixit/types';
 import operationHandler from '../../../pixit/operations/handler';
 
 function generateDefaultBaseLayer(width: number, height: number) {
@@ -29,14 +31,22 @@ function Viewport() {
   const canvasWidth = useSelector(getWidth);
   const canvasHeight = useSelector(getHeight);
   const operation = useSelector(getOperation);
+  const operationData = useSelector(getOperationData);
   const [layers, setLayers] = useState([generateDefaultBaseLayer(canvasWidth, canvasHeight)]);
   const toolOptionsDispatch = (options: ToolOptions) => dispatch(changeToolSettings(options));
   const colorDispatch = (color: RGBColor) => dispatch(changeColor(color));
   const activeLayerIdxDispatch = (idx: number) => dispatch(changeActiveLayerIdx(idx));
   const executeOperation = () => {
     if (operation == 'None') return;
-    const result = operationHandler(layers, operation);
-    if (result) setLayers(result);
+    const result = operationHandler(layers, operation, operationData);
+    if (result) {
+      if (result[0].width != layers[0].width || 
+        result[0].height != layers[0].height) {
+        dispatch(changeWidth(result[0].width));
+        dispatch(changeHeight(result[0].height));
+      }
+      setLayers(result);
+    };
     dispatch(changeOperation('None'));
   };
   useEffect(executeOperation, [operation]);

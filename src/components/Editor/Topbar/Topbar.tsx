@@ -3,15 +3,21 @@ import { useDispatch } from 'react-redux';
 import './topbar.css';
 
 import DropDownMenu from './DropDownMenu';
-import { Operations } from '../../../pixit/types';
-import { changeOperation } from '../../../store/editorSlice';
+import { DialogBox, Operations } from '../../../pixit/types';
+import { changeDialogBox, changeOperation } from '../../../store/editorSlice';
 
 function Topbar() {
   const dispatch = useDispatch();
-  const clickHandler = (operation: keyof Operations) => {
+  const dispatchOperation = (operation: keyof Operations) => {
     return (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       evt.stopPropagation();
       dispatch(changeOperation(operation));
+    };
+  };
+  const dispatchMenu = (menu: DialogBox) => {
+    return (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      evt.stopPropagation();
+      dispatch(changeDialogBox(menu));
     };
   };
   const menuItems = {
@@ -35,26 +41,29 @@ function Topbar() {
       title: 'Select',
       buttons: [
         { name: 'Clear Selection' }, { name: 'Select All' }, 
-        { name: 'Invert Selection' },
+        { name: 'Invert Selection' }, 
       ],
     },
     image: {
       title: 'Image',
       buttons: [
-        { name: 'Scale Canvas' }, { name: 'Resize Canvas' }, 
-        { name: 'Crop Image', onClick: clickHandler('cropImage') }, 
-        { name: 'Centralize Image', onClick: clickHandler('centralizeImage') }, 
-        { name: 'Mirror' }, { name: 'Rotate' }, { name: 'Desaturation' }, 
-        { name: 'Invert Colors', onClick: clickHandler('invertImageColors') }, 
-        { name: 'Outline', onClick: clickHandler('outlineImage') }, 
-        { name: 'Drop Shadow' }, { name: 'Adjust Hue/Saturation/Value' }, 
+        { name: 'Scale Canvas', onClick: dispatchMenu('scaleCanvas') }, 
+        { name: 'Resize Canvas', onClick: dispatchMenu('resizeCanvas') }, 
+        { name: 'Crop Image', onClick: dispatchOperation('cropImage') }, 
+        { name: 'Centralize Image', onClick: dispatchOperation('centralizeImage') }, 
+        { name: 'Mirror Image', onClick: dispatchMenu('mirrorImage') }, 
+        { name: 'Rotate Image', onClick: dispatchMenu('rotateImage') }, 
+        { name: 'Invert Colors', onClick: dispatchOperation('invertImageColors') }, 
+        { name: 'Outline', onClick: dispatchMenu('outlineImage') }, 
+        { name: 'Drop Shadow', onClick: dispatchMenu('dropShadow') }, 
+        { name: 'Desaturation' }, { name: 'Adjust Hue/Saturation/Value' }, 
       ],
     },
     view: {
       title: 'View',
       buttons: [
-        { name: 'Grayscale View' }, { name: 'Invert View' }, 
-        { name: 'Show Grid' }, { name: 'Show Pixel Grid' },
+        { name: 'Grayscale View' }, { name: 'Show Grid' }, 
+        { name: 'Show Pixel Grid' }, 
       ],
     },
   };

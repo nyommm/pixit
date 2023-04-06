@@ -2,7 +2,7 @@ import React from 'react';
 import { RGBColor } from 'react-color';
 
 import Layer from './Layer';
-import { Pixel, PixelPosition, ToolOptions } from './types';
+import { MirrorAxis, Pixel, PixelPosition, ToolOptions } from './types';
 
 /**
  * Get the position of the pixel at the client's position
@@ -22,18 +22,16 @@ function pointerPosition(canvas: HTMLCanvasElement | null,
  */
 function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number): void {
   if (canvas == null) return;
-
   const width = layers[0].width;
   const height = layers[0].height;
-
   canvas.width = width * scale;
   canvas.height = height * scale;
-
   const ctx = canvas.getContext('2d');
   let color: RGBColor | undefined;
-
   if (ctx == null) return;
-
+  const ckbgScale = 1.5 * scale;
+  const ckbgOffsetX = -1;
+  const ckbgOffsetY = -1.5;
   for(let idx = layers.length - 1; idx >= 0; idx--) {
     if (layers[idx].hidden) continue;
     for (let y = 0; y < layers[idx].height; y++) {
@@ -41,7 +39,10 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
         color = layers[idx].pixel(x, y);
         if (!color) return;
         ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${color.a})`;
-        ctx.fillRect(x * scale, y * scale, scale, scale);
+        if (idx == layers.length - 1)
+          ctx.fillRect((x + ckbgOffsetX) * ckbgScale, (y + ckbgOffsetY) * ckbgScale, ckbgScale, ckbgScale);
+        else
+          ctx.fillRect(x * scale, y * scale, scale, scale);
       }
     }
   }
@@ -211,21 +212,16 @@ function grayscaleLayerColors(layer: Layer): Layer {
   return layer.colorPixels(toColor);
 }
 
-function outlineLayer(layer: Layer, outlineThickness?: number, outlineColor?: RGBColor): Layer {
+function outlineLayer(layer: Layer, outlineThickness: number = 1, outlineColor: RGBColor = Layer.BLACK): Layer {
+  if (outlineThickness <= 0) return layer;
   const toColor: Pixel[] = [];
-  if (!outlineThickness) outlineThickness = 1;
-  if (!outlineColor) {
-    outlineColor = {
-      r: 0,
-      g: 0,
-      b: 0,
-      a: 255,
-    };
+  const directions = [];
+  for (let i = outlineThickness; i > 0; i--) {
+    directions.push(
+      { dx: i, dy: 0 }, { dx: -i, dy: 0 },
+      { dx: 0, dy: i }, { dx: 0, dy: -i },
+    );
   }
-  const directions = [
-    { dx: 1, dy: 0 }, { dx: -1, dy: 0 },
-    { dx: 0, dy: 1 }, { dx: 0, dy: -1 },
-  ];
   for (let y = 0; y < layer.height; y++) {
     for (let x = 0; x < layer.width; x++) {
       const color = layer.pixel(x, y);
@@ -256,6 +252,110 @@ function translatePixels(layer: Layer, offsetX: number, offsetY: number): Layer 
   return emptyLayer.colorPixels(toColor);
 }
 
+function mirrorLayer(layer: Layer, axis: MirrorAxis = 'Y'): Layer {
+  const emptyLayer = Layer.empty(layer.id, layer.width, layer.height);
+  const toColor: Pixel[] = [];
+  for (let y = 0; y < layer.height; y++) {
+    for (let x = 0; x < layer.width; x++) {
+      const color = layer.pixel(x, y);
+      if (!color) continue;
+      if (axis == 'Y') {
+        toColor.push({
+          x: layer.width - 1 - x,
+          y, color
+        });
+      } else {
+        toColor.push({
+          y: layer.height - 1 - y,
+          x, color
+        });
+      }
+    }
+  }
+  return emptyLayer.colorPixels(toColor);
+}
+
+function dropShadowOnLayer(layer: Layer, offsetX: number = 1, offsetY: number = 1, shadowColor: RGBColor = Layer.BLACK): Layer {
+  const emptyLayer = Layer.copy(layer.id, layer);
+  const toColor: Pixel[] = [];
+  const alphaFactor = 0.4;
+  for (let y = 0; y < layer.height; y++) {
+    for (let x = 0; x < layer.width; x++) {
+      const color = layer.pixel(x, y);
+      if (!color || !color.a) continue;
+      const colorAtOffset = layer.pixel(x + offsetX, y + offsetY);
+      if (colorAtOffset && colorAtOffset.a) continue;
+      toColor.push({
+        x: x + offsetX, 
+        y: y + offsetY, 
+        color: {
+          ...shadowColor,
+          a: alphaFactor * color.a,
+        },
+      });
+    }
+  }
+  return emptyLayer.colorPixels(toColor);
+}
+
+function nearestNeighbor(initialWidth: number, initialHeight: number, finalWidth: number, finalHeight: number) {
+  const rowRatio = initialWidth / finalWidth;
+  const colRatio = initialHeight / finalHeight;
+  return {
+    rowPositions: new Array(finalWidth).fill(0).map((_, idx) => Math.ceil(idx * rowRatio)),
+    colPositions: new Array(finalHeight).fill(0).map((_, idx) => Math.ceil(idx * colRatio)),
+  };
+}
+
+function scaleLayer(layer: Layer, finalWidth: number, finalHeight: number): Layer {
+  const emptyLayer = Layer.empty(layer.id, finalWidth, finalHeight);
+  const toColor: Pixel[] = [];
+  const { rowPositions, colPositions } = nearestNeighbor(layer.width, layer.height, finalWidth, finalHeight);
+  for (let y = 0; y < emptyLayer.height; y++) {
+    for (let x = 0; x < emptyLayer.width; x++) {
+      const color = layer.pixel(rowPositions[x], colPositions[y]);
+      if (!color || !color.a) continue;
+      toColor.push({ x, y, color });
+    }
+  }
+  return emptyLayer.colorPixels(toColor);
+}
+
+function resizeLayer(layer: Layer, width: number, height: number): Layer {
+  const emptyLayer = Layer.empty(layer.id, width, height);
+  const toColor: Pixel[] = [];
+  for (let y = 0; y < emptyLayer.height; y++) {
+    if (layer.height <= y) break;
+    for (let x = 0; x < emptyLayer.width; x++) {
+      if (layer.width <= x) break;
+      const color = layer.pixel(x, y);
+      if (!color || !color.a) continue;
+      toColor.push({ x, y, color });
+    }
+  }
+  return emptyLayer.colorPixels(toColor);
+}
+
+function rotateLayer(layer: Layer, pivot: PixelPosition, angle: number): Layer {
+  const emptyLayer = Layer.empty(layer.id, layer.width, layer.height);
+  const toColor: Pixel[] = [];
+  const theta = -(angle * (Math.PI / 180));
+  const cosTheta = Math.cos(theta);
+  const sinTheta = Math.sin(theta);
+  const deltaX = pivot.x;
+  const deltaY = pivot.y;
+  for (let y = 0; y < emptyLayer.height; y++) {
+    for (let x = 0; x < emptyLayer.width; x++) {
+      const x0 = Math.ceil((x - deltaX) * cosTheta - (y - deltaY) * sinTheta) + deltaX;
+      const y0 = Math.ceil((y - deltaY) * cosTheta + (x - deltaX) * sinTheta) + deltaY;
+      const color = layer.pixel(x0, y0);
+      if (!color || !color.a) continue;
+      toColor.push({ x, y, color });
+    }
+  }
+  return emptyLayer.colorPixels(toColor);
+}
+
 export {
   draw,
   drawLine,
@@ -265,4 +365,9 @@ export {
   grayscaleLayerColors,
   invertLayerColors,
   outlineLayer,
+  mirrorLayer,
+  dropShadowOnLayer,
+  scaleLayer,
+  resizeLayer,
+  rotateLayer,
 };

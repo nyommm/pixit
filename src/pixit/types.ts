@@ -59,19 +59,38 @@ export interface TopbarMenuBtn {
 export type MirrorAxis = 'X' | 'Y';
 
 export interface OperationData {
-  width?: number;
-  height?: number;
+  canvasWidth?: number;
+  canvasHeight?: number;
   mirrorAxis?: MirrorAxis;
   outlineThickness?: number;
   outlineColor?: RGBColor;
+  shadowColor?: RGBColor;
+  offsetX?: number;
+  offsetY?: number;
+  angle?: number;
+  pivot?: PixelPosition;
 }
 
-export type CanvasOperation = ((layers: Layer[]) => Layer[]) | ((layers: Layer[]) => void);
+export type CanvasOperation = ((layers: Layer[], data?: OperationData) => Layer[]) | ((layers: Layer[]) => void);
 
 export interface Operations {
-  None: () => {},
-  invertImageColors: CanvasOperation,
-  centralizeImage: CanvasOperation,
-  cropImage: CanvasOperation,
-  outlineImage: CanvasOperation,
-}
+  None: () => {};
+  invertImageColors: CanvasOperation;
+  centralizeImage: CanvasOperation;
+  cropImage: CanvasOperation;
+  outlineImage: CanvasOperation;
+  mirrorImage: CanvasOperation;
+  dropShadow: CanvasOperation;
+  scaleCanvas: CanvasOperation;
+  resizeCanvas: CanvasOperation;
+  rotateImage: CanvasOperation;
+};
+
+export type DialogBox = 
+  'None' 
+  | 'mirrorImage' 
+  | 'outlineImage' 
+  | 'dropShadow' 
+  | 'scaleCanvas' 
+  | 'resizeCanvas' 
+  | 'rotateImage';

@@ -9,7 +9,8 @@ class Layer {
   hidden: boolean = false;
   locked: boolean = false;
 
-  static DEFAULT_COLOR: RGBColor = { r: 0, g: 0, b: 0, a: 0 };
+  static TRANSPARENT: RGBColor = { r: 0, g: 0, b: 0, a: 0 };
+  static BLACK: RGBColor = { r: 0, g: 0, b: 0, a: 1 };
 
   constructor(id: string, width: number, height: number, pixels: RGBColor[]) {
     this.id = id;
@@ -50,7 +51,7 @@ class Layer {
   /**
    * Creates a new Layer filled with the specified color
    */
-  static empty(id: string, width: number, height: number, color: RGBColor = Layer.DEFAULT_COLOR): Layer {
+  static empty(id: string, width: number, height: number, color: RGBColor = Layer.TRANSPARENT): Layer {
     return new Layer(id, width, height, new Array(width * height).fill(color));
   }
 
