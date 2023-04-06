@@ -84,23 +84,17 @@ export const pixitEditorSlice = createSlice({
         state.undoStack = state.undoStack.slice(1);
       state.undoStack = [...state.undoStack, action.payload];
     },
-    undo: (state) => {
+    changeRedoStack: (state, action) => {
       const stackSize = 12;
-      if (state.undoStack.length > 1) {
-        if (state.redoStack.length == stackSize) 
-          state.redoStack = state.redoStack.slice(1);
-        state.redoStack = [...state.redoStack, state.undoStack[state.undoStack.length - 1]];
-        state.undoStack = state.undoStack.slice(1);
-      }
+      if (state.redoStack.length == stackSize) 
+        state.redoStack = state.redoStack.slice(1);
+      state.redoStack = [...state.redoStack, action.payload];
+    },
+    undo: (state) => {
+      if (state.undoStack.length >= 1) state.undoStack = state.undoStack.slice(0, -1);
     },
     redo: (state) => {
-      const stackSize = 12;
-      if (state.redoStack.length > 1) {
-        if (state.undoStack.length == stackSize) 
-          state.undoStack = state.undoStack.slice(1);
-        state.undoStack = [...state.undoStack, state.redoStack[state.redoStack.length - 1]];
-        state.redoStack = state.redoStack.slice(1);
-      }
+      if (state.redoStack.length > 0) state.redoStack = state.redoStack.slice(0, -1);
     }
   },
 });
@@ -118,6 +112,7 @@ export const {
   changeOperationData,
   changeDialogBox,
   changeUndoStack,
+  changeRedoStack,
   undo, redo
 } = pixitEditorSlice.actions;
 

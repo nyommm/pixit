@@ -94,7 +94,7 @@ export interface OperationData {
 export type ImageOperation = ((layers: Layer[], data?: OperationData) => OperationResult);
 
 export interface Operations {
-  None: () => {};
+  None: () => OperationResult;
   invertImageColors: ImageOperation;
   centralizeImage: ImageOperation;
   cropImage: ImageOperation;
@@ -104,7 +104,8 @@ export interface Operations {
   scaleCanvas: ImageOperation;
   resizeCanvas: ImageOperation;
   rotateImage: ImageOperation;
-  undoRedoChange: ImageOperation;
+  undoChange: ImageOperation;
+  redoChange: ImageOperation;
 };
 
 export type DialogBox = 

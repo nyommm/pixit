@@ -28,17 +28,17 @@ function Topbar() {
     evt.stopPropagation();
     if (undoStack.length == 0) return;
     const changeData = undoStack[undoStack.length - 1];
-    dispatch(undo);
+    dispatch(undo());
     dispatch(changeOperationData({ changeData }));
-    dispatch(changeOperation('undoRedoOperation'));
+    dispatch(changeOperation('undoChange'));
   };
   const dispatchRedoOperation = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     evt.stopPropagation();
     if (redoStack.length == 0) return;
     const changeData = redoStack[redoStack.length - 1];
-    dispatch(redo);
+    dispatch(redo());
     dispatch(changeOperationData({ changeData }));
-    dispatch(changeOperation('undoRedoOperation'));
+    dispatch(changeOperation('redoChange'));
   };
   const menuItems = {
     file: {
