@@ -57,7 +57,7 @@ export interface LayerData {
   height: number;
   hidden: boolean;
   locked: boolean;
-  pixels: Pixel[];
+  pixels: RGBColor[];
 };
 
 export interface ChangeData {
@@ -104,8 +104,7 @@ export interface Operations {
   scaleCanvas: ImageOperation;
   resizeCanvas: ImageOperation;
   rotateImage: ImageOperation;
-  undoChange: ImageOperation;
-  redoChange: ImageOperation;
+  undoRedoChange: ImageOperation;
 };
 
 export type DialogBox = 
