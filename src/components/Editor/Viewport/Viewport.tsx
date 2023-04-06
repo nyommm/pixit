@@ -39,14 +39,14 @@ function Viewport() {
   const executeOperation = () => {
     if (operation == 'None') return;
     const result = operationHandler(layers, operation, operationData);
-    if (result) {
-      if (result[0].width != layers[0].width || 
-        result[0].height != layers[0].height) {
-        dispatch(changeWidth(result[0].width));
-        dispatch(changeHeight(result[0].height));
+    if (result.layers) {
+      if (result.layers.length > 1) {
+        dispatch(changeWidth(result.layers[0].width));
+        dispatch(changeHeight(result.layers[0].height));
       }
-      setLayers(result);
+      setLayers(result.layers);
     };
+    if (result.activeLayerIdx) activeLayerIdxDispatch(result.activeLayerIdx);
     dispatch(changeOperation('None'));
   };
   useEffect(executeOperation, [operation]);

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RGBColor } from 'react-color';
 import Layer from '../pixit/Layer';
 import tools from '../pixit/tools/tools';
-import { OperationData, Operations, PixitTools, ToolOptions, DialogBox } from '../pixit/types';
+import { OperationData, Operations, PixitTools, ToolOptions, DialogBox, ChangeData } from '../pixit/types';
 
 // ***** DEFAULTS *****
 const DEFAULT_SCALE = 10;
@@ -36,6 +36,8 @@ export const pixitEditorSlice = createSlice({
     operation: 'None' as keyof Operations,
     operationData: DEFAULT_OPERATION_DATA,
     dialogBox: 'None' as DialogBox,
+    undoStack: [] as ChangeData[],
+    redoStack: [] as ChangeData[],
   },
   reducers: {
     changeFileName: (state, action) => {
@@ -75,6 +77,30 @@ export const pixitEditorSlice = createSlice({
     },
     changeDialogBox: (state, action) => {
       state.dialogBox = action.payload;
+    },
+    changeUndoStack: (state, action) => {
+      const stackSize = 12;
+      if (state.undoStack.length == stackSize) 
+        state.undoStack = state.undoStack.slice(1);
+      state.undoStack = [...state.undoStack, action.payload];
+    },
+    undo: (state) => {
+      const stackSize = 12;
+      if (state.undoStack.length > 1) {
+        if (state.redoStack.length == stackSize) 
+          state.redoStack = state.redoStack.slice(1);
+        state.redoStack = [...state.redoStack, state.undoStack[state.undoStack.length - 1]];
+        state.undoStack = state.undoStack.slice(1);
+      }
+    },
+    redo: (state) => {
+      const stackSize = 12;
+      if (state.redoStack.length > 1) {
+        if (state.undoStack.length == stackSize) 
+          state.undoStack = state.undoStack.slice(1);
+        state.undoStack = [...state.undoStack, state.redoStack[state.redoStack.length - 1]];
+        state.redoStack = state.redoStack.slice(1);
+      }
     }
   },
 });
@@ -90,7 +116,9 @@ export const {
   changeScale,
   changeOperation,
   changeOperationData,
-  changeDialogBox
+  changeDialogBox,
+  changeUndoStack,
+  undo, redo
 } = pixitEditorSlice.actions;
 
 export type EditorState = ReturnType<typeof pixitEditorSlice.reducer>
@@ -106,5 +134,7 @@ export const getToolSettings = (state: { editor: EditorState }): ToolOptions | u
 export const getOperation = (state: { editor: EditorState }): keyof Operations => state.editor.operation;
 export const getOperationData = (state: { editor: EditorState }): OperationData => state.editor.operationData;
 export const getDialogBox = (state: { editor: EditorState }): DialogBox => state.editor.dialogBox;
+export const getUndoStack = (state: { editor: EditorState }): ChangeData[] => state.editor.undoStack;
+export const getRedoStack = (state: { editor: EditorState }): ChangeData[] => state.editor.redoStack;
 
 export const editorReducer = pixitEditorSlice.reducer;
