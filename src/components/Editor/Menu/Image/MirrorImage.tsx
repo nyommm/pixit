@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MirrorAxis } from '../../../pixit/types';
-import { changeOperationData, getOperationData } from '../../../store/editorSlice';
-import menuSection from './MenuSection';
+import { MirrorAxis } from '../../../../pixit/types';
+import { changeOperationData, getOperationData } from '../../../../store/editorSlice';
+import menuSection from '../common/MenuSection';
 
 function AxisSection() {
   const operationData = useSelector(getOperationData);

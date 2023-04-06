@@ -1,5 +1,5 @@
 import React from 'react';
-import './menu-section.css';
+import '../menu-section.css';
 
 export default function menuSection(sectionHeader: string, Component: () => JSX.Element) {
   return function MenuSection() {

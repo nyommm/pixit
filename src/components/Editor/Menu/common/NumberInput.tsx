@@ -1,5 +1,5 @@
 import React from 'react';
-import './menu-section.css';
+import '../menu-section.css';
 
 interface NumberInputProps {
   label: string;

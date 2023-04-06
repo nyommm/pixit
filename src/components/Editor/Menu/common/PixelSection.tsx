@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeOperationData, getHeight, getOperationData, getWidth } from '../../../store/editorSlice';
+import { changeOperationData, getHeight, getOperationData, getWidth } from '../../../../store/editorSlice';
 import NumberInput from './NumberInput';
-import './menu-section.css';
+import '../menu-section.css';
 
 export default function PixelSection() {
   const currentWidth = useSelector(getWidth);

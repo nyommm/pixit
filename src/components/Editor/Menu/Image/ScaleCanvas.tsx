@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeOperationData, getHeight, getOperationData, getWidth } from '../../../store/editorSlice';
-import PixelSection from './PixelSection';
-import menuSection from './MenuSection';
-import NumberInput from './NumberInput';
-import './menu-section.css';
+import { changeOperationData, getHeight, getOperationData, getWidth } from '../../../../store/editorSlice';
+import PixelSection from '../common/PixelSection';
+import menuSection from '../common/MenuSection';
+import NumberInput from '../common/NumberInput';
+import '../menu-section.css';
 
 function PercentageSection() {
   const currentWidth = useSelector(getWidth);

@@ -1,9 +1,9 @@
-import MirrorImage from './MirrorImage';
-import DropShadow from './DropShadow';
-import OutlineImage from './OutlineImage';
-import ScaleCanvas from './ScaleCanvas';
-import ResizeCanvas from './ResizeCanvas';
-import RotateImage from './RotateImage';
+import MirrorImage from './Image/MirrorImage';
+import DropShadow from './Image/DropShadow';
+import OutlineImage from './Image/OutlineImage';
+import ScaleCanvas from './Image/ScaleCanvas';
+import ResizeCanvas from './Image/ResizeCanvas';
+import RotateImage from './Image/RotateImage';
 import { Operations } from '../../../pixit/types';
 
 export default {

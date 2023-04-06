@@ -1,12 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeOperationData, getHeight, getOperationData, getWidth } from '../../../store/editorSlice';
+import { changeOperationData, getHeight, getOperationData, getWidth } from '../../../../store/editorSlice';
 import { AlphaPicker, ColorResult, CustomPicker, HuePicker } from 'react-color';
-import NumberInput from './NumberInput';
-import menuSection from './MenuSection';
-import Layer from '../../../pixit/Layer';
-import './menu-section.css';
+import NumberInput from '../common/NumberInput';
+import menuSection from '../common/MenuSection';
+import Layer from '../../../../pixit/Layer';
+import '../menu-section.css';
 
 function OutlineThicknessSection() {
   const operationData = useSelector(getOperationData);
