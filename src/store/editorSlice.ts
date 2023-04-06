@@ -18,6 +18,8 @@ const DEFAULT_OPERATION_DATA: OperationData = {
   shadowColor: Layer.BLACK,
   offsetX: 5,
   offsetY: 5,
+  angle: 0,
+  pivot: { x: 0, y: 0 },
 };
 
 export const pixitEditorSlice = createSlice({

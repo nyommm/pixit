@@ -1,6 +1,6 @@
 import Layer from '../Layer';
 import { OperationData, Pixel } from '../types';
-import { dropShadowOnLayer, getImageBoundingBox, invertLayerColors, 
+import { dropShadowOnLayer, getImageBoundingBox, invertLayerColors, rotateLayer,  
   mirrorLayer, outlineLayer, translatePixels, scaleLayer, resizeLayer } from '../utils';
 
 export function invertImageColors(layers: Layer[]): Layer[] {
@@ -79,5 +79,13 @@ export function resizeCanvas(layers: Layer[], data?: OperationData): Layer[] {
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(resizeLayer(layer, data.canvasWidth, data.canvasHeight));
+  return newLayers;
+}
+
+export function rotateImage(layers: Layer[], data?: OperationData): Layer[] {
+  if (!data?.angle || !data?.pivot) return layers;
+  const newLayers: Layer[] = [];
+  for (const layer of layers)
+    newLayers.push(rotateLayer(layer, data.pivot, data.angle));
   return newLayers;
 }

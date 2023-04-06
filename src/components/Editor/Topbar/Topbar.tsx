@@ -41,7 +41,7 @@ function Topbar() {
       title: 'Select',
       buttons: [
         { name: 'Clear Selection' }, { name: 'Select All' }, 
-        { name: 'Invert Selection' },
+        { name: 'Invert Selection' }, 
       ],
     },
     image: {
@@ -52,17 +52,18 @@ function Topbar() {
         { name: 'Crop Image', onClick: dispatchOperation('cropImage') }, 
         { name: 'Centralize Image', onClick: dispatchOperation('centralizeImage') }, 
         { name: 'Mirror Image', onClick: dispatchMenu('mirrorImage') }, 
-        { name: 'Rotate Image' }, { name: 'Desaturation' }, 
+        { name: 'Rotate Image', onClick: dispatchMenu('rotateImage') }, 
         { name: 'Invert Colors', onClick: dispatchOperation('invertImageColors') }, 
         { name: 'Outline', onClick: dispatchMenu('outlineImage') }, 
-        { name: 'Drop Shadow', onClick: dispatchMenu('dropShadow') }, { name: 'Adjust Hue/Saturation/Value' }, 
+        { name: 'Drop Shadow', onClick: dispatchMenu('dropShadow') }, 
+        { name: 'Desaturation' }, { name: 'Adjust Hue/Saturation/Value' }, 
       ],
     },
     view: {
       title: 'View',
       buttons: [
-        { name: 'Grayscale View' }, { name: 'Invert View' }, 
-        { name: 'Show Grid' }, { name: 'Show Pixel Grid' },
+        { name: 'Grayscale View' }, { name: 'Show Grid' }, 
+        { name: 'Show Pixel Grid' }, 
       ],
     },
   };

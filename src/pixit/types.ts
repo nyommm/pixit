@@ -67,6 +67,8 @@ export interface OperationData {
   shadowColor?: RGBColor;
   offsetX?: number;
   offsetY?: number;
+  angle?: number;
+  pivot?: PixelPosition;
 }
 
 export type CanvasOperation = ((layers: Layer[], data?: OperationData) => Layer[]) | ((layers: Layer[]) => void);
@@ -81,6 +83,14 @@ export interface Operations {
   dropShadow: CanvasOperation;
   scaleCanvas: CanvasOperation;
   resizeCanvas: CanvasOperation;
+  rotateImage: CanvasOperation;
 };
 
-export type DialogBox = 'None' | 'mirrorImage' | 'outlineImage' | 'dropShadow' | 'scaleCanvas' | 'resizeCanvas';
+export type DialogBox = 
+  'None' 
+  | 'mirrorImage' 
+  | 'outlineImage' 
+  | 'dropShadow' 
+  | 'scaleCanvas' 
+  | 'resizeCanvas' 
+  | 'rotateImage';

@@ -336,6 +336,26 @@ function resizeLayer(layer: Layer, width: number, height: number): Layer {
   return emptyLayer.colorPixels(toColor);
 }
 
+function rotateLayer(layer: Layer, pivot: PixelPosition, angle: number): Layer {
+  const emptyLayer = Layer.empty(layer.id, layer.width, layer.height);
+  const toColor: Pixel[] = [];
+  const theta = -(angle * (Math.PI / 180));
+  const cosTheta = Math.cos(theta);
+  const sinTheta = Math.sin(theta);
+  const deltaX = pivot.x;
+  const deltaY = pivot.y;
+  for (let y = 0; y < emptyLayer.height; y++) {
+    for (let x = 0; x < emptyLayer.width; x++) {
+      const x0 = Math.ceil((x - deltaX) * cosTheta - (y - deltaY) * sinTheta) + deltaX;
+      const y0 = Math.ceil((y - deltaY) * cosTheta + (x - deltaX) * sinTheta) + deltaY;
+      const color = layer.pixel(x0, y0);
+      if (!color || !color.a) continue;
+      toColor.push({ x, y, color });
+    }
+  }
+  return emptyLayer.colorPixels(toColor);
+}
+
 export {
   draw,
   drawLine,
@@ -349,4 +369,5 @@ export {
   dropShadowOnLayer,
   scaleLayer,
   resizeLayer,
+  rotateLayer,
 };
