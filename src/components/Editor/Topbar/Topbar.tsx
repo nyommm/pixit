@@ -1,12 +1,16 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './topbar.css';
 
 import DropDownMenu from './DropDownMenu';
 import { DialogBox, Operations } from '../../../pixit/types';
-import { changeDialogBox, changeOperation } from '../../../store/editorSlice';
+import { changeDialogBox, changeOperation, getRedoStack, getUndoStack, redo } from '../../../store/editorSlice';
+import { changeOperationData } from '../../../store/editorSlice';
+import { undo } from '../../../store/editorSlice';
 
 function Topbar() {
+  const undoStack = useSelector(getUndoStack);
+  const redoStack = useSelector(getRedoStack);
   const dispatch = useDispatch();
   const dispatchOperation = (operation: keyof Operations) => {
     return (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -20,6 +24,22 @@ function Topbar() {
       dispatch(changeDialogBox(menu));
     };
   };
+  const dispatchUndoOperation = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    evt.stopPropagation();
+    if (undoStack.length == 0) return;
+    const changeData = undoStack[undoStack.length - 1];
+    dispatch(undo);
+    dispatch(changeOperationData({ changeData }));
+    dispatch(changeOperation('undoRedoOperation'));
+  };
+  const dispatchRedoOperation = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    evt.stopPropagation();
+    if (redoStack.length == 0) return;
+    const changeData = redoStack[redoStack.length - 1];
+    dispatch(redo);
+    dispatch(changeOperationData({ changeData }));
+    dispatch(changeOperation('undoRedoOperation'));
+  };
   const menuItems = {
     file: {
       title: 'File',
@@ -31,7 +51,8 @@ function Topbar() {
     edit: {
       title: 'Edit',
       buttons: [
-        { name: 'Undo' }, { name: 'Redo' }, 
+        { name: 'Undo', onClick: dispatchUndoOperation }, 
+        { name: 'Redo', onClick: dispatchRedoOperation }, 
         { name: 'Copy' }, { name: 'Cut' }, 
         { name: 'Paste' }, { name: 'Delete' }, 
         { name: 'Preferences...' }, 
