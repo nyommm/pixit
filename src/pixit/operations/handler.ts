@@ -3,6 +3,7 @@ import { OperationData, OperationResult, Operations } from '../types';
 import { invertImageColors, dropShadow, cropImage, resizeCanvas,  
   mirrorImage, centralizeImage, outlineImage, scaleCanvas, rotateImage } from './image';
 import { undoRedoChange } from './edit';
+import { exportImage } from './file';
 
 export const operations = {
   None: () => { return {} as OperationResult; },
@@ -17,6 +18,7 @@ export const operations = {
   rotateImage,
   undoChange: undoRedoChange,
   redoChange: undoRedoChange,
+  exportImage,
 };
 
 export default function operationHandler(layers: Layer[], operation: keyof Operations, data?: OperationData): OperationResult {

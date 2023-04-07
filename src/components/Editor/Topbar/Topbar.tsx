@@ -45,7 +45,7 @@ function Topbar() {
       title: 'File',
       buttons: [
         { name: 'New...' }, { name: 'Save' }, 
-        { name: 'Save As...' }, { name: 'Export' }, 
+        { name: 'Export', onClick: dispatchMenu('export') }, 
       ],
     },
     edit: {
@@ -83,8 +83,8 @@ function Topbar() {
     view: {
       title: 'View',
       buttons: [
-        { name: 'Grayscale View' }, { name: 'Show Grid' }, 
-        { name: 'Show Pixel Grid' }, 
+        { name: 'Grayscale View' }, { name: 'Show Checkboard' }, 
+        { name: 'Show Grid' }, { name: 'Show Pixel Grid' }, 
       ],
     },
   };

@@ -12,19 +12,19 @@
 }
 
 .menu-section__header,
-.num-input__container__label {
+.input__container__label {
   font-weight: 500;
   font-size: 0.8rem;
 }
 
-.num-input__container {
+.input__container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0 0 0.25rem 0.5rem;
 }
 
-.num-input__container__label {
+.input__container__label {
   color: lightgrey;
 }
 
@@ -46,7 +46,7 @@
   background-color: darkgoldenrod;
 }
 
-.num-input__container__input {
+.input__container__input {
   width: 50%;
   margin-left: 0.5rem;
   font-size: 0.75rem;

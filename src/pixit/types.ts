@@ -106,6 +106,7 @@ export interface Operations {
   rotateImage: ImageOperation;
   undoChange: ImageOperation;
   redoChange: ImageOperation;
+  exportImage: () => OperationResult;
 };
 
 export type DialogBox = 
@@ -115,4 +116,5 @@ export type DialogBox =
   | 'dropShadow' 
   | 'scaleCanvas' 
   | 'resizeCanvas' 
-  | 'rotateImage';
+  | 'rotateImage'
+  | 'exportImage';

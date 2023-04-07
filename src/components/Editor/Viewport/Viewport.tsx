@@ -71,7 +71,6 @@ function Viewport() {
         dispatch(changeWidth(result.layers[0].width));
         dispatch(changeHeight(result.layers[0].height));
       }
-      // *INFO: this predicate is to prevent inserting state into the stack right after an undo
       if (operation != 'undoChange') setChangeDataUndo(getChangeData());
       if (operation == 'undoChange') setChangeDataRedo(getChangeData());
       console.log(result.layers);
@@ -107,8 +106,8 @@ function Viewport() {
     <div className="viewport" >
       <LayerCanvas 
         layers={layers} 
-        color={color} 
-        activeLayerIdx={activeLayerIdx}
+        color={color} exportImage={operation == 'exportImage'}
+        activeLayerIdx={activeLayerIdx} 
         toolFn={toolFn} />
       <ViewportWidget 
         widgetName='Layers'

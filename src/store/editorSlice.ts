@@ -41,7 +41,7 @@ export const pixitEditorSlice = createSlice({
   },
   reducers: {
     changeFileName: (state, action) => {
-      state.width = action.payload;
+      state.fileName = action.payload;
     },
     changeWidth: (state, action) => {
       state.width = action.payload;
