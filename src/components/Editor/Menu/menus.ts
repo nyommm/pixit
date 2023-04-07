@@ -8,7 +8,7 @@ import ExportImage from './File/ExportImage';
 import { Operations } from '../../../pixit/types';
 
 export default {
-  export: {
+  exportImage: {
     title: 'Export',
     operation: 'exportImage' as keyof Operations,
     component: ExportImage,

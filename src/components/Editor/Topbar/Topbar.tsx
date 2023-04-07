@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './topbar.css';
 
 import DropDownMenu from './DropDownMenu';
+import FileMetaData from './FileMetaData';
 import { DialogBox, Operations } from '../../../pixit/types';
 import { changeDialogBox, changeOperation, getRedoStack, getUndoStack, redo } from '../../../store/editorSlice';
 import { changeOperationData } from '../../../store/editorSlice';
@@ -45,7 +46,7 @@ function Topbar() {
       title: 'File',
       buttons: [
         { name: 'New...' }, { name: 'Save' }, 
-        { name: 'Export', onClick: dispatchMenu('export') }, 
+        { name: 'Export', onClick: dispatchMenu('exportImage') }, 
       ],
     },
     edit: {
@@ -98,6 +99,7 @@ function Topbar() {
         <DropDownMenu {...menuItems.select} />
         <DropDownMenu {...menuItems.image} />
       </div>
+      <FileMetaData />
     </nav>
   );
 }

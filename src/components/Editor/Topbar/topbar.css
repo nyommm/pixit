@@ -29,11 +29,19 @@
   margin: 0;
 }
 
+.topbar__metadata,
 .topbar__dropdown-menu__btn {
   display: border-box;
   text-align: center;
   padding: 0 0.5rem;
   font-size: 0.8rem;
+}
+
+.topbar__metadata {
+  align-self: center;
+  margin-left: auto;
+  color: lightgrey;
+  font-size: 0.7rem;
 }
 
 .topbar__dropdown-menu__content {
