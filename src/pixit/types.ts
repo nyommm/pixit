@@ -28,10 +28,14 @@ export interface ToolThickness {
 
 export type ToolShape = 'square' | 'circle';
 
+export type ShadingEffect = 'lighten' | 'darken';
+
 export interface ToolOptions {
   thickness?: ToolThickness;
   toolShape?: ToolShape;
   fill?: boolean;
+  shading?: ShadingEffect;
+  shadingIntensity?: number;
 }
 
 export interface PixitTool {

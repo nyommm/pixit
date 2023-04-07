@@ -10,7 +10,7 @@ export default function FileMetaData() {
   const pointer = useSelector(getPointerPosition);
   return (
     <div className="topbar__metadata">
-      {fileName}.png {`[${canvasWidth},${canvasHeight}]`} {`${pointer.x},${pointer.y}`}
+      {fileName} {`[${canvasWidth},${canvasHeight}]`} {`${pointer.x},${pointer.y}`}
     </div>
   );
 }
