@@ -5,8 +5,8 @@ import { RGBColor } from 'react-color';
 import './canvas.css';
 
 import Layer from '../../../pixit/Layer';
-import { draw } from '../../../pixit/utils';
-import { changeScale, getFileName, getHeight, getScale, getWidth } from '../../../store/editorSlice';
+import { draw, pointerPosition } from '../../../pixit/utils';
+import { changePointerPosition, changeScale, getFileName, getHeight, getScale, getWidth } from '../../../store/editorSlice';
 
 interface LayerCanvasProps {
   layers: Layer[];
@@ -97,14 +97,20 @@ function LayerCanvas({ layers, activeLayerIdx, exportImage, toolFn }: LayerCanva
       canvasElement.addEventListener('mousemove', onMoveCallback);
     }
   };
+  const onMouseMove = (evt: any) => {
+    if (canvasRef.current == null) return;
+    const canvasElement = canvasRef.current as HTMLCanvasElement;
+    dispatch(changePointerPosition(
+      pointerPosition(canvasElement, evt as MouseEvent, scale)
+    ));
+  };
   const canvasLockClass = layers[activeLayerIdx].locked || layers[activeLayerIdx].hidden 
     ? 'viewport__canvas-disabled' : '';
   return (
     <canvas 
       ref={canvasRef} 
-      className={
-        `viewport__canvas ${canvasLockClass}`
-      }
+      className={`viewport__canvas ${canvasLockClass}`} 
+      onMouseMove={onMouseMove} 
       onWheel={onZoom} 
       onMouseDown={onMouseDown} >
     </canvas>

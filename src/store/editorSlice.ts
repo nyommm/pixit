@@ -2,13 +2,15 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RGBColor } from 'react-color';
 import Layer from '../pixit/Layer';
 import tools from '../pixit/tools/tools';
-import { OperationData, Operations, PixitTools, ToolOptions, DialogBox, ChangeData } from '../pixit/types';
+import { OperationData, Operations, PixitTools, ToolOptions, 
+  DialogBox, ChangeData, PixelPosition } from '../pixit/types';
 
 // ***** DEFAULTS *****
 const DEFAULT_SCALE = 10;
 const DEFAULT_FILENAME = 'untitled';
 const DEFAULT_CANVAS_SIZE = 64; // side length in number of pixels
 const DEFAULT_TOOL: keyof PixitTools = 'pen';
+const DEFAULT_POINTER_POSITION: PixelPosition = { x: 0, y: 0 };
 const DEFAULT_OPERATION_DATA: OperationData = {
   canvasWidth: DEFAULT_CANVAS_SIZE,
   canvasHeight: DEFAULT_CANVAS_SIZE,
@@ -38,6 +40,7 @@ export const pixitEditorSlice = createSlice({
     dialogBox: 'None' as DialogBox,
     undoStack: [] as ChangeData[],
     redoStack: [] as ChangeData[],
+    pointerPosition: DEFAULT_POINTER_POSITION,
   },
   reducers: {
     changeFileName: (state, action) => {
@@ -95,7 +98,10 @@ export const pixitEditorSlice = createSlice({
     },
     redo: (state) => {
       if (state.redoStack.length > 0) state.redoStack = state.redoStack.slice(0, -1);
-    }
+    },
+    changePointerPosition: (state, action) => {
+      state.pointerPosition = action.payload;
+    },
   },
 });
 
@@ -113,7 +119,8 @@ export const {
   changeDialogBox,
   changeUndoStack,
   changeRedoStack,
-  undo, redo
+  undo, redo,
+  changePointerPosition
 } = pixitEditorSlice.actions;
 
 export type EditorState = ReturnType<typeof pixitEditorSlice.reducer>
@@ -131,5 +138,6 @@ export const getOperationData = (state: { editor: EditorState }): OperationData 
 export const getDialogBox = (state: { editor: EditorState }): DialogBox => state.editor.dialogBox;
 export const getUndoStack = (state: { editor: EditorState }): ChangeData[] => state.editor.undoStack;
 export const getRedoStack = (state: { editor: EditorState }): ChangeData[] => state.editor.redoStack;
+export const getPointerPosition = (state: { editor: EditorState }): PixelPosition => state.editor.pointerPosition;
 
 export const editorReducer = pixitEditorSlice.reducer;
