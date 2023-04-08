@@ -6,7 +6,9 @@ import './canvas.css';
 
 import Layer from '../../../pixit/Layer';
 import { draw, pointerPosition } from '../../../pixit/utils';
-import { changePointerPosition, changeScale, getFileName, getHeight, getScale, getWidth } from '../../../store/editorSlice';
+import { changePointerPosition, changeScale, getFileName, 
+  getHeight, getScale, getWidth } from '../../../store/editorSlice';
+import { getBackground, getBackgroundColor, getGrid, getGridSize } from '../../../store/preferencesSlice';
 
 interface LayerCanvasProps {
   layers: Layer[];
@@ -28,16 +30,37 @@ function generateCheckboardBackground(width: number, height: number) {
   return Layer.checkboard('ckbg', width, height);
 }
 
+function generateSolidBackground(width: number, height: number, color: RGBColor = Layer.TRANSPARENT) {
+  return Layer.empty('sbg', width, height, color);
+}
+
 function LayerCanvas({ layers, activeLayerIdx, exportImage, toolFn }: LayerCanvasProps) {
   const dispatch = useDispatch();
   const scale = useSelector(getScale);
   const width = useSelector(getWidth);
   const height = useSelector(getHeight);
   const fileName = useSelector(getFileName);
+  const background = useSelector(getBackground);
+  const backgroundColor = useSelector(getBackgroundColor);
+  const grid = useSelector(getGrid);
+  const gridSize = useSelector(getGridSize);
   const scaleDispatch = (newScale: number) => dispatch(changeScale(newScale));
   const canvasRef = useRef(null);
-  const paintCanvas = () =>
-    draw(canvasRef.current, [...layers, generateCheckboardBackground(width, height)], scale);
+  const paintCanvas = () => {
+    let bg;
+    switch (background) {
+      case 'checkboard':
+        bg = generateCheckboardBackground(width, height);
+        break;
+      case 'solid':
+        bg = generateSolidBackground(width, height, backgroundColor);
+        break;
+      case 'none':
+      default:
+        bg = generateSolidBackground(width, height);
+    }
+    draw(canvasRef.current, [...layers, bg], scale, grid, gridSize);
+  }
   const exportToPNG = () => {
     if (canvasRef.current == null || !exportImage) return;
     const canvasElement = canvasRef.current as HTMLCanvasElement;
@@ -69,7 +92,10 @@ function LayerCanvas({ layers, activeLayerIdx, exportImage, toolFn }: LayerCanva
     if (zoomAmount == -1) scaleDispatch(Math.max(scale + zoomAmount, MIN_SCALE));
     else scaleDispatch(Math.min(scale + zoomAmount, MAX_SCALE));
   };
-  useEffect(paintCanvas, [layers, activeLayerIdx, layers[activeLayerIdx].id, scale]);
+  useEffect(paintCanvas, [
+    layers, activeLayerIdx, layers[activeLayerIdx].id, 
+    scale, background, backgroundColor, grid, gridSize
+  ]);
   // TODO!: understand when this effect should trigger
   useEffect(bindTool);
   useEffect(exportToPNG)

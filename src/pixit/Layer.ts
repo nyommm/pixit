@@ -11,6 +11,7 @@ class Layer {
 
   static TRANSPARENT: RGBColor = { r: 0, g: 0, b: 0, a: 0 };
   static BLACK: RGBColor = { r: 0, g: 0, b: 0, a: 1 };
+  static WHITE: RGBColor = { r: 255, g: 255, b: 255, a: 1 };
 
   constructor(id: string, width: number, height: number, pixels: RGBColor[]) {
     this.id = id;

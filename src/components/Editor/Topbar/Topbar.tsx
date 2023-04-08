@@ -4,14 +4,16 @@ import './topbar.css';
 
 import DropDownMenu from './DropDownMenu';
 import FileMetaData from './FileMetaData';
-import { DialogBox, Operations } from '../../../pixit/types';
-import { changeDialogBox, changeOperation, getRedoStack, getUndoStack, redo } from '../../../store/editorSlice';
-import { changeOperationData } from '../../../store/editorSlice';
-import { undo } from '../../../store/editorSlice';
+import { CanvasBackground, CanvasGrid, DialogBox, Operations } from '../../../pixit/types';
+import { changeDialogBox, changeOperation, getRedoStack, getUndoStack, 
+  changeOperationData, undo, redo } from '../../../store/editorSlice';
+import { changeBackground, changeGrid, getBackground, getGrid } from '../../../store/preferencesSlice';
 
 function Topbar() {
   const undoStack = useSelector(getUndoStack);
   const redoStack = useSelector(getRedoStack);
+  const background = useSelector(getBackground);
+  const grid = useSelector(getGrid);
   const dispatch = useDispatch();
   const dispatchOperation = (operation: keyof Operations) => {
     return (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -23,6 +25,20 @@ function Topbar() {
     return (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       evt.stopPropagation();
       dispatch(changeDialogBox(menu));
+    };
+  };
+  const dispatchBackgroundOperation = (current: CanvasBackground) => {
+    return (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      evt.stopPropagation();
+      if (background == current) dispatch(changeBackground('none'));
+      else dispatch(changeBackground(current));
+    };
+  };
+  const dispatchGridOperation = (current: CanvasGrid) => {
+    return (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      evt.stopPropagation();
+      if (grid == current) dispatch(changeGrid('none'));
+      else dispatch(changeGrid(current));
     };
   };
   const dispatchUndoOperation = (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -45,8 +61,8 @@ function Topbar() {
     file: {
       title: 'File',
       buttons: [
-        { name: 'New...' }, { name: 'Save' }, 
-        { name: 'Export', onClick: dispatchMenu('exportImage') }, 
+        { name: 'New...' }, { name: 'Save' }, { name: 'Save As...' }, 
+        { name: 'Export...', onClick: dispatchMenu('exportImage') }, 
       ],
     },
     edit: {
@@ -84,8 +100,15 @@ function Topbar() {
     view: {
       title: 'View',
       buttons: [
-        { name: 'Grayscale View' }, { name: 'Show Checkboard' }, 
-        { name: 'Show Grid' }, { name: 'Show Pixel Grid' }, 
+        { name: 'Grayscale View' }, 
+        { name: `${background == 'solid' ? 'Hide' : 'Show'} Solid Background`, 
+          onClick: dispatchBackgroundOperation('solid') },
+        { name: `${background == 'checkboard' ? 'Hide' : 'Show'} Checkboard`, 
+          onClick: dispatchBackgroundOperation('checkboard') }, 
+        { name: `${grid == 'pixel' ? 'Hide' : 'Show'} Pixel Grid`, 
+          onClick: dispatchGridOperation('pixel') }, 
+        { name: `${grid == 'grid' ? 'Hide' : 'Show'} Grid`, 
+          onClick: dispatchGridOperation('grid') }, 
       ],
     },
   };
