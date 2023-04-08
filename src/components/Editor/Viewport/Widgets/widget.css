@@ -48,13 +48,13 @@
 
 .widget-toolOptions {
   top: 22rem;
-  min-width: 12.5rem;
+  min-width: 14rem;
   max-height: 10rem;
 }
 
 .widget-colorSelect {
   top: 6rem;
-  min-width: 14rem;
+  min-width: 15rem;
 }
 
 .widget__item__btn {

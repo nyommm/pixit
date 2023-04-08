@@ -170,8 +170,8 @@ function shadePixels(layer: Layer, start: PixelPosition, end: PixelPosition, opt
 function shadeLayer(layer: Layer, options?: ToolOptions): Layer {
   const newLayer = Layer.empty(layer.id, layer.width, layer.height);
   const toColor: Pixel[] = [];
-  const mag = options?.shadingIntensity ?? 10;
-  const effect = options?.shading ?? 'darken';
+  const mag = options?.shadingIntensity?.value ?? 10;
+  const effect = options?.shadingEffect ?? 'darken';
   const shiftColorComponent = (value: number) => {
     switch(effect) {
       case 'darken':

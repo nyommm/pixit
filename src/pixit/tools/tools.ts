@@ -2,7 +2,7 @@ import { TbColorPicker } from 'react-icons/tb';
 import { BsSlashLg } from 'react-icons/bs';
 import { BiPencil, BiRectangle, BiCircle, BiColorFill, BiEraser } from 'react-icons/bi';
 import { RxShadowInner } from 'react-icons/rx';
-import { PixitTools } from '../types';
+import { PixitTools, ShadingEffect, ToolShape } from '../types';
 import penToolFn from './drag-tools/pen';
 import rectToolFn from './drag-tools/rectangle';
 import circleToolFn from './drag-tools/ellipse';
@@ -14,6 +14,11 @@ import shadingToolFn from './drag-tools/shade';
 
 const MIN_STROKE_THICKNESS = 1;
 const MAX_STROKE_THICKNESS = 64;
+const DEFAULT_SHADING_INTENSITY = 10;
+const MIN_SHADING_INTENSITY = 1;
+const MAX_SHADING_INTENSITY = 100;
+const DEFAULT_SHADING_EFFECT = 'darken' as ShadingEffect;
+const DEFAULT_TOOL_SHAPE = 'circle' as ToolShape;
 
 // Pixit tools with callbacks, metadata and options
 const tools: PixitTools = {
@@ -37,7 +42,7 @@ const tools: PixitTools = {
         min: MIN_STROKE_THICKNESS,
         max: MAX_STROKE_THICKNESS,
       },
-      toolShape: 'circle',
+      toolShape: DEFAULT_TOOL_SHAPE,
     }
   },
   pen: {
@@ -50,7 +55,7 @@ const tools: PixitTools = {
         min: MIN_STROKE_THICKNESS,
         max: MAX_STROKE_THICKNESS,
       },
-      toolShape: 'circle',
+      toolShape: DEFAULT_TOOL_SHAPE,
     }
   },
   shade: {
@@ -63,7 +68,13 @@ const tools: PixitTools = {
         min: MIN_STROKE_THICKNESS,
         max: MAX_STROKE_THICKNESS,
       },
-      toolShape: 'circle',
+      shadingIntensity: {
+        value: DEFAULT_SHADING_INTENSITY,
+        min: MIN_SHADING_INTENSITY,
+        max: MAX_SHADING_INTENSITY,
+      },
+      shadingEffect: DEFAULT_SHADING_EFFECT,
+      toolShape: DEFAULT_TOOL_SHAPE,
     },
   },
   line: {
@@ -76,7 +87,7 @@ const tools: PixitTools = {
         min: MIN_STROKE_THICKNESS,
         max: MAX_STROKE_THICKNESS,
       },
-      toolShape: 'circle',
+      toolShape: DEFAULT_TOOL_SHAPE,
     }
   },
   rectangle: {

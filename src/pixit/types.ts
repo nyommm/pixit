@@ -26,6 +26,12 @@ export interface ToolThickness {
   max: number;
 }
 
+export interface ShadingIntensity {
+  value: number;
+  min: number;
+  max: number;
+}
+
 export type ToolShape = 'square' | 'circle';
 
 export type ShadingEffect = 'lighten' | 'darken';
@@ -34,8 +40,8 @@ export interface ToolOptions {
   thickness?: ToolThickness;
   toolShape?: ToolShape;
   fill?: boolean;
-  shading?: ShadingEffect;
-  shadingIntensity?: number;
+  shadingEffect?: ShadingEffect;
+  shadingIntensity?: ShadingIntensity;
 }
 
 export interface PixitTool {
@@ -73,7 +79,7 @@ export interface ChangeData {
 export interface TopbarMenuBtn {
   name: string;
   onClick?: (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-}
+};
 
 export type MirrorAxis = 'X' | 'Y';
 
@@ -94,7 +100,7 @@ export interface OperationData {
   angle?: number;
   pivot?: PixelPosition;
   changeData?: ChangeData;
-}
+};
 
 export type ImageOperation = ((layers: Layer[], data?: OperationData) => OperationResult);
 
