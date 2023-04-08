@@ -2,7 +2,12 @@ import React from 'react';
 import { RGBColor } from 'react-color';
 
 import Layer from './Layer';
-import { MirrorAxis, Pixel, PixelPosition, ShadingEffect, ToolOptions } from './types';
+import { MirrorAxis, Pixel, PixelPosition, ToolOptions } from './types';
+
+interface Position {
+  x: number;
+  y: number;
+};
 
 /**
  * Get the position of the pixel at the client's position
@@ -15,6 +20,26 @@ function pointerPosition(canvas: HTMLCanvasElement | null,
     x: Math.max(Math.floor((moveEvent.clientX - canvasRect.left) / scale), 0),
     y: Math.max(Math.floor((moveEvent.clientY - canvasRect.top) / scale), 0)
   };
+}
+
+function drawGridLine(canvas: HTMLCanvasElement, start: Position, end: Position): void {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  ctx.beginPath();
+  ctx.moveTo(start.x, start.y);
+  ctx.lineTo(end.x, end.y);
+  ctx.stroke();
+}
+
+function drawPixelGrid(canvas: HTMLCanvasElement, width: number, height: number, scale: number, size: number = 1) {
+  const startX = 0;
+  const endX = (width) * scale;
+  const startY = 0;
+  const endY = (height) * scale;
+  for (let y = 0; y < height; y += size)
+    drawGridLine(canvas, { x: startX, y: y * scale }, { x: endX, y: y * scale });
+  for (let x = 0; x < width; x += size)
+    drawGridLine(canvas, { x: x * scale, y: startY }, { x: x * scale, y: endY });
 }
 
 /**
