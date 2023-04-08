@@ -2,7 +2,7 @@ import React from 'react';
 import { RGBColor } from 'react-color';
 
 import Layer from './Layer';
-import { MirrorAxis, Pixel, PixelPosition, ToolOptions } from './types';
+import { CanvasGrid, MirrorAxis, Pixel, PixelPosition, ToolOptions } from './types';
 
 interface Position {
   x: number;
@@ -45,7 +45,7 @@ function drawPixelGrid(canvas: HTMLCanvasElement, width: number, height: number,
 /**
  * Draw the 'pixels' on the canvas layer by layer
  */
-function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number): void {
+function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number, grid: CanvasGrid, gridSize: number): void {
   if (canvas == null) return;
   const width = layers[0].width;
   const height = layers[0].height;
@@ -64,13 +64,14 @@ function draw(canvas: HTMLCanvasElement | null, layers: Layer[], scale: number):
         color = layers[idx].pixel(x, y);
         if (!color) return;
         ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${color.a})`;
-        if (idx == layers.length - 1)
+        if (idx == layers.length - 1 && layers[idx].id == 'ckbg')
           ctx.fillRect((x + ckbgOffsetX) * ckbgScale, (y + ckbgOffsetY) * ckbgScale, ckbgScale, ckbgScale);
         else
           ctx.fillRect(x * scale, y * scale, scale, scale);
       }
     }
   }
+  if (grid != 'none') drawPixelGrid(canvas, width, height, scale, grid == 'pixel' ? 1 : gridSize);
 }
 
 // TODO!: A function to draw an outline on the 'pixels'/area that will be affected by the tool
