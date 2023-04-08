@@ -1,21 +1,21 @@
 import Layer from '../Layer';
-import { OperationData, Pixel } from '../types';
+import { OperationData, OperationResult, Pixel } from '../types';
 import { dropShadowOnLayer, getImageBoundingBox, invertLayerColors, rotateLayer,  
   mirrorLayer, outlineLayer, translatePixels, scaleLayer, resizeLayer } from '../utils';
 
-export function invertImageColors(layers: Layer[]): Layer[] {
+export function invertImageColors(layers: Layer[]): OperationResult {
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(invertLayerColors(layer));
-  return newLayers;
+  return { layers: newLayers };
 }
 
-export function centralizeImage(layers: Layer[]): Layer[] {
-  if (layers.length == 0) return layers;
+export function centralizeImage(layers: Layer[]): OperationResult {
+  if (layers.length == 0) return { layers };
   const centerX = Math.round(layers[0].width / 2);
   const centerY = Math.round(layers[0].height / 2);
   const { hasContent, minX, minY, maxX, maxY } = getImageBoundingBox(layers);
-  if (!hasContent) return layers;
+  if (!hasContent) return { layers };
   const rectCenterX = Math.round((maxX - minX) / 2) + minX;
   const rectCenterY = Math.round((maxY - minY) / 2) + minY;
   const offsetX =  centerX - rectCenterX;
@@ -23,13 +23,13 @@ export function centralizeImage(layers: Layer[]): Layer[] {
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(translatePixels(layer, offsetX, offsetY));
-  return newLayers;
+  return { layers: newLayers };
 }
 
-export function cropImage(layers: Layer[]): Layer[] {
-  if (layers.length == 0) return layers;
+export function cropImage(layers: Layer[]): OperationResult {
+  if (layers.length == 0) return { layers };
   const { hasContent, minX, minY, maxX, maxY } = getImageBoundingBox(layers);
-  if (!hasContent) return layers;
+  if (!hasContent) return { layers };
   const newLayers: Layer[] = [];
   for (const layer of layers) {
     const emptyLayer = Layer.empty(layer.id, maxX - minX + 1, maxY - minY + 1);
@@ -42,50 +42,50 @@ export function cropImage(layers: Layer[]): Layer[] {
     }
     newLayers.push(emptyLayer.colorPixels(toColor));
   }
-  return newLayers;
+  return { layers: newLayers };
 }
 
-export function outlineImage(layers: Layer[], data?: OperationData): Layer[] {
+export function outlineImage(layers: Layer[], data?: OperationData): OperationResult {
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(outlineLayer(layer, data?.outlineThickness, data?.outlineColor));
-  return newLayers;
+  return { layers: newLayers };
 }
 
-export function mirrorImage(layers: Layer[], data?: OperationData): Layer[] {
+export function mirrorImage(layers: Layer[], data?: OperationData): OperationResult {
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(mirrorLayer(layer, data?.mirrorAxis));
-  return newLayers;
+  return { layers: newLayers };
 }
 
-export function dropShadow(layers: Layer[], data?: OperationData): Layer[] {
+export function dropShadow(layers: Layer[], data?: OperationData): OperationResult {
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(dropShadowOnLayer(layer, data?.offsetX, data?.offsetY, data?.shadowColor));
-  return newLayers;
+  return { layers: newLayers };
 }
 
-export function scaleCanvas(layers: Layer[], data?: OperationData): Layer[] {
-  if (!data?.canvasHeight || !data?.canvasWidth) return layers;
+export function scaleCanvas(layers: Layer[], data?: OperationData): OperationResult {
+  if (!data?.canvasHeight || !data?.canvasWidth) return { layers };
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(scaleLayer(layer, data.canvasWidth, data.canvasHeight));
-  return newLayers;
+  return { layers: newLayers };
 }
 
-export function resizeCanvas(layers: Layer[], data?: OperationData): Layer[] {
-  if (!data?.canvasHeight || !data?.canvasWidth) return layers;
+export function resizeCanvas(layers: Layer[], data?: OperationData): OperationResult {
+  if (!data?.canvasHeight || !data?.canvasWidth) return { layers };
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(resizeLayer(layer, data.canvasWidth, data.canvasHeight));
-  return newLayers;
+  return { layers: newLayers };
 }
 
-export function rotateImage(layers: Layer[], data?: OperationData): Layer[] {
-  if (!data?.angle || !data?.pivot) return layers;
+export function rotateImage(layers: Layer[], data?: OperationData): OperationResult {
+  if (!data?.angle || !data?.pivot) return { layers };
   const newLayers: Layer[] = [];
   for (const layer of layers)
     newLayers.push(rotateLayer(layer, data.pivot, data.angle));
-  return newLayers;
+  return { layers: newLayers };
 }

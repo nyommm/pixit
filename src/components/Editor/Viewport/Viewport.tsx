@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { debounce } from 'lodash';
 import './viewport.css';
 
 import Layer from '../../../pixit/Layer';
@@ -13,9 +14,9 @@ import tools from '../../../pixit/tools/tools';
 import { getTool, getToolSettings, changeToolSettings, 
   getColor, changeColor, getActiveLayerIdx, changeActiveLayerIdx, 
   getWidth, getHeight, getOperation, changeOperation, changeWidth, 
-  changeHeight, getOperationData } from '../../../store/editorSlice';
+  changeHeight, getOperationData, changeUndoStack, changeRedoStack } from '../../../store/editorSlice';
 import { RGBColor } from 'react-color';
-import { ToolOptions } from '../../../pixit/types';
+import { ToolOptions, LayerData, ChangeData } from '../../../pixit/types';
 import operationHandler from '../../../pixit/operations/handler';
 
 function generateDefaultBaseLayer(width: number, height: number) {
@@ -33,29 +34,98 @@ function Viewport() {
   const operation = useSelector(getOperation);
   const operationData = useSelector(getOperationData);
   const [layers, setLayers] = useState([generateDefaultBaseLayer(canvasWidth, canvasHeight)]);
+  const [changeDataUndo, setChangeDataUndo] = useState({} as ChangeData);
+  const [changeDataRedo, setChangeDataRedo] = useState({} as ChangeData);
   const toolOptionsDispatch = (options: ToolOptions) => dispatch(changeToolSettings(options));
   const colorDispatch = (color: RGBColor) => dispatch(changeColor(color));
   const activeLayerIdxDispatch = (idx: number) => dispatch(changeActiveLayerIdx(idx));
+  const getChangeData = (canvasLayers: Layer[] = layers, activeLayerIndex: number = activeLayerIdx) => {
+    const layerData: LayerData[] = canvasLayers.map((layer) => {
+      return {
+        id: layer.id,
+        width: layer.width,
+        height: layer.height,
+        hidden: layer.hidden,
+        locked: layer.locked,
+        pixels: layer.pixels.slice(),
+      };
+    });
+    return {
+      activeLayerIdx: activeLayerIndex,
+      layers: layerData,
+    };
+  };
+  const updateUndoStack = debounce(() => {
+    dispatch(changeUndoStack(changeDataUndo));
+    setChangeDataUndo({} as ChangeData);
+  }, 100);
+  const updateRedoStack = debounce(() => {
+    dispatch(changeRedoStack(changeDataRedo));
+    setChangeDataUndo({} as ChangeData);
+  }, 100);
   const executeOperation = () => {
     if (operation == 'None') return;
     const result = operationHandler(layers, operation, operationData);
-    if (result) {
-      if (result[0].width != layers[0].width || 
-        result[0].height != layers[0].height) {
-        dispatch(changeWidth(result[0].width));
-        dispatch(changeHeight(result[0].height));
+    if (result.layers) {
+      if (result.layers.length > 1) {
+        dispatch(changeWidth(result.layers[0].width));
+        dispatch(changeHeight(result.layers[0].height));
       }
-      setLayers(result);
+      if (operation != 'undoChange') setChangeDataUndo(getChangeData());
+      if (operation == 'undoChange') setChangeDataRedo(getChangeData());
+      console.log(result.layers);
+      setLayers(result.layers);
     };
+    if (result.activeLayerIdx) activeLayerIdxDispatch(result.activeLayerIdx);
     dispatch(changeOperation('None'));
   };
+  const persistData = debounce(() => {
+    const data = layers.map((layer) => {
+      return {
+        id: layer.id,
+        width: layer.width,
+        height: layer.height,
+        hidden: layer.hidden,
+        locked: layer.locked,
+        pixels: layer.pixels,
+      };
+    });
+    localStorage.setItem('canvasLayers', JSON.stringify(data));
+  }, 5000);
+  const readLocalStorage = () => {
+    const dataString = localStorage.getItem('canvasLayers');
+    if (dataString == null) return;
+    const data = JSON.parse(dataString);
+    if (!data || data.length == undefined) return;
+    const persistedLayers: Layer[] = [];
+    for (const layerData of data) {
+      const layer = new Layer(layerData.id, layerData.width, layerData.height, layerData.pixels);
+      layer.hidden = layerData.hidden;
+      layer.locked = layerData.locked;
+      persistedLayers.push(layer);
+    }
+    setLayers(persistedLayers);
+  };
+  useEffect(readLocalStorage, []);
+  useEffect(persistData, [layers]);
   useEffect(executeOperation, [operation]);
+  useEffect(() => {
+    if (changeDataUndo.layers || changeDataUndo.activeLayerIdx) updateUndoStack();
+    return () => updateUndoStack.cancel();
+  }, [changeDataUndo]);
+  useEffect(() => {
+    if (changeDataRedo.layers || changeDataRedo.activeLayerIdx) updateRedoStack();
+    return () => updateRedoStack.cancel();
+  }, [changeDataRedo]);
   const toolDispatch = (state: { layer?: Layer, color?: RGBColor }) => {
     if (state.layer) {
-      setLayers([
+      const newLayers = [
         ...layers.slice(0, activeLayerIdx),
         state.layer, ...layers.slice(activeLayerIdx + 1)
-      ]);
+      ]
+      setChangeDataUndo(getChangeData());
+      // setChangeDataRedo(getChangeData(newLayers));
+      setLayers(newLayers);
     }
     if (state.color) colorDispatch(state.color);
   };
@@ -65,8 +135,8 @@ function Viewport() {
     <div className="viewport" >
       <LayerCanvas 
         layers={layers} 
-        color={color} 
-        activeLayerIdx={activeLayerIdx}
+        color={color} exportImage={operation == 'exportImage'}
+        activeLayerIdx={activeLayerIdx} 
         toolFn={toolFn} />
       <ViewportWidget 
         widgetName='Layers'

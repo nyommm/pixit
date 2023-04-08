@@ -4,9 +4,15 @@ import OutlineImage from './Image/OutlineImage';
 import ScaleCanvas from './Image/ScaleCanvas';
 import ResizeCanvas from './Image/ResizeCanvas';
 import RotateImage from './Image/RotateImage';
+import ExportImage from './File/ExportImage';
 import { Operations } from '../../../pixit/types';
 
 export default {
+  exportImage: {
+    title: 'Export',
+    operation: 'exportImage' as keyof Operations,
+    component: ExportImage,
+  },
   mirrorImage: {
     title: 'Mirror Image',
     operation: 'mirrorImage' as keyof Operations,

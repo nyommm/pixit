@@ -1,17 +1,17 @@
-.widget-toolOptions__thickness, 
+.widget-toolOptions__slider, 
 .widget-toolOptions__fill, 
-.widget-toolOptions__shape {
+.widget-toolOptions__radio {
   font-size: 0.8rem;
   margin: 0.2rem 0;
 }
 
-.widget-toolOptions__thickness label, 
+.widget-toolOptions__slider label, 
 .widget-toolOptions__fill label, 
-.widget-toolOptions__shape label {
+.widget-toolOptions__radio label {
   user-select: none;
 }
 
-.widget-toolOptions__thickness input {
+.widget-toolOptions__slider input {
   width: 50%;
   -webkit-appearance: none;
   appearance: none;
@@ -20,11 +20,11 @@
   outline: none;
 }
 
-.widget-toolOptions__thickness input:hover {
+.widget-toolOptions__slider input:hover {
   background-color: lightgrey;
 }
 
-.widget-toolOptions__thickness input::-webkit-slider-thumb {
+.widget-toolOptions__slider input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 0.3rem;
@@ -33,9 +33,9 @@
   cursor: pointer;
 }
 
-.widget-toolOptions__shape input {
+.widget-toolOptions__radio input {
   -webkit-appearance: none;
-  margin: 0;
+  margin: 0 0.5rem 0 0.15rem;
   appearance: none;
   background-color: transparent;
   font: inherit;
@@ -46,7 +46,7 @@
   transform: translateY(0.075rem);
 }
 
-.widget-toolOptions__shape input:checked {
+.widget-toolOptions__radio input:checked {
   background-color: darkgoldenrod;
 }
 

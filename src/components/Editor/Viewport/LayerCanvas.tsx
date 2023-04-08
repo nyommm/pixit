@@ -5,13 +5,14 @@ import { RGBColor } from 'react-color';
 import './canvas.css';
 
 import Layer from '../../../pixit/Layer';
-import { draw } from '../../../pixit/utils';
-import { changeScale, getHeight, getScale, getWidth } from '../../../store/editorSlice';
+import { draw, pointerPosition } from '../../../pixit/utils';
+import { changePointerPosition, changeScale, getFileName, getHeight, getScale, getWidth } from '../../../store/editorSlice';
 
 interface LayerCanvasProps {
   layers: Layer[];
   activeLayerIdx: number;
   color: RGBColor;
+  exportImage: boolean;
   toolFn: (canvas: HTMLCanvasElement, scale: number) => {
     handleMouseDown: (evt: MouseEvent) => void;
     handleMouseLeave?: (evt: MouseEvent) => void;
@@ -27,15 +28,27 @@ function generateCheckboardBackground(width: number, height: number) {
   return Layer.checkboard('ckbg', width, height);
 }
 
-function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
+function LayerCanvas({ layers, activeLayerIdx, exportImage, toolFn }: LayerCanvasProps) {
   const dispatch = useDispatch();
   const scale = useSelector(getScale);
   const width = useSelector(getWidth);
   const height = useSelector(getHeight);
+  const fileName = useSelector(getFileName);
   const scaleDispatch = (newScale: number) => dispatch(changeScale(newScale));
   const canvasRef = useRef(null);
   const paintCanvas = () =>
     draw(canvasRef.current, [...layers, generateCheckboardBackground(width, height)], scale);
+  const exportToPNG = () => {
+    if (canvasRef.current == null || !exportImage) return;
+    const canvasElement = canvasRef.current as HTMLCanvasElement;
+    const imgURL = canvasElement.toDataURL('image/png');
+    const downloadLink = document.createElement('a');
+    downloadLink.download = `${fileName}.png`;
+    downloadLink.href = imgURL;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
   const bindTool = () => {
     if (layers[activeLayerIdx].locked || layers[activeLayerIdx].hidden) return;
     if (canvasRef.current == null) return;
@@ -59,6 +72,7 @@ function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
   useEffect(paintCanvas, [layers, activeLayerIdx, layers[activeLayerIdx].id, scale]);
   // TODO!: understand when this effect should trigger
   useEffect(bindTool);
+  useEffect(exportToPNG)
   // TODO!: Need to find a better way to handle adding/removing event listeners
   // For now panning the canvas will be taken care of with this
   const onMouseDown = (evt: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
@@ -83,14 +97,20 @@ function LayerCanvas({ layers, activeLayerIdx, toolFn }: LayerCanvasProps) {
       canvasElement.addEventListener('mousemove', onMoveCallback);
     }
   };
+  const onMouseMove = (evt: any) => {
+    if (canvasRef.current == null) return;
+    const canvasElement = canvasRef.current as HTMLCanvasElement;
+    dispatch(changePointerPosition(
+      pointerPosition(canvasElement, evt as MouseEvent, scale)
+    ));
+  };
   const canvasLockClass = layers[activeLayerIdx].locked || layers[activeLayerIdx].hidden 
     ? 'viewport__canvas-disabled' : '';
   return (
     <canvas 
       ref={canvasRef} 
-      className={
-        `viewport__canvas ${canvasLockClass}`
-      }
+      className={`viewport__canvas ${canvasLockClass}`} 
+      onMouseMove={onMouseMove} 
       onWheel={onZoom} 
       onMouseDown={onMouseDown} >
     </canvas>

@@ -26,12 +26,22 @@ export interface ToolThickness {
   max: number;
 }
 
+export interface ShadingIntensity {
+  value: number;
+  min: number;
+  max: number;
+}
+
 export type ToolShape = 'square' | 'circle';
+
+export type ShadingEffect = 'lighten' | 'darken';
 
 export interface ToolOptions {
   thickness?: ToolThickness;
   toolShape?: ToolShape;
   fill?: boolean;
+  shadingEffect?: ShadingEffect;
+  shadingIntensity?: ShadingIntensity;
 }
 
 export interface PixitTool {
@@ -49,14 +59,34 @@ export interface PixitTools {
   fill: PixitTool;
   'color picker': PixitTool;
   line: PixitTool;
+  shade: PixitTool;
+};
+
+export interface LayerData {
+  id: string;
+  width: number;
+  height: number;
+  hidden: boolean;
+  locked: boolean;
+  pixels: RGBColor[];
+};
+
+export interface ChangeData {
+  activeLayerIdx: number;
+  layers: LayerData[];
 };
 
 export interface TopbarMenuBtn {
   name: string;
   onClick?: (evt: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-}
+};
 
 export type MirrorAxis = 'X' | 'Y';
+
+export interface OperationResult {
+  activeLayerIdx?: number;
+  layers?: Layer[];
+};
 
 export interface OperationData {
   canvasWidth?: number;
@@ -69,21 +99,25 @@ export interface OperationData {
   offsetY?: number;
   angle?: number;
   pivot?: PixelPosition;
-}
+  changeData?: ChangeData;
+};
 
-export type CanvasOperation = ((layers: Layer[], data?: OperationData) => Layer[]) | ((layers: Layer[]) => void);
+export type ImageOperation = ((layers: Layer[], data?: OperationData) => OperationResult);
 
 export interface Operations {
-  None: () => {};
-  invertImageColors: CanvasOperation;
-  centralizeImage: CanvasOperation;
-  cropImage: CanvasOperation;
-  outlineImage: CanvasOperation;
-  mirrorImage: CanvasOperation;
-  dropShadow: CanvasOperation;
-  scaleCanvas: CanvasOperation;
-  resizeCanvas: CanvasOperation;
-  rotateImage: CanvasOperation;
+  None: () => OperationResult;
+  invertImageColors: ImageOperation;
+  centralizeImage: ImageOperation;
+  cropImage: ImageOperation;
+  outlineImage: ImageOperation;
+  mirrorImage: ImageOperation;
+  dropShadow: ImageOperation;
+  scaleCanvas: ImageOperation;
+  resizeCanvas: ImageOperation;
+  rotateImage: ImageOperation;
+  undoChange: ImageOperation;
+  redoChange: ImageOperation;
+  exportImage: () => OperationResult;
 };
 
 export type DialogBox = 
@@ -93,4 +127,5 @@ export type DialogBox =
   | 'dropShadow' 
   | 'scaleCanvas' 
   | 'resizeCanvas' 
-  | 'rotateImage';
+  | 'rotateImage'
+  | 'exportImage';
