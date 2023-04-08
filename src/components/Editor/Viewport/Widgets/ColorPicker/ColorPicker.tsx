@@ -29,7 +29,7 @@ function ColorPickerFields({ hex, rgb, hsl, colors, onChange }: ColorPickerField
   const validateHexCode = (code: string) => {
     return /^[0-9A-Fa-f]{6}$/.test(code) || /^[0-9A-Fa-f]{3}$/.test(code);
   }
-  const handleChange = (data, e) => {
+  const handleChange = (data: any, e: any) => {
     if (data.hex) {
       validateHexCode(data.hex) && onChange({
         hex: data.hex,

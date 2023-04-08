@@ -15,6 +15,7 @@ function toolOptions(options: ToolOptions | undefined, setOptions: (options: Too
                   max={options.thickness.max} 
                   step={1} 
                   value={options.thickness.value} 
+                  // @ts-ignore
                   onChange={(evt) => setOptions({...options, thickness: { ...options.thickness, value: +evt.target.value }})} />
               {options.thickness.value}px</label>
             </div>)
@@ -27,6 +28,7 @@ function toolOptions(options: ToolOptions | undefined, setOptions: (options: Too
                   max={options.shadingIntensity.max} 
                   step={1} 
                   value={options.shadingIntensity.value} 
+                  // @ts-ignore
                   onChange={(evt) => setOptions({...options, shadingIntensity: { ...options.shadingIntensity, value: +evt.target.value }})} />
               {options.shadingIntensity.value}</label>
             </div>)
