@@ -10,6 +10,10 @@ export interface Pixel extends PixelPosition {
   color: RGBColor
 };
 
+export type CanvasGrid = 'none' | 'pixel' | 'grid';
+
+export type CanvasBackground = 'none' | 'solid' | 'checkboard';
+
 export type DispatchFn = (state: { layer?: Layer, color?: RGBColor }) => void;
 
 export type ToolFn = (canvas: HTMLCanvasElement, layer: Layer, 

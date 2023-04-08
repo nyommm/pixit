@@ -31,25 +31,14 @@ function drawGridLine(canvas: HTMLCanvasElement, start: Position, end: Position)
   ctx.stroke();
 }
 
-function drawPixelGrid(canvas: HTMLCanvasElement, width: number, height: number, scale: number) {
+function drawPixelGrid(canvas: HTMLCanvasElement, width: number, height: number, scale: number, size: number = 1) {
   const startX = 0;
   const endX = (width) * scale;
   const startY = 0;
   const endY = (height) * scale;
-  for (let y = 0; y < height; y++)
+  for (let y = 0; y < height; y += size)
     drawGridLine(canvas, { x: startX, y: y * scale }, { x: endX, y: y * scale });
-  for (let x = 0; x < width; x++)
-    drawGridLine(canvas, { x: x * scale, y: startY }, { x: x * scale, y: endY });
-}
-
-function drawGrid(canvas: HTMLCanvasElement, width: number, height: number, scale: number) {
-  const startX = 0;
-  const endX = (width) * scale;
-  const startY = 0;
-  const endY = (height) * scale;
-  for (let y = 0; y < height; y += 4)
-    drawGridLine(canvas, { x: startX, y: y * scale }, { x: endX, y: y * scale });
-  for (let x = 0; x < width; x += 4)
+  for (let x = 0; x < width; x += size)
     drawGridLine(canvas, { x: x * scale, y: startY }, { x: x * scale, y: endY });
 }
 
