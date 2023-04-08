@@ -53,7 +53,7 @@ const tools: PixitTools = {
       toolShape: 'circle',
     }
   },
-  'shading tool': {
+  shade: {
     name: 'shading tool',
     toolFn: shadingToolFn,
     icon: RxShadowInner,

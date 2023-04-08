@@ -12,8 +12,8 @@ function shade(layer: Layer, pixel: Pixel, dispatch: DispatchFn, options?: ToolO
     // if the cursor goes out of the canvas reset start
     if (pos.x == 0 || pos.x == layer.width - 1 || 
       pos.y == 0 || pos.y == layer.height - 1) start = pos;
-      start = pos;
     const positions = shadePixels(activeLayer, start, pos, options);
+    start = pos;
     const pixels: Pixel[] = [];
     for (const pos of positions) {
       const color = shadedLayer.pixel(pos.x, pos.y)
