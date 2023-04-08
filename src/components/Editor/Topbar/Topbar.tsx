@@ -5,9 +5,8 @@ import './topbar.css';
 import DropDownMenu from './DropDownMenu';
 import FileMetaData from './FileMetaData';
 import { DialogBox, Operations } from '../../../pixit/types';
-import { changeDialogBox, changeOperation, getRedoStack, getUndoStack, redo } from '../../../store/editorSlice';
-import { changeOperationData } from '../../../store/editorSlice';
-import { undo } from '../../../store/editorSlice';
+import { changeDialogBox, changeOperation, getRedoStack, getUndoStack, 
+  changeOperationData, undo, redo } from '../../../store/editorSlice';
 
 function Topbar() {
   const undoStack = useSelector(getUndoStack);
@@ -45,8 +44,8 @@ function Topbar() {
     file: {
       title: 'File',
       buttons: [
-        { name: 'New...' }, { name: 'Save' }, 
-        { name: 'Export', onClick: dispatchMenu('exportImage') }, 
+        { name: 'New...' }, { name: 'Save' }, { name: 'Save As...' }, 
+        { name: 'Export...', onClick: dispatchMenu('exportImage') }, 
       ],
     },
     edit: {
