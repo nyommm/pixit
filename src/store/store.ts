@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { editorReducer } from './editorSlice';
+import { preferencesReducer } from './preferencesSlice';
 
 const store = configureStore({
   reducer: {
     editor: editorReducer,
+    preferences: preferencesReducer,
   },
 });
 

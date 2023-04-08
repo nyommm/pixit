@@ -3,7 +3,7 @@ import { RGBColor } from 'react-color';
 import Layer from '../pixit/Layer';
 import tools from '../pixit/tools/tools';
 import { OperationData, Operations, PixitTools, ToolOptions, 
-  DialogBox, ChangeData, PixelPosition, CanvasGrid, CanvasBackground } from '../pixit/types';
+  DialogBox, ChangeData, PixelPosition } from '../pixit/types';
 
 // ***** DEFAULTS *****
 const DEFAULT_SCALE = 10;
@@ -11,8 +11,6 @@ const DEFAULT_FILENAME = 'untitled';
 const DEFAULT_CANVAS_SIZE = 64; // side length in number of pixels
 const DEFAULT_TOOL: keyof PixitTools = 'pen';
 const DEFAULT_POINTER_POSITION: PixelPosition = { x: 0, y: 0 };
-const DEFAULT_GRID_SIZE = 4;
-const WHITE: RGBColor = { r: 255, g: 255, b: 255, a: 1 };
 const DEFAULT_OPERATION_DATA: OperationData = {
   canvasWidth: DEFAULT_CANVAS_SIZE,
   canvasHeight: DEFAULT_CANVAS_SIZE,
@@ -40,10 +38,6 @@ export const pixitEditorSlice = createSlice({
     tool: persistedState.tool ?? DEFAULT_TOOL,
     activeLayerIdx: persistedState.activeLayerIdx ?? 0,
     toolSettings: persistedState.toolSettings ?? tools[DEFAULT_TOOL].options,
-    grid: 'none' as CanvasGrid,
-    gridSize: DEFAULT_GRID_SIZE,
-    background: 'checkboard' as CanvasBackground,
-    backgroundColor: WHITE,
     operation: 'None' as keyof Operations,
     operationData: DEFAULT_OPERATION_DATA,
     dialogBox: 'None' as DialogBox,
@@ -77,18 +71,6 @@ export const pixitEditorSlice = createSlice({
     },
     changeScale: (state, action) => {
       state.scale = action.payload;
-    },
-    changeGrid: (state, action) => {
-      state.grid = action.payload;
-    },
-    changeGridSize: (state, action) => {
-      state.gridSize = action.payload;
-    },
-    changeBackground: (state, action) => {
-      state.background = action.payload;
-    },
-    changeBackgroundColor: (state, action) => {
-      state.backgroundColor = action.payload;
     },
     changeOperation: (state, action) => {
       state.operation = action.payload;
@@ -135,10 +117,6 @@ export const {
   changeToolSettings,
   changeColor,
   changeScale,
-  changeBackground,
-  changeBackgroundColor,
-  changeGrid,
-  changeGridSize,
   changeOperation,
   changeOperationData,
   changeDialogBox,
@@ -158,10 +136,6 @@ export const getColor = (state: { editor: EditorState }): RGBColor => state.edit
 export const getScale = (state: { editor: EditorState }): number => state.editor.scale;
 export const getTool = (state: { editor: EditorState }): keyof PixitTools => state.editor.tool;
 export const getToolSettings = (state: { editor: EditorState }): ToolOptions | undefined => state.editor.toolSettings;
-export const getGrid = (state: { editor: EditorState }): CanvasGrid => state.editor.grid;
-export const getGridSize = (state: { editor: EditorState }): number => state.editor.gridSize;
-export const getBackground = (state: { editor: EditorState }): CanvasBackground => state.editor.background;
-export const getBackgroundColor = (state: { editor: EditorState }): RGBColor => state.editor.backgroundColor;
 export const getOperation = (state: { editor: EditorState }): keyof Operations => state.editor.operation;
 export const getOperationData = (state: { editor: EditorState }): OperationData => state.editor.operationData;
 export const getDialogBox = (state: { editor: EditorState }): DialogBox => state.editor.dialogBox;
