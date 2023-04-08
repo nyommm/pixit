@@ -24,17 +24,20 @@ const DEFAULT_OPERATION_DATA: OperationData = {
   pivot: { x: 0, y: 0 },
 };
 
+const persistedStateString = localStorage.getItem('reduxState');
+const persistedState = persistedStateString ? JSON.parse(persistedStateString) : {};
+
 export const pixitEditorSlice = createSlice({
   name: 'editor',
   initialState: {
-    fileName: DEFAULT_FILENAME,
-    width: DEFAULT_CANVAS_SIZE,
-    height: DEFAULT_CANVAS_SIZE,
-    color: Layer.BLACK,
-    scale: DEFAULT_SCALE,
-    tool: DEFAULT_TOOL,
-    activeLayerIdx: 0,
-    toolSettings: tools[DEFAULT_TOOL].options,
+    fileName: persistedState.fileName ?? DEFAULT_FILENAME,
+    width: persistedState.width ?? DEFAULT_CANVAS_SIZE,
+    height: persistedState.height ?? DEFAULT_CANVAS_SIZE,
+    color: persistedState.color ?? Layer.BLACK,
+    scale: persistedState.scale ?? DEFAULT_SCALE,
+    tool: persistedState.tool ?? DEFAULT_TOOL,
+    activeLayerIdx: persistedState.activeLayerIdx ?? 0,
+    toolSettings: persistedState.toolSettings ?? tools[DEFAULT_TOOL].options,
     operation: 'None' as keyof Operations,
     operationData: DEFAULT_OPERATION_DATA,
     dialogBox: 'None' as DialogBox,
