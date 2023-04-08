@@ -25,7 +25,7 @@ const DEFAULT_OPERATION_DATA: OperationData = {
 };
 
 const persistedStateString = localStorage.getItem('reduxState');
-const persistedState = persistedStateString ? JSON.parse(persistedStateString) : {};
+const persistedState = persistedStateString ? JSON.parse(persistedStateString).editorState : {};
 
 export const pixitEditorSlice = createSlice({
   name: 'editor',

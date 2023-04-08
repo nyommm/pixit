@@ -79,6 +79,35 @@ function Viewport() {
     if (result.activeLayerIdx) activeLayerIdxDispatch(result.activeLayerIdx);
     dispatch(changeOperation('None'));
   };
+  const persistData = debounce(() => {
+    const data = layers.map((layer) => {
+      return {
+        id: layer.id,
+        width: layer.width,
+        height: layer.height,
+        hidden: layer.hidden,
+        locked: layer.locked,
+        pixels: layer.pixels,
+      };
+    });
+    localStorage.setItem('canvasLayers', JSON.stringify(data));
+  }, 5000);
+  const readLocalStorage = () => {
+    const dataString = localStorage.getItem('canvasLayers');
+    if (dataString == null) return;
+    const data = JSON.parse(dataString);
+    if (!data || data.length == undefined) return;
+    const persistedLayers: Layer[] = [];
+    for (const layerData of data) {
+      const layer = new Layer(layerData.id, layerData.width, layerData.height, layerData.pixels);
+      layer.hidden = layerData.hidden;
+      layer.locked = layerData.locked;
+      persistedLayers.push(layer);
+    }
+    setLayers(persistedLayers);
+  };
+  useEffect(readLocalStorage, []);
+  useEffect(persistData, [layers]);
   useEffect(executeOperation, [operation]);
   useEffect(() => {
     if (changeDataUndo.layers || changeDataUndo.activeLayerIdx) updateUndoStack();
