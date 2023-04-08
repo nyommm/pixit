@@ -67,7 +67,7 @@ function Viewport() {
     if (operation == 'None') return;
     const result = operationHandler(layers, operation, operationData);
     if (result.layers) {
-      if (result.layers.length > 1) {
+      if (result.layers.length > 0) {
         dispatch(changeWidth(result.layers[0].width));
         dispatch(changeHeight(result.layers[0].height));
       }
