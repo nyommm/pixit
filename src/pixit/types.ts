@@ -121,6 +121,8 @@ export interface Operations {
   rotateImage: ImageOperation;
   undoChange: ImageOperation;
   redoChange: ImageOperation;
+  switchGrid: () => OperationResult;
+  switchBackground: () => OperationResult;
   exportImage: () => OperationResult;
 };
 

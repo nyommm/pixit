@@ -4,6 +4,7 @@ import { invertImageColors, dropShadow, cropImage, resizeCanvas,
   mirrorImage, centralizeImage, outlineImage, scaleCanvas, rotateImage } from './image';
 import { undoRedoChange } from './edit';
 import { exportImage } from './file';
+import { switchGrid, switchBackground } from './view';
 
 export const operations = {
   None: () => { return {} as OperationResult; },
@@ -18,6 +19,8 @@ export const operations = {
   rotateImage,
   undoChange: undoRedoChange,
   redoChange: undoRedoChange,
+  switchGrid,
+  switchBackground,
   exportImage,
 };
 
