@@ -53,6 +53,7 @@ export interface PixitTools {
   fill: PixitTool;
   'color picker': PixitTool;
   line: PixitTool;
+  'shading tool': PixitTool;
 };
 
 export interface LayerData {

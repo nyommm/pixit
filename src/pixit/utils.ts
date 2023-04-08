@@ -2,7 +2,7 @@ import React from 'react';
 import { RGBColor } from 'react-color';
 
 import Layer from './Layer';
-import { MirrorAxis, Pixel, PixelPosition, ToolOptions } from './types';
+import { MirrorAxis, Pixel, PixelPosition, ShadingEffect, ToolOptions } from './types';
 
 /**
  * Get the position of the pixel at the client's position
@@ -148,6 +148,56 @@ function drawLine(layer: Layer, start: PixelPosition, end: PixelPosition, color:
     });
   }
   return layer.colorPixels(toColor);
+}
+
+function shadePixels(layer: Layer, start: PixelPosition, end: PixelPosition, options?: ToolOptions): PixelPosition[] {
+  const pixels: PixelPosition[] = [];
+  // TODO!: Optimize for large thickness values
+  const points = generatePointsOnLine(
+    layer, start, end,
+    // *Optimization Idea: reduce numberOfPoints proportional to thickness
+    Math.round(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2)),
+    options
+  );
+  for (const point of points) {
+    const color = layer.pixel(Math.round(point.x), Math.round(point.y));
+    if (!color || !color.a) continue;
+    pixels.push({ x: Math.round(point.x), y: Math.round(point.y) })
+  }
+  return pixels;
+}
+
+function shadeLayer(layer: Layer, options?: ToolOptions): Layer {
+  const newLayer = Layer.empty(layer.id, layer.width, layer.height);
+  const toColor: Pixel[] = [];
+  const mag = options?.shadingIntensity ?? 10;
+  const effect = options?.shading ?? 'darken';
+  const shiftColorComponent = (value: number) => {
+    switch(effect) {
+      case 'darken':
+        return Math.max(value - mag, 0);
+      case 'lighten':
+        return Math.min(value + mag, 255);
+      default:
+        return value;
+    }
+  }
+  for (let y = 0; y < layer.height; y++) {
+    for (let x = 0; x < layer.width; x++) {
+      const color = layer.pixel(x, y);
+      if (!color || !color.a) continue;
+      toColor.push({
+        x, y,
+        color: {
+          r: shiftColorComponent(color.r),
+          g: shiftColorComponent(color.g),
+          b: shiftColorComponent(color.b),
+          a: color.a,
+        },
+      });
+    }
+  }
+  return newLayer.colorPixels(toColor);
 }
 
 function getImageBoundingBox(layers: Layer[]) {
@@ -359,6 +409,8 @@ function rotateLayer(layer: Layer, pivot: PixelPosition, angle: number): Layer {
 export {
   draw,
   drawLine,
+  shadePixels,
+  shadeLayer,
   pointerPosition,
   getImageBoundingBox,
   translatePixels,
