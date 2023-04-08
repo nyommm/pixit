@@ -42,6 +42,17 @@ function drawPixelGrid(canvas: HTMLCanvasElement, width: number, height: number,
     drawGridLine(canvas, { x: x * scale, y: startY }, { x: x * scale, y: endY });
 }
 
+function drawGrid(canvas: HTMLCanvasElement, width: number, height: number, scale: number) {
+  const startX = 0;
+  const endX = (width) * scale;
+  const startY = 0;
+  const endY = (height) * scale;
+  for (let y = 0; y < height; y += 4)
+    drawGridLine(canvas, { x: startX, y: y * scale }, { x: endX, y: y * scale });
+  for (let x = 0; x < width; x += 4)
+    drawGridLine(canvas, { x: x * scale, y: startY }, { x: x * scale, y: endY });
+}
+
 /**
  * Draw the 'pixels' on the canvas layer by layer
  */
